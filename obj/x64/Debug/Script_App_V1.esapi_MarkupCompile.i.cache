@@ -4,7 +4,7 @@
 library
 C#
 .cs
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\
 Script_App_V1
 none
 false
@@ -16,5 +16,5 @@ DEBUG;TRACE
 161870519788
 UserScript.xaml;WindowCredit.xaml;
 
-False
+True
 
