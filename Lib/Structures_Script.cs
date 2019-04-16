@@ -920,17 +920,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_CYC_25fx(ScriptContext context)
         {
             const string SCRIPT_NAME0 = "CYC";
-            string[] N_GTV = { "GTV_HeadNeck", "GTV_SIB", "SIB","Tumor" };
+            //gtv-ctvs
+            string[] N_GTV = { "GTV_HeadNeck", "GTV_SIB", "SIB","Tumor", "sib base leng" };
             string[] N_CTV = { "CTV_High_Risk", "CTV_Tumor", "CTV_Peritumor" };
-            string[] N_NL = { "CTV_LN_Neck_L", "cuello izq", "Cuello izq" };
-            string[] N_NR = { "CTV_LN_Neck_R", "cuello der", "Cuello d" };
-            string[] N_ADPR = { "GTV_ADP_R", "", "adp der","ADP D" };
-            string[] N_ADPL = { "GTV_ADP_L", "", "adp izq", "ADP I" };
+            string[] N_NL = { "CTV_LN_Neck_L", "cuello izq", "Cuello izq", "cuello izq" };
+            string[] N_NR = { "CTV_LN_Neck_R", "cuello der", "Cuello d", "cuello derech" };
+            string[] N_ADPR = { "GTV_ADP_R", "adp der","ADP D", "sib adp izq" };
+            string[] N_ADPL = { "GTV_ADP_L", "adp izq", "ADP I" };
+            string[] N_N1 = { "CTV_LN_NIA", "Nivel Ia" };
+            //oars
             string[] N_Brainst = { "Brainstem", "", "tronco", "Tronco" };
             string[] N_Parotid_L = { "Parotid_L", "", "parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
             string[] N_Parotid_R = { "Parotid_R", "", "parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
             string[] N_Body = { "Body", "Outer Contour", "body"};
-            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc","sc" };
+            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc","sc","ME" };
+            string[] N_OptinNR = { "Optic_NErve" };//falta
 
             if (context.Patient == null || context.StructureSet == null)
             {
