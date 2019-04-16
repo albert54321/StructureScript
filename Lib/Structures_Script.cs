@@ -921,20 +921,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "CYC";
             //gtv-ctvs
-            string[] N_GTV = { "GTV_HeadNeck", "GTV_SIB", "SIB","Tumor", "sib base leng" };
+            string[] N_GTV = { "GTV_HeadNeck", "GTV_SIB", "SIB", "Tumor", "sib base leng" };
             string[] N_CTV = { "CTV_High_Risk", "CTV_Tumor", "CTV_Peritumor" };
             string[] N_NL = { "CTV_LN_Neck_L", "cuello izq", "Cuello izq", "cuello izq" };
             string[] N_NR = { "CTV_LN_Neck_R", "cuello der", "Cuello d", "cuello derech" };
-            string[] N_ADPR = { "GTV_ADP_R", "adp der","ADP D", "sib adp izq" };
+            string[] N_ADPR = { "GTV_ADP_R", "adp der", "ADP D", "sib adp izq" };
             string[] N_ADPL = { "GTV_ADP_L", "adp izq", "ADP I" };
-            string[] N_N1 = { "CTV_LN_NIA", "Nivel Ia" };
+            string[] N_N1 = { "CTV_LN_NI_A", "Nivel Ia" };//50gy=cuello
             //oars
             string[] N_Brainst = { "Brainstem", "", "tronco", "Tronco" };
             string[] N_Parotid_L = { "Parotid_L", "", "parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
             string[] N_Parotid_R = { "Parotid_R", "", "parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
-            string[] N_Body = { "Body", "Outer Contour", "body"};
-            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc","sc","ME" };
-            string[] N_OptinNR = { "Optic_NErve" };//falta
+            string[] N_Body = { "Body", "Outer Contour", "body" };
+            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc", "sc", "ME" };
+            string[] N_OpticNR = { "OpticNrv_R", "NOD" };//falta
+            string[] N_OpticNL = { "OpticNrv_L", "NOI" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -958,7 +959,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifSt(ctv_ID6, false, N_ADPR[0]);//
             Structure ctv_ID7 = ss.Structures.FirstOrDefault(s => N_ADPL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(ctv_ID7, false, N_ADPL[0]);//
-
+            Structure ctv_ID8 = ss.Structures.FirstOrDefault(s => N_N1.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID8, false, N_ADPL[0]);//
+            //OARS
             Structure brainstem = ss.Structures.FirstOrDefault(s => N_Brainst.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(brainstem, false, N_Brainst[0]);//
             Structure sc = ss.Structures.FirstOrDefault(s => N_SC.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
@@ -970,6 +973,11 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure parotidR = ss.Structures.FirstOrDefault(s => N_Parotid_R.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(parotidR, true, N_Parotid_R[0]);//
             if (parotidR == null) return;//
+            Structure optic_r = ss.Structures.FirstOrDefault(s => N_OpticNR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(optic_r, false, N_OpticNR[0]);//
+            Structure optic_l = ss.Structures.FirstOrDefault(s => N_OpticNL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(optic_l, false, N_OpticNL[0]);//
+
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(body, false, N_Body[0]);//
 
