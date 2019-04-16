@@ -1,0 +1,34 @@
+﻿<Window x:Class="Script_App_V1.WindowCredit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Script_App_V1"
+        mc:Ignorable="d"
+        Title="Credits" FontSize="24" Width="831.96" Height="356.676">
+    <Grid>
+        <StackPanel Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF4A4A4B"/>
+                    <GradientStop Color="#FFD2D2D2" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <Label x:Name="Stat_Copy0" Content="Autor:   Alberto Alarcón Paredes" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="412" Height="34" FontSize="18"/>
+            <Label x:Name="Stat_Copy1" Content="Magister en Física Médica-Instituto Balseiro" HorizontalAlignment="Left" Margin="-410,80,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="363" Height="34" FontSize="18"/>
+            <Label x:Name="Stat_Copy2" Content="Licenciado en Física Universidad Mayor de San Simón" HorizontalAlignment="Left" Margin="-410,120,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="449" Height="34" FontSize="18"/>
+            <Label x:Name="Stat_Copy3" Content="Email Institucional: aalarcon@institutozunino.org" HorizontalAlignment="Left" Margin="-450,160,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="412" Height="34" FontSize="18"/>
+            <Label x:Name="Stat_Copy4" Content="Email Personal: alarcon.alberto01@gmail.com" HorizontalAlignment="Left" Margin="-450,200,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="380" Height="34" FontSize="18"/>
+            <Label x:Name="Stat_Copy5" Content="Cordoba-Argentina" HorizontalAlignment="Left" Margin="-360,240,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="351" Height="34" FontSize="18"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" RenderTransformOrigin="0.5,0.5" Margin="271,10,-178,0">
+            <StackPanel.Background>
+                <ImageBrush x:Name="myBrush" ImageSource="Lib/dynalog-1.png" Stretch="Uniform" Opacity="0.5" ></ImageBrush>
+            </StackPanel.Background>
+        </StackPanel>
+
+    </Grid>
+</Window>

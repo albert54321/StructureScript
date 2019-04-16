@@ -1,0 +1,14 @@
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.csprojAssemblyReference.cache
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\UserScript.g.cs
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.esapi_MarkupCompile.cache
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.esapi_MarkupCompile.lref
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\plugins\Lib\Structures_Script.cs
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\plugins\Script_App_V1.esapi.dll
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\plugins\Script_App_V1.esapi.pdb
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\UserScript.baml
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.esapi.g.resources
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.csproj.CoreCompileInputs.cache
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.esapi.dll
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\Script_App_V1.esapi.pdb
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\WindowCredit.g.cs
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\Eclipse Scripting API\Projects\Script_App_V1\obj\x64\Debug\WindowCredit.baml
