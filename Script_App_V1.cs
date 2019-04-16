@@ -42,7 +42,7 @@ namespace VMS.TPS
             /*SBRT_Prostate x = new SBRT_Prostate();
             string id = x.Class_ID;
             x.St_Prostate(context);*/
-
+            //hola
 
 
             // TODO : Add here your code that is called when the script is launched from Eclipse
