@@ -48,7 +48,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             else {
                 if(name != "Body" && name != "Outer Contour" && st1.CanConvertToHighResolution()) st1.ConvertToHighResolution();
-                if (st1.Id != name) st1.Id = name;              
+                else if (st1.Id != name) st1.Id = name;              
             }
         }
         public void VerifSt1(Structure st1, bool need, string name)//solo para cambiar nombre
@@ -89,7 +89,7 @@ namespace VMS.TPS//tiene que ser igual que el main
         });
             list.Add(new Structures_Creation
             {
-                ID = "Script_Head_Neck",
+                ID = "Script_Head_Neck25Fx",
                 approved = true,
                 SCRIPT_NAME = "Head_Neck_Structures",
                 number = 3
@@ -942,9 +942,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_ADPL = { "GTV_ADP_L", "adp izq", "ADP I" };
             string[] N_N1 = { "CTV_LN_NI_A", "Nivel Ia" };//50gy=cuello
             //oars
-            string[] N_Brainst = { "Brainstem", "", "tronco", "Tronco" };
-            string[] N_Parotid_L = { "Parotid_L", "", "parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
-            string[] N_Parotid_R = { "Parotid_R", "", "parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
+            string[] N_Brainst = { "Brainstem", "tronco", "Tronco" };
+            string[] N_Parotid_L = { "Parotid_L","parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
+            string[] N_Parotid_R = { "Parotid_R","parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
             string[] N_Body = { "Body", "Outer Contour", "body" };
             string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc", "sc", "ME" };
             string[] N_OpticNR = { "OpticNrv_R", "NOD" };//falta
@@ -973,7 +973,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ctv_ID7 = ss.Structures.FirstOrDefault(s => N_ADPL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(ctv_ID7, false, N_ADPL[0]);//
             Structure ctv_ID8 = ss.Structures.FirstOrDefault(s => N_N1.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(ctv_ID8, false, N_ADPL[0]);//
+            VerifSt(ctv_ID8, false, N_N1[0]);//
             //OARS
             Structure brainstem = ss.Structures.FirstOrDefault(s => N_Brainst.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(brainstem, false, N_Brainst[0]);//
@@ -1008,6 +1008,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             const string PTV_ID15 = "PTV_LN_Neck_R";
             const string PTV_ID16 = "PTV_GTV_ADP_R";
             const string PTV_ID17 = "PTV_GTV_ADP_L";
+            const string PTV_ID18 = "PTV_LN_NI_A";
             const string PTV_ID21 = "zPTV_Low_5000!";
             const string PTV_ID22 = "zPTV_Mid_5800!";
             const string PTV_ID23 = "zPTV_High_6700!";
@@ -1027,6 +1028,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
             Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
             Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
+            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//n1
             Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
             Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
             Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
@@ -1047,7 +1049,7 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
             St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17);St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID25); St.Add(prv_brainstem);
-            St.Add(prv_sc); St.Add(mr); St.Add(auxi); St.Add(auxi2); St.Add(auxi3); St.Add(buff_body); St.Add(body0);
+            St.Add(prv_sc); St.Add(mr); St.Add(auxi); St.Add(auxi2); St.Add(auxi3); St.Add(buff_body); St.Add(body0);St.Add(ptv_ID18);
             foreach (Structure x in St) x.ConvertToHighResolution();
             //---------------------------------------
             //comienza la manipulacion de estructuras
@@ -1072,7 +1074,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                 Cropbody(ctv_ID7, buff_body);
                 Cropbody(ptv_ID17, buff_body);
                 Cropbody(ptv_ID23, buff_body);
-            } 
+            }
+
             ptv_ID13.SegmentVolume = ctv_ID3.Margin(5.0); //PTV CTV
             Cropbody(ctv_ID3, buff_body);
             Cropbody(ptv_ID13, buff_body);
@@ -1080,21 +1083,28 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID4 != null)
             {
                 ptv_ID14.SegmentVolume = ctv_ID4.Margin(5.0); //PTV Cuello d
-                ctv_ID4.SegmentVolume = ctv_ID4.And(buff_body);//int outer-4
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID14);
+                Cropbody(ctv_ID4, buff_body);
+                Cropbody(ptv_ID14, buff_body);
             }
             //else ss.RemoveStructure(ctv_ID4); ss.RemoveStructure(ptv_ID14);
             if (ctv_ID5 != null)
             {
                 ptv_ID15.SegmentVolume = ctv_ID5.Margin(5.0); //PTV Cuello i
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID15);
                 Cropbody(ctv_ID5, buff_body);
                 Cropbody(ptv_ID15, buff_body);
+            }
+            if (ctv_ID8 != null)
+            {
+                ptv_ID18.SegmentVolume = ctv_ID8.Margin(5.0); //PTV nivel1
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID18);
+                Cropbody(ctv_ID8, buff_body);
+                Cropbody(ptv_ID18, buff_body);
             }
 
             ptv_ID22.SegmentVolume = ptv_ID13.Sub(ptv_ID23);//67-58
             Cropbody(ptv_ID22, buff_body); //int outer-4
-
-            if (ctv_ID4 != null) ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID14);
-            if (ctv_ID5 != null) ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID15);
 
             if (ptv_ID21 != null)
             {
@@ -1117,12 +1127,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             auxi.SegmentVolume = (parotidL.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 2))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0));//.Margin(30);//anado
             auxi2.SegmentVolume = (parotidR.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0));
             auxi3.SegmentVolume = auxi.And(auxi2);//int
-            buff_body.SegmentVolume = (body.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 50, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 25, 0));//.Margin(-7.0);//auter -7
+            buff_body.SegmentVolume = (body0.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 50, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 25, 0));//.Margin(-7.0);//auter -7
             auxi3.SegmentVolume = auxi3.And(buff_body);//int buff
             auxi.SegmentVolume = ptv_ID25.Margin(10);
             auxi3.SegmentVolume = auxi3.And(buff_body);//int buff
             auxi3.SegmentVolume = auxi3.Sub(auxi);
-            buff_body.SegmentVolume = body.Margin(-7);
+            buff_body.SegmentVolume = body0.Margin(-7);
             //buff_body.SegmentVolume = (body.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 50, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 10, 0));//
             //auxi3.SegmentVolume = auxi3.Sub(buff_body);// vol - buff reduced 7.5cm hacia abajo
             //buff_body.SegmentVolume = body.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 40, 0, 0, 40, 0, 0));//*/
@@ -1143,13 +1153,14 @@ namespace VMS.TPS//tiene que ser igual que el main
                 auxi2.SegmentVolume = (parotidR.Margin(40).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0));//anad
                 auxi3.SegmentVolume = auxi3.Sub(auxi);
                 auxi3.SegmentVolume = auxi3.Sub(auxi2);
-                buff_body.SegmentVolume = body.Margin(-18);
+                buff_body.SegmentVolume = body0.Margin(-18);
                 auxi3.SegmentVolume = auxi3.And(buff_body);
                 inf.SegmentVolume = auxi3;
                 //inf.SegmentVolume = (inf.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 0, 50))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 0, 0, 0, 0, 45));
                 inf.SegmentVolume = inf.Sub(ptv_ID25.Margin(5));
             }
-
+            af.SetAssignedHU(0.0);//hu artefacto
+            dientes.SetAssignedHU(900);//HU dientes dado por el fabi
             ss.RemoveStructure(auxi);
             ss.RemoveStructure(auxi2);
             ss.RemoveStructure(auxi3);
@@ -1159,6 +1170,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID5 == null) ss.RemoveStructure(ptv_ID15);
             if (ctv_ID6 == null) ss.RemoveStructure(ptv_ID16);
             if (ctv_ID7 == null) ss.RemoveStructure(ptv_ID17);
+            if (ctv_ID8 == null) ss.RemoveStructure(ptv_ID18);
         }  
     }
 

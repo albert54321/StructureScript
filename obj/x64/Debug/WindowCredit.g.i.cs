@@ -108,7 +108,7 @@ namespace Script_App_V1 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Script_App_V1.esapi;component/windowcredit.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Script_App_V2.esapi;component/windowcredit.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\WindowCredit.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
