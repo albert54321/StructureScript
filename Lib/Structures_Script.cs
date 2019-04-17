@@ -340,7 +340,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Dist = { "CTV_Breast_Dist", "8-MDISTAL", "Distal", "10- CTV distal" };
             string[] N_Prox = { "CTV_Breast_Prox", "9-MPROX", "Proximal", "9 CTV proximal" };
             string[] N_SIB = { "GTV_SIB", "10-SIB", "SIB", "8 SIB" };//hip joint left
-            string[] N_Chest = { "CTV_Chestwall", "1-Pared", "Pared" };
+            string[] N_Chest = { "CTV_Chestwall", "1-Pared", "Pared","PD" };
             //bad names
             string[] N_Body = { "Body", "Outer Contour", "body" };
             string[] N_SC = { "SpinalCord", "Spinal Cord", "Spinal, Cord" };
@@ -397,7 +397,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                 {
                     System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Chest[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return;//es la unica por el momento para terminar la aplicacion
-                } 
+                }
+                else ctv_ID11.Id = N_Chest[0];
             }
             //if (result == DialogResult.Cancel && ctv_ID11 == null) return;
             Structure body0 = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));
@@ -444,18 +445,18 @@ namespace VMS.TPS//tiene que ser igual que el main
             const string Surface = "zSurface";          //Superficie
 
             //20fx Breast
-            const string PTV_ID20_ = "zPTV_High_5640!"; //PTV_56.4Gy
-            const string PTV_ID21_ = "zPTV_Low_4300!";  //PTV_43Gy
-            const string PTV_ID22_ = "zPTV_Mid_4600!";  //PTV_46Gy
-            const string PTV_ID23_ = "zPTV_Mid_4540!";  //PTV_45.4Gy
+            const string PTV_ID20_ = "zPTV_High_5640"; //PTV_56.4Gy//tengo un problema con los IDS por eso le quito el signo de admiracion
+            const string PTV_ID21_ = "zPTV_Low_4300";  //PTV_43Gy
+            const string PTV_ID22_ = "zPTV_Mid_4600";  //PTV_46Gy
+            const string PTV_ID23_ = "zPTV_Mid_4540";  //PTV_45.4Gy
 
             //Chest wall 16fx
             const string PTV_ID25 = "zPTV_High_4400!";  //PTV_44Gy
 
             //Chest wall 20fx
-            const string PTV_ID25_ = "zPTV_High_4700!"; //PTV_47Gy
+            const string PTV_ID25_ = "zPTV_High_4700"; //PTV_47Gy//problema con el id
             //const string PTV_ID26_ = "zPTV_Mid_4600!";  //PTV_46Gy
-            const string PTV_ID27 = "PTV_Chestwall!";  //PTV pared
+            const string PTV_ID27 = "PTV_Chestwall";  //PTV pared
 
 
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
@@ -670,11 +671,23 @@ namespace VMS.TPS//tiene que ser igual que el main
             //ver si es de 16 o 20 FX
             if (result2 == DialogResult.No)
             {
-                ptv_ID20.Id = PTV_ID20_;
-                ptv_ID21.Id = PTV_ID21_;
-                ptv_ID22.Id = PTV_ID22_;//por defecto esta en fx16
-                ptv_ID23.Id = PTV_ID23_;
-                ptv_ID25.Id = PTV_ID25_;
+                if (result3 == DialogResult.Yes)
+                {
+                    ptv_ID20.Id = PTV_ID20_;
+                    ptv_ID21.Id = PTV_ID21_;
+                    ptv_ID22.Id = PTV_ID22_;//por defecto esta en fx16
+                    ptv_ID23.Id = PTV_ID23_;
+                    ptv_ID25.Id = PTV_ID25_;
+                }
+                else if(result3==DialogResult.No)//lo coloco asi porque sino me sale que ya existe el id
+                {
+                    ptv_ID20.Id = PTV_ID20_+"!";
+                    ptv_ID21.Id = PTV_ID21_ + "!";
+                    ptv_ID22.Id = PTV_ID22_ + "!";//por defecto esta en fx16
+                    ptv_ID23.Id = PTV_ID23_ + "!";
+                    ptv_ID25.Id = PTV_ID25_ + "!";
+                }
+
             }
 
 
