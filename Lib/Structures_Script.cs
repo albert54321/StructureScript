@@ -66,19 +66,19 @@ namespace VMS.TPS//tiene que ser igual que el main
         public static List<Structures_Creation> Script()//ScriptContext sc) //hay que aprobar el script aqui sino no va correr
         {
             List<Structures_Creation> list = new List<Structures_Creation>();
-            list.Add(new Structures_Creation {
+            list.Add(new Structures_Creation//esto es una lista de clases dentro
+            {
+                ID = "Script_Breast_ChestWall",//nombre que aparece en la lista de la interfaz grafica
+                approved = true,//si el script esta aprobado o no
+                SCRIPT_NAME = "Breast_ChestWall_Structures",//nombre de las advertencias 
+                number = 1//nombre del script se enlaza con Start.
+            });
+            list.Add(new Structures_Creation
+            {
                 ID = "Script_SBRT_Prostate",
                 approved = true,
                 SCRIPT_NAME = "Prostate_Structures",
                 number = 0
-        });
-
-            list.Add(new Structures_Creation//esto es una lista de clases dentro
-            {
-                ID = "Script_Breast_ChestWall",
-                approved = true,
-                SCRIPT_NAME = "Breast_ChestWall_Structures",
-                number = 1
             });
             list.Add(new Structures_Creation
             {
@@ -94,6 +94,14 @@ namespace VMS.TPS//tiene que ser igual que el main
                 SCRIPT_NAME = "Head_Neck_Structures",
                 number = 3
         });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Cervix20Fx",
+                approved = true,
+                SCRIPT_NAME = "Cervix_Structures",
+                number = 4
+            });
+
             return list;
         } //ESTAN LIGADOS EL NUMBER AQUI
         //comienzo del script strutures
@@ -103,6 +111,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             //else if (template == 2 && appr) St_Breast_ChestWall_RA(context);
             else if (template == 2 && appr) St_Rectum20fx(context);
             else if (template == 3 && appr) St_CYC_25fx(context);
+            else if (template == 4 && appr) St_Cervix_25fx(context);
             else System.Windows.MessageBox.Show("The Script does not approved for clinical use ");
         }// Aqui hay que implementar el nuevo script de estructuras y correlacionar los numeros sino no se ejecuta
         public void Cropbody(Structure st1, Structure body1)
@@ -1171,7 +1180,264 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID6 == null) ss.RemoveStructure(ptv_ID16);
             if (ctv_ID7 == null) ss.RemoveStructure(ptv_ID17);
             if (ctv_ID8 == null) ss.RemoveStructure(ptv_ID18);
-        }  
+        }
+
+        public void St_Cervix_25fx(ScriptContext context)
+        {
+            const string SCRIPT_NAME0 = "Cervix";
+            //gtv-ctvs
+            string[] N_GTV = { "_GTV_Cervix", "Tumor" };
+            string[] N_CTV3 = { "_CTV_Paramet_L" };
+            string[] N_CTV4 = { "_CTV_Paramet_R" };
+            string[] N_CTV5 = { "_CTV_Rest_Uterus" };
+            string[] N_CTV6 = { "_CTV_Rest_Vagina" };
+            string[] N_CTV7 = { "_CTV_LN_Iliac" };
+            string[] N_CTV8 = { "_CTV_LN_Presacra" };
+            string[] N_CTV9 = { "_CTV_LN_Paraaort", "LAO" };
+            string[] N_CTV10 = { "_CTV_ADP_I" };
+            string[] N_CTV13 = { "_CTV_ADP_II"};
+            string[] N_CTV11 = { "_CTV_LN_Pelvic" };
+            string[] N_CTV12 = { "_CTV_Parametrium" };
+
+            //oars
+            string[] N_Colon = { "Colon", "colon" };
+            string[] N_Bladder = { "Bladder","Vejiga","vejiga"};
+            string[] N_Rectum = { "Rectum", "Recto" };
+            string[] N_Bowel = { "Bowel", "Intestino", "intestino","intestinos", "Intestinos" };
+            string[] N_Body = { "Body", "Outer Contour", "body" };
+            string[] N_FJL = { "FemoralJoint_L"};
+            string[] N_FJR = { "FemoralJoint_R" };
+            string[] N_KL = { "Kidney_L" };
+            string[] N_KR = { "Kidney_R" };
+            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc", "sc", "ME" };
+
+            if (context.Patient == null || context.StructureSet == null)
+            {
+                System.Windows.MessageBox.Show("Please load a patient, 3D image, and structure set before running this script.", SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            StructureSet ss = context.StructureSet;
+            context.Patient.BeginModifications();   // enable writing with this script.
+
+            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_GTV.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID2, true, N_GTV[0]);//es necesario true
+            if (ctv_ID2 == null) return;
+            Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_CTV3.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID3, false, N_CTV3[0]);//es necesario true
+            Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_CTV4.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID4, false, N_CTV4[0]);
+            Structure ctv_ID5 = ss.Structures.FirstOrDefault(s => N_CTV5.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID5, false, N_CTV5[0]);
+            Structure ctv_ID6 = ss.Structures.FirstOrDefault(s => N_CTV6.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID6, false, N_CTV6[0]);
+            Structure ctv_ID7 = ss.Structures.FirstOrDefault(s => N_CTV7.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID7, false, N_CTV7[0]);
+            Structure ctv_ID8 = ss.Structures.FirstOrDefault(s => N_CTV8.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID8, false, N_CTV8[0]);
+            Structure ctv_ID9 = ss.Structures.FirstOrDefault(s => N_CTV9.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID9, false, N_CTV9[0]);
+            Structure ctv_ID10 = ss.Structures.FirstOrDefault(s => N_CTV10.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID10, false, N_CTV10[0]);//es necesario true
+            Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_CTV11.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID11, false, N_CTV11[0]);
+            Structure ctv_ID12 = ss.Structures.FirstOrDefault(s => N_CTV12.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID12, false, N_CTV12[0]);
+            Structure ctv_ID13 = ss.Structures.FirstOrDefault(s => N_CTV13.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(ctv_ID13, false, N_CTV13[0]);
+
+            //OARS
+            Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(colon, false, N_Colon[0]);
+            Structure bladder = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(bladder, true, N_Bladder[0]);
+            if (bladder == null) return;
+            Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(rectum, true, N_Rectum[0]);
+            if (rectum == null) return;
+            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(bowel, true, N_Bowel[0]);
+            if (bowel == null) return;
+            Structure body = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(body, true, N_Bowel[0]);
+            if (body == null) return;
+
+            //New Structures 
+            const string PTV_ID12 = "PTV_GTV_Cervix";
+            const string PTV_ID13 = "PTV_Paramet_L";
+            const string PTV_ID14 = "PTV_Paramet_R";
+            const string PTV_ID15 = "PTV_Rest_Uterus";
+            const string PTV_ID16 = "PTV_Rest_Vagina";
+            const string PTV_ID17 = "PTV_LN_Iliac";
+            const string PTV_ID18 = "PTV_LN_Presacral";
+            const string PTV_ID19 = "PTV_LN_Paraaort";
+            const string PTV_ID20 = "PTV_ADP_I";
+            const string PTV_ID21 = "zPTV_Low_4300!";
+            const string PTV_ID22 = "zPTV_Mid_4800!";
+            const string PTV_ID23 = "zPTV_High_5840!";
+            const string PTV_ID24 = "zPTV_5840-PRVs!";  //PTV58.4-PRVs
+            const string PTV_ID25 = "zPTV_Total!";
+            const string PTV_ID26 = "zPTV_RectumPRV5!";//PTV58.4 interseccion PRV recto
+            const string PTV_ID27 = "zPTV_BladderPRV!"; //PTV58.4 interseccion PRV vejiga
+                                                        //PTVs de la variante
+            const string PTV_ID28 = "PTV_LN_Pelvic"; //
+            const string PTV_ID29 = "PTV_Parametrium";
+            const string PTV_ID30 = "PTV_ADP_II";
+
+            const string PRV_Rectum = "Rectum_PRV05";
+            const string PRV_Colon = "Colon_PRV05";//
+            const string PRV_Bowel = "Bowel_PRV05";//
+            const string PRV_Bladder = "Bladder_PRV05";//
+
+            // create the empty "ptv+5mm" structure ans auxilary structures
+            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
+            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
+            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
+            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
+            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
+            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
+            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);
+            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);
+            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
+            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
+            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
+            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
+            Structure ptv_ID24 = ss.AddStructure("PTV", PTV_ID24);
+            Structure ptv_ID25 = ss.AddStructure("PTV", PTV_ID25);
+            Structure ptv_ID26 = ss.AddStructure("PTV", PTV_ID26);
+            Structure ptv_ID27 = ss.AddStructure("PTV", PTV_ID27);
+
+            Structure ptv_ID28 = ss.AddStructure("PTV", PTV_ID28);//PTV DE LOS GANGLIOS
+            Structure ptv_ID29 = ss.AddStructure("PTV", PTV_ID29);//PTV DE LOS PARAMETRIOS
+            Structure ptv_ID30 = ss.AddStructure("PTV", PTV_ID30);//ADPII
+
+            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
+            Structure prv_colon = ss.AddStructure("CONTROL", PRV_Colon);
+            Structure prv_intestino = ss.AddStructure("CONTROL", PRV_Bowel);
+            Structure prv_bladder = ss.AddStructure("CONTROL", PRV_Bladder);
+
+            Structure auxi = ss.AddStructure("CONTROL", "Auxi");//auxiliar para mochar
+
+            DialogResult result = System.Windows.Forms.MessageBox.Show("OPtions:" + "\n" + "1.-If Yes, Parametrium left(izq) is inside 58.4Gy" + "\n" +
+    "2.-If No, Parametrium right(der) is inside 58.4Gy" + "\n" + "3.-If Cancel, both(ambos) of them are inside 58.4Gy", SCRIPT_NAME, MessageBoxButtons.YesNoCancel);
+
+            List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
+            St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
+            St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(ptv_ID25); St.Add(ptv_ID26); St.Add(ptv_ID27); St.Add(ptv_ID28); St.Add(ptv_ID29); St.Add(ptv_ID30);///////
+            St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_intestino); St.Add(prv_bladder); St.Add(auxi);
+            foreach (Structure x in St) x.ConvertToHighResolution();
+
+            ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0); //PTV Tumor cuello
+            if (ctv_ID3 != null) ptv_ID13.SegmentVolume = ctv_ID3.Margin(6.0); //PTV param i
+            //else ss.RemoveStructure(ctv_ID3); ss.RemoveStructure(ptv_ID13);
+            if (ctv_ID4 != null) ptv_ID14.SegmentVolume = ctv_ID4.Margin(6.0); //PTV param d
+            //else ss.RemoveStructure(ctv_ID4); ss.RemoveStructure(ptv_ID14);
+            if (ctv_ID5 != null) ptv_ID15.SegmentVolume = ctv_ID5.Margin(9.0); //PTV Utero
+            if (ctv_ID6 != null)
+            {
+                ptv_ID16.SegmentVolume = ctv_ID6.Margin(9.0); //PTV Vagina
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID16); //ptv param d utero + vagina 48
+            }
+            if (ctv_ID7 != null)
+            {
+                ptv_ID17.SegmentVolume = ctv_ID7.Margin(6.0); //PTV gang ilia
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID17); //ptv param d utero + vagina + g iliaco48
+            }
+            //else ss.RemoveStructure(ctv_ID7); ss.RemoveStructure(ptv_ID17);
+            if (ctv_ID8 != null)
+            {
+                ptv_ID18.SegmentVolume = ctv_ID8.Margin(6.0); //PTV gang presa
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID18); //ptv param d utero + vagina + g iliaco+presac48
+                
+            }
+
+            //else ss.RemoveStructure(ctv_ID8); ss.RemoveStructure(ptv_ID18);
+            if (ctv_ID9 != null) ptv_ID19.SegmentVolume = ctv_ID9.Margin(6.0); //PTV LAO
+            //else ss.RemoveStructure(ctv_ID9); ss.RemoveStructure(ptv_ID19);
+            if (ctv_ID10 != null) ptv_ID20.SegmentVolume = ctv_ID10.Margin(6.0); //PTV ADP
+            else ss.RemoveStructure(ctv_ID10); ss.RemoveStructure(ptv_ID20);
+
+            if (ctv_ID11 != null)
+            {
+                ptv_ID28.SegmentVolume = ctv_ID11.Margin(6.0); //PTV ganglios
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID28); //ptv param d utero + vagina + g iliaco+presac48+ganglios
+            }
+            //else ss.RemoveStructure(ctv_ID11); ss.RemoveStructure(ptv_ID28);
+            if (ctv_ID12 != null) ptv_ID29.SegmentVolume = ctv_ID12.Margin(6.0); //PTV parametrios
+            //else ss.RemoveStructure(ctv_ID12); ss.RemoveStructure(ptv_ID29);
+            if (ctv_ID13 != null) ptv_ID30.SegmentVolume = ctv_ID13.Margin(6.0);//PTV adpII
+            //PRV
+            if (colon != null) prv_colon.SegmentVolume = colon.Margin(5.0);// PRV 
+            prv_bladder.SegmentVolume = bladder.Margin(5.0);// PRV 
+            prv_rectum.SegmentVolume = rectum.Margin(5.0);// PRV 
+            prv_intestino.SegmentVolume = bowel.Margin(5.0);// PRV 
+
+            if (result == DialogResult.Yes)
+            {
+                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 15, 0, 0, 30, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                ptv_ID22.SegmentVolume = ptv_ID14.Or(ptv_ID15); //ptv param d utero 48
+            }
+            else if (result == DialogResult.No)
+            {
+                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID14);//PTV tumor+param D 58.4
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 30, 0, 0, 15, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                ptv_ID22.SegmentVolume = ptv_ID13.Or(ptv_ID15); //ptv param i utero 48
+            }
+            else
+            {
+                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
+                ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID14);//PTV tumor+param D 58.4
+                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID29);//PTV tumor+param Ambos si hay 58.4
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 26, 0, 0, 26, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                ptv_ID22.SegmentVolume = ptv_ID15.Or(ptv_ID13); //ptv param i utero 48
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14); //ptv param i+d utero 48
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID29); //ptv param i+d+ambos utero 48
+            }
+
+
+            //Struture Auxiliar for creation of lateral crop in PRV Bladder. esto es solo para parametrio izq
+
+            auxi.SegmentVolume = auxi.And(prv_bladder);// intersection with bladder            
+            auxi.SegmentVolume = auxi.AsymmetricMargin(new AxisAlignedMargins(0, 3, 50, 3, 3, 3, 3)); ;//mochado+3mm+5cm hacia arriba para cortar
+            ptv_ID27.SegmentVolume = auxi.And(ptv_ID23);//PTV58.4*PRV Bladder mochado para que corte lo necesario
+            ptv_ID27.SegmentVolume = ptv_ID27.And(prv_bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
+            ////////////////////////////////////////////PTV58.4-Prvs
+            ptv_ID24.SegmentVolume = ptv_ID23.Sub(auxi);//PTV58.4-PRVs! - PRV Vejiga+3mm
+            auxi.SegmentVolume = prv_rectum.Margin(3.0);// ahora el auxi es la extension del prv recto
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(auxi); //PTV58.4-PRVs! - PRV Rectum+3mm
+            auxi.SegmentVolume = prv_intestino.Margin(3.0);// ahora el auxi es la extension del prv intestino
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(auxi); //PTV58.4-PRVs! - PRV Rectum+3mm
+            auxi.SegmentVolume = prv_colon.Margin(3.0);// ahora el auxi es la extension del prv colon
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(auxi); //PTV58.4-PRVs! - PRV Rectum+3mm
+                                                         //////////////////////////////////////////////////////
+
+            
+
+            ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID23); //48-58.4
+
+            ptv_ID21.SegmentVolume = ptv_ID19.Sub(ptv_ID22); //43-48
+            ptv_ID21.SegmentVolume = ptv_ID21.Sub(ptv_ID23); //43-58.4
+
+            //PTV total
+            ptv_ID25.SegmentVolume = ptv_ID23.Or(ptv_ID22);//58.4+48
+            ptv_ID25.SegmentVolume = ptv_ID25.Or(ptv_ID21);//58.4+43
+            //PTV58.4*PRV REC
+            ptv_ID26.SegmentVolume = ptv_ID23.And(prv_rectum);
+
+            ss.RemoveStructure(auxi);
+            if (ctv_ID3 == null) ss.RemoveStructure(ptv_ID13);
+            if (ctv_ID4 == null) ss.RemoveStructure(ptv_ID14);
+            if (ctv_ID5 == null) ss.RemoveStructure(ptv_ID15);
+            if (ctv_ID6 == null) ss.RemoveStructure(ptv_ID16);
+            if (ctv_ID7 == null) ss.RemoveStructure(ptv_ID17);
+            if (ctv_ID8 == null) ss.RemoveStructure(ptv_ID18);
+            if (ctv_ID9 == null) ss.RemoveStructure(ptv_ID19);
+
+            if (ctv_ID11 == null) ss.RemoveStructure(ptv_ID28);
+            if (ctv_ID12 == null) ss.RemoveStructure(ptv_ID29);
+            if (ctv_ID13 == null) ss.RemoveStructure(ptv_ID30);
+
+        }
     }
 
 }
