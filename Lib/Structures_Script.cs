@@ -51,6 +51,21 @@ namespace VMS.TPS//tiene que ser igual que el main
                 else if (st1.Id != name) st1.Id = name;              
             }
         }
+        public void VerifStLow(Structure st1, bool need, string name)//cambia el nombre y NO convierte en alta resolucion
+        {
+            if (st1 == null || st1.IsEmpty)
+            {
+                System.Windows.MessageBox.Show(string.Format("'{0}' not found!", name), SCRIPT_NAME, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                if (need == true)
+                {
+                    System.Windows.MessageBox.Show("Script doesnt execute");
+                }
+            }
+            else
+            {
+                if (st1.Id != name) st1.Id = name;
+            }
+        }
         public void VerifSt1(Structure st1, bool need, string name)//solo para cambiar nombre
         {
             if (st1 == null || st1.IsEmpty)
@@ -61,6 +76,17 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 if (st1.Id != name) st1.Id = name;
             }
+        }
+        public bool HighResol(Structure s)//verifica su una estructura es alta resol devuelve a= false si es alta resol
+        {
+            bool a;
+            if (s == null || s.IsEmpty) a = true;
+            else
+            {
+                if (s.IsHighResolution) a = false;
+                else a = true;
+            }
+            return a;
         }
         //La lista de script es aqui
         public static List<Structures_Creation> Script()//ScriptContext sc) //hay que aprobar el script aqui sino no va correr
@@ -97,7 +123,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             list.Add(new Structures_Creation
             {
                 ID = "Script_Cervix20Fx",
-                approved = true,
+                approved = false,
                 SCRIPT_NAME = "Cervix_Structures",
                 number = 4
             });
@@ -149,38 +175,54 @@ namespace VMS.TPS//tiene que ser igual que el main
             context.Patient.BeginModifications();   // enable writing with this script.
 
             Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_Prostate.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(ctv_ID2,true,N_Prostate[0]);//es necesario true
-            if (ctv_ID2 == null) return;
             Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LN.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(ctv_ID3, false, N_LN[0]);//es necesario true/false
-
             Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_VS.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(ctv_ID4, false, N_VS[0]);//es necesario true
-
             Structure ctv_ID5 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(ctv_ID5, false, N_SIB[0]);//es necesario true
-
             Structure ctv_ID6 = ss.Structures.FirstOrDefault(s => N_GP.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(ctv_ID6, false, N_GP[0]);//es necesario true
-
             Structure uretra = ss.Structures.FirstOrDefault(s => N_Urethra.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(uretra, true, N_Urethra[0]);//es necesario true
-
-            if (uretra == null) return;
             Structure trigono = ss.Structures.FirstOrDefault(s => N_Trigone.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(trigono, true, N_Trigone[0]);//es necesario true
-            if (trigono == null) return;
-
             Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(rectum, true, N_Rectum[0]);//es necesario true
-            if (rectum == null) return;
-
             Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(colon, false, N_Colon[0]);//es necesario true
-
             Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(bowel, false, N_Bowel[0]);//es necesario true
 
+
+            bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
+            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(uretra) || !HighResol(trigono) || !HighResol(rectum) || !HighResol(colon) || !HighResol(bowel))
+            {
+                Low = false;
+                VerifSt(ctv_ID2, true, N_Prostate[0]);//es necesario true
+                if (ctv_ID2 == null) return;
+                VerifSt(ctv_ID3, false, N_LN[0]);//es necesario true/false
+                VerifSt(ctv_ID4, false, N_VS[0]);//es necesario true
+                VerifSt(ctv_ID5, false, N_SIB[0]);//es necesario true
+                VerifSt(ctv_ID6, false, N_GP[0]);//es necesario true
+                VerifSt(uretra, true, N_Urethra[0]);//es necesario true
+                if (uretra == null) return;
+                VerifSt(trigono, true, N_Trigone[0]);//es necesario true
+                if (trigono == null) return;
+                VerifSt(rectum, true, N_Rectum[0]);//es necesario true
+                if (rectum == null) return;
+                VerifSt(colon, false, N_Colon[0]);//es necesario true
+                VerifSt(bowel, false, N_Bowel[0]);//es necesario true
+            }
+            else
+            {
+                Low = true;
+                VerifStLow(ctv_ID2, true, N_Prostate[0]);//es necesario true
+                if (ctv_ID2 == null) return;
+                VerifStLow(ctv_ID3, false, N_LN[0]);//es necesario true/false
+                VerifStLow(ctv_ID4, false, N_VS[0]);//es necesario true
+                VerifStLow(ctv_ID5, false, N_SIB[0]);//es necesario true
+                VerifStLow(ctv_ID6, false, N_GP[0]);//es necesario true
+                VerifStLow(uretra, true, N_Urethra[0]);//es necesario true
+                if (uretra == null) return;
+                VerifStLow(trigono, true, N_Trigone[0]);//es necesario true
+                if (trigono == null) return;
+                VerifStLow(rectum, true, N_Rectum[0]);//es necesario true
+                if (rectum == null) return;
+                VerifStLow(colon, false, N_Colon[0]);//es necesario true
+                VerifStLow(bowel, false, N_Bowel[0]);//es necesario true
+            }
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver////el body no deja convertirr a high entonces copiar la estrucutura enn body2
             VerifSt(body, true, N_Body[0]);//es necesario true
             if (body == null) return;
@@ -241,12 +283,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
             Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
             //Structure uretra2 = ss.AddStructure("PTV", "Buffer_U");
-
-            List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
-            St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
-            St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(prv_rectum); St.Add(rect_ant); St.Add(rect_post); St.Add(prv_colon); St.Add(prv_bowel);
-            foreach (Structure x in St) x.ConvertToHighResolution();
-
+            if (!Low)
+            {
+                List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
+                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
+                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(prv_rectum); St.Add(rect_ant); St.Add(rect_post); St.Add(prv_colon); St.Add(prv_bowel);
+                foreach (Structure x in St) x.ConvertToHighResolution();
+            }
             ptv_ID12.SegmentVolume = ctv_ID2.AsymmetricMargin(new AxisAlignedMargins(0, 5, 5, 5, 5, 3, 5));// PTV Prostate asymmetry
             /*uretra2.SegmentVolume = uretra.AsymmetricMargin(new AxisAlignedMargins(0, 0, 0, 10, 0, 0, 10));//expande urethra 1 cm sup and inf   z1 pies z2 cab pero lo hace mal porque es chico
             uretra2.SegmentVolume = uretra2.Sub(uretra);
@@ -339,26 +382,26 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Breast_ChestWall(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_Breast_ChestWall";
-            string[] N_Breast = { "CTV_Breast", "1-Mama" };
-            string[] N_LNI = { "CTV_LN_Ax_L1", "2-Ax I", "Axila I" };
-            string[] N_LNII = { "CTV_LN_Ax_L2", "3-Ax II", "Axila II" };
-            string[] N_LNIII = { "CTV_LN_Ax_L3", "4-Ax III", "Axila III" };
-            string[] N_Rotter = { "CTV_LN_Rotter", "5-Rotter", "7 Rotter" };
-            string[] N_Sclav = { "CTV_LN_Sclav", "6-Supra", "6-SUPRA" };
-            string[] N_IMN = { "CTV_LN_IMN", "7-CMI"};
-            string[] N_Dist = { "CTV_Breast_Dist", "8-MDISTAL", "Distal", "10- CTV distal" };
-            string[] N_Prox = { "CTV_Breast_Prox", "9-MPROX", "Proximal", "9 CTV proximal" };
-            string[] N_SIB = { "GTV_SIB", "10-SIB", "SIB", "8 SIB" };//hip joint left
-            string[] N_Chest = { "CTV_Chestwall", "1-Pared", "Pared","PD" };
+            string[] N_Breast = { "1-Mama","CTV_Breast" ,"Mama" };
+            string[] N_LNI = { "2-Ax I","CTV_LN_Ax_L1",  "Axila I" };
+            string[] N_LNII = { "3-Ax II", "CTV_LN_Ax_L2",  "Axila II" };
+            string[] N_LNIII = { "4-Ax III", "CTV_LN_Ax_L3",  "Axila III" };
+            string[] N_Rotter = { "5-Rotter", "CTV_LN_Rotter",  "7 Rotter" };
+            string[] N_Sclav = { "6-Supra", "CTV_LN_Sclav",  "6-SUPRA" };
+            string[] N_IMN = { "7-CMI","CTV_LN_IMN" };
+            string[] N_Dist = { "8-MDISTAL", "CTV_Breast_Dist",  "Distal", "10- CTV distal" };
+            string[] N_Prox = { "9-MPROX",  "CTV_Breast_Prox",  "Proximal", "9 CTV proximal" };
+            string[] N_SIB = { "10-SIB", "GTV_SIB",  "SIB", "8 SIB" };//hip joint left
+            string[] N_Chest = { "1-Pared", "CTV_Chestwall",  "Pared","PD" };
             //bad names
             string[] N_Body = { "Body", "Outer Contour", "body" };
             string[] N_SC = { "SpinalCord", "Spinal Cord", "Spinal, Cord" };
             string[] N_LL = { "Lung_L", "Lung Left", "Lung, Left" };
             string[] N_LR = { "Lung_R", "Lung Right", "Lung, Right" };
             string[] N_Es = { "Esophagus", "Esofago" };
-            string[] N_BR = { "Breast_R", "MD" };
+            string[] N_BR = { "Breast_R", "MDer" };
             string[] N_BL = { "Breast_L", "MI", };
-            string[] N_Tr = { "Trachea", "Traquea", };
+            string[] N_Tr = { "Trachea", "Traquea", "traquea" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -368,47 +411,86 @@ namespace VMS.TPS//tiene que ser igual que el main
             StructureSet ss = context.StructureSet;
             context.Patient.BeginModifications();   // enable writing with this script.
 
-            DialogResult result = System.Windows.Forms.MessageBox.Show("Breast or Chest wall or Prosthesis?" + "\n" + "If Yes, the volume is Breast(Mama)." + "\n" + "If No, the volume is Chest wall(Pared)." + "\n" + "If Cancel, the volume has expander(Expansor).", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
+            //bool resol=ss.Structures. Any(x => x.IsHighResolution); //encuentra un elemeto de alta resolucion el problema esta que te encuentra de todo
+            
+            DialogResult result = System.Windows.Forms.MessageBox.Show("Breast or Chest wall or Prosthesis?" + "\n" + "If Yes, the volume is Breast(Mama)." + "\n" + "If No, the volume is Chest wall(Pared)." + "\n" + "If Cancel, the volume is chestwall with expander(Expansor).", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             Structure ctv_ID1 = ss.Structures.FirstOrDefault(s => N_Breast.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             //if (result == DialogResult.Yes) VerifSt(ctv_ID1, true, N_Breast[0]);//es necesario true
             if (result == DialogResult.Yes && ctv_ID1 == null)// esto no lo convierto en alta resolucion para que haga la superficie, despues si
             {
                 System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Breast[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;//es la unica por el momento para terminar la aplicacion
-            } 
-            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_LNI.Any(x => s.Id.Contains(x)));
-            VerifSt(ctv_ID2, false, N_LNI[0]);
-            Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LNII.Any(x => s.Id.Contains(x)));
-            VerifSt(ctv_ID3, false, N_LNII[0]);
-            Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_LNIII.Any(x => s.Id.Contains(x)));
-            VerifSt(ctv_ID4, false, N_LNIII[0]);
-            Structure ctv_ID5 = ss.Structures.FirstOrDefault(s => N_Rotter.Any(x => s.Id.Contains(x)));
-            VerifSt(ctv_ID5, false, N_Rotter[0]);
-            Structure ctv_ID6 = ss.Structures.FirstOrDefault(s => N_Sclav.Any(x => s.Id.Contains(x)));
-            VerifSt(ctv_ID6, false, N_Sclav[0]);
-            Structure ctv_ID7 = ss.Structures.FirstOrDefault(s => N_IMN.Any(x => s.Id.Contains(x)));
-            VerifSt(ctv_ID7, false, N_IMN[0]);
-            Structure ctv_ID8 = ss.Structures.FirstOrDefault(s => N_Dist.Any(x => s.Id.Contains(x)));
-            if (result == DialogResult.Yes) VerifSt(ctv_ID8, true, N_Dist[0]);
-            if (result == DialogResult.Yes && ctv_ID8 == null) return;
-            Structure ctv_ID9 = ss.Structures.FirstOrDefault(s => N_Prox.Any(x => s.Id.Contains(x)));
-            if (result == DialogResult.Yes) VerifSt(ctv_ID9, true, N_Prox[0]);
-            if (result == DialogResult.Yes && ctv_ID9 == null) return;
-            Structure ctv_ID10 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));
-            if (result == DialogResult.Yes)  VerifSt(ctv_ID10, true, N_SIB[0]);
-            if (result == DialogResult.Yes && ctv_ID10 == null) return;
-            Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
-            //if (result == DialogResult.No || result==DialogResult.Cancel) VerifSt(ctv_ID11, true, N_Chest[0]);
-            //if (result == DialogResult.No && ctv_ID11 == null) return;
-            if (result == DialogResult.No || result==DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
-            {
-                if (ctv_ID11 == null)
-                {
-                    System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Chest[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    return;//es la unica por el momento para terminar la aplicacion
-                }
-                else ctv_ID11.Id = N_Chest[0];
             }
+            //Crea las estructuras necesarias
+            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_LNI.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LNII.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_LNIII.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID5 = ss.Structures.FirstOrDefault(s => N_Rotter.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID6 = ss.Structures.FirstOrDefault(s => N_Sclav.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID7 = ss.Structures.FirstOrDefault(s => N_IMN.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID8 = ss.Structures.FirstOrDefault(s => N_Dist.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID9 = ss.Structures.FirstOrDefault(s => N_Prox.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID10 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));
+            Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
+            bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
+            if (!HighResol(ctv_ID1) || !HighResol(ctv_ID2)|| !HighResol(ctv_ID3)|| !HighResol(ctv_ID4)|| !HighResol(ctv_ID5)|| !HighResol(ctv_ID6)|| !HighResol(ctv_ID7)|| !HighResol(ctv_ID8)|| !HighResol(ctv_ID9)|| !HighResol(ctv_ID10) || !HighResol(ctv_ID11))
+            {
+                Low = false;
+                VerifSt(ctv_ID2, false, N_LNI[0]);
+                VerifSt(ctv_ID3, false, N_LNII[0]);
+                VerifSt(ctv_ID4, false, N_LNIII[0]);
+                VerifSt(ctv_ID5, false, N_Rotter[0]);
+                VerifSt(ctv_ID6, false, N_Sclav[0]);
+                VerifSt(ctv_ID7, false, N_IMN[0]);
+                if (result == DialogResult.Yes) VerifSt(ctv_ID8, true, N_Dist[0]);
+                if (result == DialogResult.Yes && ctv_ID8 == null) return;
+
+                if (result == DialogResult.Yes) VerifSt(ctv_ID9, true, N_Prox[0]);
+                if (result == DialogResult.Yes && ctv_ID9 == null) return;
+
+                if (result == DialogResult.Yes) VerifSt(ctv_ID10, true, N_SIB[0]);
+                if (result == DialogResult.Yes && ctv_ID10 == null) return;
+
+                //if (result == DialogResult.No || result==DialogResult.Cancel) VerifSt(ctv_ID11, true, N_Chest[0]);
+                //if (result == DialogResult.No && ctv_ID11 == null) return;
+                if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
+                {
+                    if (ctv_ID11 == null)
+                    {
+                        System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Chest[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        return;//es la unica por el momento para terminar la aplicacion
+                    }
+                    else ctv_ID11.Id = N_Chest[0];
+                }
+            }
+            else
+            {
+                Low = true;
+                VerifStLow(ctv_ID2, false, N_LNI[0]);
+                VerifStLow(ctv_ID3, false, N_LNII[0]);
+                VerifStLow(ctv_ID4, false, N_LNIII[0]);
+                VerifStLow(ctv_ID5, false, N_Rotter[0]);
+                VerifStLow(ctv_ID6, false, N_Sclav[0]);
+                VerifStLow(ctv_ID7, false, N_IMN[0]);
+                if (result == DialogResult.Yes) VerifStLow(ctv_ID8, true, N_Dist[0]);
+                if (result == DialogResult.Yes && ctv_ID8 == null) return;
+
+                if (result == DialogResult.Yes) VerifStLow(ctv_ID9, true, N_Prox[0]);
+                if (result == DialogResult.Yes && ctv_ID9 == null) return;
+
+                if (result == DialogResult.Yes) VerifStLow(ctv_ID10, true, N_SIB[0]);
+                if (result == DialogResult.Yes && ctv_ID10 == null) return;
+
+                //if (result == DialogResult.No || result==DialogResult.Cancel) VerifSt(ctv_ID11, true, N_Chest[0]);
+                //if (result == DialogResult.No && ctv_ID11 == null) return;
+                if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
+                {
+                    VerifStLow(ctv_ID11, true, N_Chest[0]);
+                    if (ctv_ID11 == null) return;
+                }
+
+            }
+            
             //if (result == DialogResult.Cancel && ctv_ID11 == null) return;
             Structure body0 = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));
             VerifSt(body0, true, N_Body[0]);
@@ -440,8 +522,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             const string PTV_ID13 = "PTV_LN_Ax_L2";     //"PTV_Ax II"
             const string PTV_ID14 = "PTV_LN_Ax_L3";     //"PTV_Ax III"
             const string PTV_ID15 = "PTV_LN_Rotter";    //"PTV_Rotter"
-            const string PTV_ID16 = "PTV_LN_Sclav";     //"PTV_Supra"
-            const string PTV_ID17 = "PTV_LN_IMN";       //"PTV_CMI"
+            const string PTV_ID16 = "PTV_LN_Supra";//"PTV_LN_Sclav";     //"PTV_Supra"
+            const string PTV_ID17 = "PTV_LN_CMI"; //"PTV_LN_IMN";       //"PTV_CMI"
             const string PTV_ID18 = "PTV_Breast_Dist";  //"PTV_MDISTAL"
             const string PTV_ID19 = "PTV_Breast_Prox";  //"PTV_MPROX"
             const string PTV_ID_20 = "PTV_GTV_SIB";     //"PTV_SIB"
@@ -514,12 +596,16 @@ namespace VMS.TPS//tiene que ser igual que el main
                 else if (ctv_ID11.IsHighResolution) is_high = 2;
             }
 
+            if (!Low)//si no es alta resolucion crea todo esto
+            {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
-            St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20); St.Add(ptv_ID_20); St.Add(ptv_ID25); St.Add(ptv_ID27);
-            St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(surface);  St.Add(ctv_ID_1); St.Add(body); //St.Add(buffered_outer); St.Add(ring); 
-            if (ctv_ID1!=null && !ctv_ID1.IsHighResolution) St.Add(ctv_ID1);// necesito colocar el null primero porque si no me da error cuando aplico ishihresolution a una estructura vacia
-            if (ctv_ID11 != null && !ctv_ID11.IsHighResolution) St.Add(ctv_ID11);
-            foreach (Structure x in St) x.ConvertToHighResolution();
+                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20); St.Add(ptv_ID_20); St.Add(ptv_ID25); St.Add(ptv_ID27);
+                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(surface); St.Add(ctv_ID_1); St.Add(body); //St.Add(buffered_outer); St.Add(ring); 
+                if (ctv_ID1 != null && !ctv_ID1.IsHighResolution) St.Add(ctv_ID1);// necesito colocar el null primero porque si no me da error cuando aplico ishihresolution a una estructura vacia
+                if (ctv_ID11 != null && !ctv_ID11.IsHighResolution) St.Add(ctv_ID11);
+                foreach (Structure x in St) x.ConvertToHighResolution();
+            }
+            
 
             buffered_outer.SegmentVolume = body.Margin(-5.0);//para cropp de los elementos con el body -0.5
 
