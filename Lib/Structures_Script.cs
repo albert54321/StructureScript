@@ -141,7 +141,20 @@ namespace VMS.TPS//tiene que ser igual que el main
                 SCRIPT_NAME = "ProstateBed_Structures",
                 number = 6
             });
-
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Bladder_Fx20(Vejiga)",//saint fausto
+                approved = true,
+                SCRIPT_NAME = "Bladder_Structures",
+                number = 7
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Endometrium_Fx20(Endometrio)",//saint fausto
+                approved = true,
+                SCRIPT_NAME = "Bladder_Structures",
+                number = 8
+            });
             return list;
         } //ESTAN LIGADOS EL NUMBER AQUI
         //comienzo del script strutures
@@ -152,8 +165,10 @@ namespace VMS.TPS//tiene que ser igual que el main
             else if (template == 2 && appr) St_Rectum20fx(context);
             else if (template == 3 && appr) St_CYC_25fx(context);
             else if (template == 4 && appr) St_Cervix_25fx(context);
-            else if (template == 5 && appr) St_HDR_15fx(context);//St_Lecho_20fx
+            else if (template == 5 && appr) St_HDR_15fx(context);//
             else if (template == 6 && appr) St_Lecho_20fx(context);
+            else if (template == 7 && appr) St_Bladder_20fx(context);//
+            else if (template == 8 && appr) St_Endometrium_20fx(context);//endometrium
             else System.Windows.MessageBox.Show("The Script does not approved for clinical use ");
         }// Aqui hay que implementar el nuevo script de estructuras y correlacionar los numeros sino no se ejecuta
         public void Cropbody(Structure st1, Structure body1)
@@ -415,7 +430,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_LR = { "Lung_R", "Lung Right", "Lung, Right" };
             string[] N_Es = { "Esophagus", "Esofago" };
             string[] N_BR = { "Breast_R", "MDer" };
-            string[] N_BL = { "Breast_L", "MI", };
+            string[] N_BL = { "Breast_L", "MIzq", };
             string[] N_Tr = { "Trachea", "Traquea", "traquea" };
 
             if (context.Patient == null || context.StructureSet == null)
@@ -883,8 +898,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano" };
             string[] N_GM = { "Gluteus_Maximus", "Gluteo Mayor", "gluteos" };
             string[] N_GS = { "Gluteal_Skin", "Piel Glutea", "pielG", "Piel glutea","piel" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left", "HI", "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right", "HD", "CFD" };
+            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
             string[] N_SC = { "SpinalCord", "Spinal Cord", "Spinal, Cord" };
 
             if (context.Patient == null || context.StructureSet == null)
@@ -1633,8 +1648,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Colon = { "Colon", "colon", "sigma" };
             string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino" };
             string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left", "HI", "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right", "HD", "CFD" };
+            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
             string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo" };
 
             if (context.Patient == null || context.StructureSet == null)
@@ -1835,10 +1850,10 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Trigone = { "Trigone", "trigono", "Trigono" };
             string[] N_Rectum = { "Rectum", "recto", "rectum" };
             string[] N_Colon = { "Colon", "colon", "sigma" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino" };
+            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino","INTESTINO" };
             string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left", "HI", "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right", "HD", "CFD" };
+            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
             string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo" };
 
             if (context.Patient == null || context.StructureSet == null)
@@ -2046,6 +2061,295 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ss.RemoveStructure(prv_colon);
             }
 
+        }
+
+        public void St_Bladder_20fx(ScriptContext context)
+        {
+            const string SCRIPT_NAME0 = "Bladder20Fx";
+            string[] N_Bladder = { "_CTV_Bladder", "CTV_Vejiga", "Vejiga" };
+            string[] N_LN = { "_CTV_LN_Pelvic", "CTV_Ganglio", "Pelvicos" };
+            string[] N_SIB = { "_GTV_SIB", "_SIB", "nodulo" };
+            string[] N_Rectum = { "Rectum", "recto", "rectum" };
+            string[] N_Colon = { "Colon", "colon", "sigma" };
+            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino" };
+            string[] N_Body = { "Body", "Outer Contour", "body" };
+            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+
+            if (context.Patient == null || context.StructureSet == null)
+            {
+                System.Windows.MessageBox.Show("Please load a patient, 3D image, and structure set before running this script.", SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            StructureSet ss = context.StructureSet;
+            context.Patient.BeginModifications();   // enable writing with this script.
+
+            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LN.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+
+            bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
+            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(rectum) || !HighResol(colon) || !HighResol(bowel))
+            {
+                Low = false;
+                VerifSt(ctv_ID2, true, N_Bladder[0]);//es necesario true
+                if (ctv_ID2 == null) return;
+                VerifSt(ctv_ID3, false, N_LN[0]);//es necesario true/false
+                VerifSt(ctv_ID4, false, N_SIB[0]);//es necesario true
+                VerifSt(rectum, true, N_Rectum[0]);//es necesario true
+                if (rectum == null) return;
+                VerifSt(colon, false, N_Colon[0]);//es necesario true
+                VerifSt(bowel, true, N_Bowel[0]);//es necesario true
+                if (bowel == null) return;
+            }
+            else
+            {
+                Low = true;
+                VerifStLow(ctv_ID2, true, N_Bladder[0]);//es necesario true
+                if (ctv_ID2 == null) return;
+                VerifStLow(ctv_ID3, false, N_LN[0]);//es necesario true/false
+                VerifStLow(ctv_ID4, false, N_SIB[0]);//es necesario true
+                VerifStLow(rectum, true, N_Rectum[0]);//es necesario true
+                if (rectum == null) return;
+                VerifStLow(colon, false, N_Colon[0]);//es necesario true
+                VerifStLow(bowel, true, N_Bowel[0]);//es necesario true
+                if (bowel == null) return;
+            }
+            Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver////el body no deja convertirr a high entonces copiar la estrucutura enn body2
+            VerifSt(body, true, N_Body[0]);//es necesario true
+            if (body == null) return;
+
+            //solo cambia nombre
+            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
+            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
+
+            //comienza las estrucuras
+            //New Structures 
+            const string PTV_ID12 = "PTV_Bladder";
+            const string PTV_ID13 = "PTV_LN_Pelvic";
+            const string PTV_ID14 = "PTV_SIB";
+            const string PTV_ID15 = "zPTV_High_5600!";
+            const string PTV_ID16 = "zPTV_Low_4500!";
+            const string PTV_ID17 = "zPTV_High_6600!";
+            const string PTV_ID18 = "zPTV56-BowelPRV!";
+            const string PTV_ID19 = "zPTV66-BowelPRV!";
+            const string PTV_ID20 = "zPTV_BowelPRV05!";
+            const string PTV_ID21 = "zPTV_Total!";
+            
+            const string PRV_Rectum = "Rectum_PRV05";
+            const string PRV_colon = "Colon_PRV05";//
+            const string PRV_bowel = "Bowel_PRV05";//
+
+            //============================
+            // GENERATE 5mm expansion of PTV
+            //============================
+
+            // create the empty "ptv+5mm" structure ans auxilary structures
+
+            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//bladder
+            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);//ganglios
+            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
+            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//5600
+            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
+            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);//6600
+            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//56-int
+            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);//66-int
+            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);//intersec int
+            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//total
+
+            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
+            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
+            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
+
+            if (!Low)
+            {
+                List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
+                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
+                St.Add(ptv_ID21); St.Add(prv_rectum);  St.Add(prv_colon); St.Add(prv_bowel);
+                foreach (Structure x in St) x.ConvertToHighResolution();
+            }
+
+            prv_rectum.SegmentVolume = rectum.Margin(5.0);
+            prv_bowel.SegmentVolume = bowel.Margin(5.0);
+            if (colon != null) prv_colon.SegmentVolume = colon.Margin(5.0);
+            else ss.RemoveStructure(prv_colon);
+
+            ptv_ID12.SegmentVolume = ctv_ID2.Margin(10.0);// PTV Bladder 
+            ptv_ID15.SegmentVolume = ptv_ID12;// PTV Bladder 
+            ptv_ID21.SegmentVolume = ptv_ID15;//total=5600
+            if (ctv_ID3 != null)
+            {
+                ptv_ID13.SegmentVolume = ctv_ID3.Margin(6.0);//gg
+                ptv_ID16.SegmentVolume = ptv_ID13.Sub(ptv_ID12);//45-56
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID16);//total=5600+4500
+            }
+            else
+            {
+                ss.RemoveStructure(ptv_ID13);
+                ss.RemoveStructure(ptv_ID16);
+            }
+
+            if (ctv_ID4 != null)
+            {
+                ptv_ID14.SegmentVolume = ctv_ID4.Margin(10.0);//sib
+                ptv_ID17.SegmentVolume = ptv_ID14;
+                ptv_ID15.SegmentVolume = ptv_ID15.Sub(ptv_ID14);//56-65
+                ptv_ID19.SegmentVolume = ptv_ID17.Sub(prv_bowel);
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID17);//total=5600+4500+6500
+                if (ctv_ID3!=null || !ctv_ID3.IsEmpty) ptv_ID16.SegmentVolume = ptv_ID16.Sub(ptv_ID14);//45-56-65
+            }
+            else
+            {
+                ss.RemoveStructure(ptv_ID14);
+                ss.RemoveStructure(ptv_ID17);
+                ss.RemoveStructure(ptv_ID19);
+            }
+            ptv_ID18.SegmentVolume = ptv_ID15.Sub(prv_bowel);
+            ptv_ID20.SegmentVolume= ptv_ID15.And(prv_bowel);
+        }
+
+        public void St_Endometrium_20fx(ScriptContext context)//gonzalez hilda //cipolletti  susana elisab
+        {
+            const string SCRIPT_NAME0 = "Endometrium20Fx";
+            string[] N_Bladder = { "_GTV_SurgicalBed", "LQ" };
+            string[] N_LN = { "_CTV_LN_Pelvic", "CTV_Ganglio", "Pelvicos" };
+            string[] N_RV = { "_CTV_RestVagina", "RV" };//rest vagina
+            string[] N_Rectum = { "Rectum", "recto", "rectum" };
+            string[] N_Colon = { "Colon", "colon", "sigma", "COLON" };
+            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
+            string[] N_Body = { "Body", "Outer Contour", "body" };
+            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+
+            if (context.Patient == null || context.StructureSet == null)
+            {
+                System.Windows.MessageBox.Show("Please load a patient, 3D image, and structure set before running this script.", SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+            StructureSet ss = context.StructureSet;
+            context.Patient.BeginModifications();   // enable writing with this script.
+
+            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LN.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_RV.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+
+            bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
+            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(rectum) || !HighResol(colon) || !HighResol(bowel))
+            {
+                Low = false;
+                VerifSt(ctv_ID2, true, N_Bladder[0]);//es necesario true
+                if (ctv_ID2 == null) return;
+                VerifSt(ctv_ID3, false, N_LN[0]);//es necesario true/false
+                VerifSt(ctv_ID4, false, N_RV[0]);//es necesario true
+                VerifSt(rectum, true, N_Rectum[0]);//es necesario true
+                if (rectum == null) return;
+                VerifSt(colon, false, N_Colon[0]);//es necesario true
+                VerifSt(bowel, true, N_Bowel[0]);//es necesario true
+                if (bowel == null) return;
+            }
+            else
+            {
+                Low = true;
+                VerifStLow(ctv_ID2, true, N_Bladder[0]);//es necesario true
+                if (ctv_ID2 == null) return;
+                VerifStLow(ctv_ID3, false, N_LN[0]);//es necesario true/false
+                VerifStLow(ctv_ID4, false, N_RV[0]);//es necesario true
+                VerifStLow(rectum, true, N_Rectum[0]);//es necesario true
+                if (rectum == null) return;
+                VerifStLow(colon, false, N_Colon[0]);//es necesario true
+                VerifStLow(bowel, true, N_Bowel[0]);//es necesario true
+                if (bowel == null) return;
+            }
+            Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver////el body no deja convertirr a high entonces copiar la estrucutura enn body2
+            VerifSt(body, true, N_Body[0]);//es necesario true
+            if (body == null) return;
+
+            //solo cambia nombre
+            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
+            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
+
+            //comienza las estrucuras
+            //New Structures 
+            const string PTV_ID12 = "PTV_SurgicalBed";
+            const string PTV_ID13 = "PTV_LN_Pelvic";
+            const string PTV_ID14 = "PTV_RestVagina";
+            const string PTV_ID15 = "zPTV_High_4800!";
+            const string PTV_ID16 = "zPTV_Low_4500!";
+            const string PTV_ID18 = "zPTV48-BowelPRV!";//pude estar vacio
+            const string PTV_ID20 = "zPTV_BowelPRV05!";
+            const string PTV_ID21 = "zPTV_Total!";
+
+            const string PRV_Rectum = "Rectum_PRV05";
+            const string PRV_colon = "Colon_PRV05";//
+            const string PRV_bowel = "Bowel_PRV05";//
+
+            //============================
+            // GENERATE 5mm expansion of PTV
+            //============================
+
+            // create the empty "ptv+5mm" structure ans auxilary structures
+
+            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//bladder
+            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);//ganglios
+            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
+            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//4800
+            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
+            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//48-int
+            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);//intersec int
+            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//total
+
+            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
+            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
+            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
+
+            if (!Low)
+            {
+                List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
+                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16);  St.Add(ptv_ID18); St.Add(ptv_ID20);
+                St.Add(ptv_ID21); St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_bowel);
+                foreach (Structure x in St) x.ConvertToHighResolution();
+            }
+
+            prv_rectum.SegmentVolume = rectum.Margin(5.0);
+            prv_bowel.SegmentVolume = bowel.Margin(5.0);
+            if (colon != null) prv_colon.SegmentVolume = colon.Margin(5.0);
+            else ss.RemoveStructure(prv_colon);
+            ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0);// PTV lecho
+            ptv_ID15.SegmentVolume = ptv_ID12;// PTV 48 
+            ptv_ID21.SegmentVolume = ptv_ID15;//total=4800
+            if (ctv_ID3 != null)
+            {
+                ptv_ID13.SegmentVolume = ctv_ID3.Margin(6.0);//gg
+                ptv_ID16.SegmentVolume = ptv_ID13.Sub(ptv_ID12);//45-48
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID16);//total=5600+4500
+            }
+            else
+            {
+                ss.RemoveStructure(ptv_ID13);  
+            }
+
+            if (ctv_ID4 != null)
+            {
+                ptv_ID14.SegmentVolume = ctv_ID4.Margin(9.0);//sib
+                if (ctv_ID3 == null) ptv_ID16.SegmentVolume = ptv_ID14;
+                ptv_ID16.SegmentVolume = ptv_ID16.Or(ptv_ID14);//45 gg+rv
+                ptv_ID16.SegmentVolume = ptv_ID16.Sub(ptv_ID15);//45-48
+                ptv_ID21.SegmentVolume = ptv_ID21.Or(ptv_ID16);//total=4800+4500
+                if (ctv_ID3 != null || !ctv_ID3.IsEmpty) ptv_ID16.SegmentVolume = ptv_ID16.Sub(ptv_ID14);//45-56-65
+            }
+            else
+            {
+                ss.RemoveStructure(ptv_ID14);
+                ss.RemoveStructure(ptv_ID16);
+            }
+            ptv_ID18.SegmentVolume = ptv_ID15.Sub(prv_bowel);
+            ptv_ID20.SegmentVolume = ptv_ID15.And(prv_bowel);
         }
     }
 }
