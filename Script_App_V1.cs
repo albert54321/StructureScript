@@ -24,8 +24,8 @@ using System.Windows.Forms;
 
 // TODO: uncomment the line below if the script requires write access.
 [assembly: ESAPIScript(IsWriteable = true)]
-[assembly: AssemblyVersion("1.0.0.110")]
-[assembly: AssemblyFileVersion("1.0.0.110")]
+[assembly: AssemblyVersion("1.0.0.119")]
+[assembly: AssemblyFileVersion("1.0.0.119")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 

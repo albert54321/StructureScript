@@ -48,7 +48,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             else {
                 if(name != "Body" && name != "Outer Contour" && st1.CanConvertToHighResolution()) st1.ConvertToHighResolution();
-                else if (st1.Id != name) st1.Id = name;              
+                if (st1.Id != name) st1.Id = name;              
             }
         }
         public void VerifStLow(Structure st1, bool need, string name)//cambia el nombre y NO convierte en alta resolucion
@@ -154,6 +154,13 @@ namespace VMS.TPS//tiene que ser igual que el main
                 approved = true,
                 SCRIPT_NAME = "Bladder_Structures",
                 number = 8
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Liver_Fx3(Higado)",//saint fausto
+                approved = false,
+                SCRIPT_NAME = "Bladder_Structures",
+                number = 9
             });
             return list;
         } //ESTAN LIGADOS EL NUMBER AQUI
@@ -413,22 +420,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Breast_ChestWall(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_Breast_ChestWall";
-            string[] N_Breast = { "1-Mama",     "zCTV_Mama",        "CTV_Breast" ,      "Mama" };
-            string[] N_LNI =    { "2-Ax I",     "CTV_GL_Axila_1",   "CTV_LN_Ax_L1",     "Axila I" };
-            string[] N_LNII =   { "3-Ax II",    "CTV_GL_Axila_2",   "CTV_LN_Ax_L2",     "Axila II" };
-            string[] N_LNIII =  { "4-Ax III",   "CTV_GL_Axila_3",   "CTV_LN_Ax_L3",     "Axila III" };
-            string[] N_Rotter = { "5-Rotter",   "CTV_GL_Rotter",    "CTV_LN_Rotter",    "7 Rotter" };
-            string[] N_Sclav =  { "6-Supra",    "CTV_GL_Supra",     "CTV_LN_Sclav",     "6-SUPRA" };
-            string[] N_IMN =    { "7-CMI",      "CTV_GL_CMI",       "CTV_LN_IMN" };
-            string[] N_Dist =   { "8-MDISTAL",  "zCTV_Mama_Dist",   "CTV_Breast_Dist",  "Distal", "10- CTV distal" };
-            string[] N_Prox =   { "9-MPROX",    "zCTV_Mama_Prox",   "CTV_Breast_Prox",  "Proximal", "9 CTV proximal" };
-            string[] N_SIB =    { "10-SIB",     "GTV_SIB",          "SIB", "8 SIB" };//hip joint left
-            string[] N_Chest =  { "1-Pared",    "zCTV_Pared",       "CTV_Chestwall",    "Pared","PD" };
-            //names for original
+            string[] N_Breast = { "CTV_Mama",      "1-Mama", "CTV_Breast" ,      "Mama", "zCTV_Mama" };
+            string[] N_LNI =    { "CTV_GL_Axila_1", "2-Ax I", "CTV_LN_Ax_L1",     "Axila I" };
+            string[] N_LNII =   { "CTV_GL_Axila_2", "3-Ax II", "CTV_LN_Ax_L2",     "Axila II" };
+            string[] N_LNIII =  { "CTV_GL_Axila_3", "4-Ax III", "CTV_LN_Ax_L3",     "Axila III" };
+            string[] N_Rotter = { "CTV_GL_Rotter",  "5-Rotter", "CTV_LN_Rotter",    "7 Rotter" };
+            string[] N_Sclav =  { "CTV_GL_Supra",   "6-Supra", "CTV_LN_Sclav",     "6-SUPRA" };
+            string[] N_IMN =    { "CTV_GL_CMI",     "7-CMI", "CTV_LN_IMN" };
+            string[] N_Dist =   { "CTV_Mama_Dist", "8-MDISTAL", "CTV_Breast_Dist",  "Distal", "10- CTV distal", "zCTV_Mama_Dist" };
+            string[] N_Prox =   { "CTV_Mama_Prox", "9-MPROX", "CTV_Breast_Prox",  "Proximal", "9 CTV proximal", "zCTV_Mama_Prox" };
+            string[] N_SIB =    { "GTV_SIB",        "10-SIB", "SIB", "8 SIB" };//hip joint left
+            string[] N_Chest =  { "CTV_Pared",     "1-Pared", "CTV_Chestwall",    "Pared","PD", "zCTV_Pared" };
+            /*//names for original
             string NPROX    = "CTV_Mama_Prox-05";
             string NDIST    = "CTV_Mama_Dist-05";
-            string NSIB     = "GTV_SIB-05";
-
+            string NSIB     = "GTV_SIB-05";*/
 
             //bad names
             string[] N_Body = { "Body",     "Outer Contour", "body" };
@@ -458,6 +464,16 @@ namespace VMS.TPS//tiene que ser igual que el main
                 System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Breast[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;//es la unica por el momento para terminar la aplicacion
             }
+            Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
+            if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
+            {
+                if (ctv_ID11 == null)
+                {
+                    System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Chest[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return;//es la unica por el momento para terminar la aplicacion
+                }
+                else ctv_ID11.Id = N_Chest[0];
+            }
             //Crea las estructuras necesarias
             Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_LNI.Any(x => s.Id.Contains(x)));
             Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LNII.Any(x => s.Id.Contains(x)));
@@ -468,11 +484,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ctv_ID8 = ss.Structures.FirstOrDefault(s => N_Dist.Any(x => s.Id.Contains(x)));
             Structure ctv_ID9 = ss.Structures.FirstOrDefault(s => N_Prox.Any(x => s.Id.Contains(x)));
             Structure ctv_ID10 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));
-            Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
+            
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
             if (!HighResol(ctv_ID1) || !HighResol(ctv_ID2)|| !HighResol(ctv_ID3)|| !HighResol(ctv_ID4)|| !HighResol(ctv_ID5)|| !HighResol(ctv_ID6)|| !HighResol(ctv_ID7)|| !HighResol(ctv_ID8)|| !HighResol(ctv_ID9)|| !HighResol(ctv_ID10) || !HighResol(ctv_ID11))
             {
                 Low = false;
+                //VerifSt(ctv_ID1, true, N_Breast[0]);
                 VerifSt(ctv_ID2, false, N_LNI[0]);
                 VerifSt(ctv_ID3, false, N_LNII[0]);
                 VerifSt(ctv_ID4, false, N_LNIII[0]);
@@ -490,19 +507,11 @@ namespace VMS.TPS//tiene que ser igual que el main
 
                 //if (result == DialogResult.No || result==DialogResult.Cancel) VerifSt(ctv_ID11, true, N_Chest[0]);
                 //if (result == DialogResult.No && ctv_ID11 == null) return;
-                if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
-                {
-                    if (ctv_ID11 == null)
-                    {
-                        System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Chest[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        return;//es la unica por el momento para terminar la aplicacion
-                    }
-                    else ctv_ID11.Id = N_Chest[0];
-                }
             }
             else
             {
                 Low = true;
+                VerifStLow(ctv_ID1, true, N_Breast[0]);
                 VerifStLow(ctv_ID2, false, N_LNI[0]);
                 VerifStLow(ctv_ID3, false, N_LNII[0]);
                 VerifStLow(ctv_ID4, false, N_LNIII[0]);
@@ -553,12 +562,12 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             DialogResult result3 = System.Windows.Forms.MessageBox.Show("Breast ChestWall Start/RA?" + "\n" + " If Yes is Start (Mama/Pared Inicio)" + "\n" + "If No, is RA (Mama/Pared RA)" + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result3 == DialogResult.Cancel) return;
-            else if (result3 == DialogResult.No && result == DialogResult.Yes)
+            /*else if (result3 == DialogResult.No && result == DialogResult.Yes) esto era para colocar -05 pero no fue viable
             {
                 ctv_ID8.Id  = NDIST;//coloca los nombres -5
                 ctv_ID9.Id  = NPROX;
                 ctv_ID10.Id = NSIB;
-            }
+            }*/
             //New Structures Breast 16fx
             const string PTV_ID12 = "PTV_GL_Axila_1";//"PTV_LN_Ax_L1";     //"PTV_Ax I"
             const string PTV_ID13 = "PTV_GL_Axila_2";//"PTV_LN_Ax_L2";     //"PTV_Ax II"
@@ -566,9 +575,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             const string PTV_ID15 = "PTV_GL_Rotter";//"PTV_LN_Rotter";    //"PTV_Rotter"
             const string PTV_ID16 = "PTV_GL_Supra";//"PTV_LN_Supra";//"PTV_LN_Sclav";     //"PTV_Supra"
             const string PTV_ID17 = "PTV_GL_CMI";//"PTV_LN_CMI"; //"PTV_LN_IMN";       //"PTV_CMI"
-            const string PTV_ID18 = "PTV_Mama_Dist-05";//"PTV_Breast_Dist";  //"PTV_MDISTAL"
-            const string PTV_ID19 = "PTV_Mama_Prox-05";//"PTV_Breast_Prox";  //"PTV_MPROX"
-            const string PTV_ID_20 = "PTV_GTV_SIB-05";//"PTV_GTV_SIB";     //"PTV_SIB"
+            const string PTV_ID18 = "PTV_Mama_Dist";//"PTV_Breast_Dist";  //"PTV_MDISTAL"
+            const string PTV_ID19 = "PTV_Mama_Prox";//"PTV_Breast_Prox";  //"PTV_MPROX"
+            const string PTV_ID_20 = "PTV_GTV_SIB";//"PTV_GTV_SIB";     //"PTV_SIB"
             const string PTV_ID20 = "zPTV_High_5200!";  //"PTV_52Gy"
             const string PTV_ID21 = "zPTV_Low_4000!";   //PTV_40Gy
             const string PTV_ID22 = "zPTV_Mid_4100!";   //PTV_41Gy
@@ -624,7 +633,11 @@ namespace VMS.TPS//tiene que ser igual que el main
                     surface.SetAssignedHU(0.0);  //asigno UH de agua
                     body0.SegmentVolume = body0.Or(surface);//Union con el body de la superficie
                 }
-                else if (ctv_ID1.IsHighResolution) is_high = 1;
+                else if (ctv_ID1.IsHighResolution)
+                {
+                    is_high = 1;
+                    ctv_ID1.Id = N_Breast[0];
+                }
             }
             else if (!(ctv_ID11 == null))
             {
@@ -2364,18 +2377,21 @@ namespace VMS.TPS//tiene que ser igual que el main
             ptv_ID20.SegmentVolume = ptv_ID15.And(prv_bowel);
         }
 
-        public void St_Higado_3fx(ScriptContext context)
+        public void St_Higado_3fx(ScriptContext context)//CanAddStructure n34741
         {
-            const string SCRIPT_NAME0 = "Endometrium20Fx";
-            string[] N_Bladder = { "GTV_SurgicalBed", "LQ" };
-            string[] N_LN = { "CTV_LN_Pelvic", "CTV_Ganglio", "Pelvicos" };
-            string[] N_RV = { "CTV_RestVagina", "RV" };//rest vagina
-            string[] N_Rectum = { "Rectum", "recto", "rectum" };
-            string[] N_Colon = { "Colon", "colon", "sigma", "COLON" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left", "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right", "CFD" };
+            const string SCRIPT_NAME0 = "Liver_3Fx";
+            string[] N_Liver = {    "GTV_Liver","ITV", "GTV MT hepatic" };
+            string[] N_Stomach = {  "Stomach",  "Estomago", "estomago" };
+            string[] N_Esophagus = { "Esophagus",    "Esofago", "esofago"};
+            string[] N_Bowel = {    "Bowel",    "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
+            string[] N_Body = {     "Body",     "Outer Contour", "body" };
+            string[] N_Duodenum = { "Duodenum", "Duodeno", "duodeno" };//hip joint left
+
+            string[] N_Lungs = { "Lungs", "Pulmones", "pulmones" };
+            string[] N_Lung_L = { "Lung_L", "Pulmon Izq", "Lung L" };//Lung R
+            string[] N_Lung_R = { "Lung_R", "Pulmon Der", "Lung R" };//Lung R
+            string[] N_Kidney_L = { "Kidney_L", "RD"};
+            string[] N_Kidney_R = { "Kidney_R", "RI" };//
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -2385,51 +2401,55 @@ namespace VMS.TPS//tiene que ser igual que el main
             StructureSet ss = context.StructureSet;
             context.Patient.BeginModifications();   // enable writing with this script.
 
-            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_LN.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_RV.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_Liver.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure stomach = ss.Structures.FirstOrDefault(s => N_Stomach.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure esophagus = ss.Structures.FirstOrDefault(s => N_Esophagus.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure bowel = ss.Structures.FirstOrDefault(s => N_Stomach.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure duodenum = ss.Structures.FirstOrDefault(s => N_Duodenum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            
 
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
-            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(rectum) || !HighResol(colon) || !HighResol(bowel))
+            if (!HighResol(ctv_ID2) || !HighResol(stomach) || !HighResol(esophagus) || !HighResol(bowel) || !HighResol(duodenum))
             {
                 Low = false;
-                VerifSt(ctv_ID2, true, N_Bladder[0]);//es necesario true
+                VerifSt(ctv_ID2, true, N_Liver[0]);//es necesario true
                 if (ctv_ID2 == null) return;
-                VerifSt(ctv_ID3, false, N_LN[0]);//es necesario true/false
-                VerifSt(ctv_ID4, false, N_RV[0]);//es necesario true
-                VerifSt(rectum, true, N_Rectum[0]);//es necesario true
-                if (rectum == null) return;
-                VerifSt(colon, false, N_Colon[0]);//es necesario true
+                VerifSt(stomach, true, N_Stomach[0]);//es necesario true/false
+                if (stomach == null) return;
+                VerifSt(esophagus, true, N_Esophagus[0]);//es necesario true
+                if (esophagus == null) return;
                 VerifSt(bowel, true, N_Bowel[0]);//es necesario true
                 if (bowel == null) return;
+                VerifSt(duodenum, true, N_Duodenum[0]);//es necesario true
+                if (duodenum == null) return;
+                
             }
             else
             {
                 Low = true;
-                VerifStLow(ctv_ID2, true, N_Bladder[0]);//es necesario true
+                VerifStLow(ctv_ID2, true, N_Liver[0]);//es necesario true
                 if (ctv_ID2 == null) return;
-                VerifStLow(ctv_ID3, false, N_LN[0]);//es necesario true/false
-                VerifStLow(ctv_ID4, false, N_RV[0]);//es necesario true
-                VerifStLow(rectum, true, N_Rectum[0]);//es necesario true
-                if (rectum == null) return;
-                VerifStLow(colon, false, N_Colon[0]);//es necesario true
+                VerifStLow(stomach, false, N_Stomach[0]);//es necesario true/false
+                VerifStLow(esophagus, false, N_Esophagus[0]);//es necesario true
                 VerifStLow(bowel, true, N_Bowel[0]);//es necesario true
                 if (bowel == null) return;
+                VerifStLow(duodenum, false, N_Duodenum[0]);//es necesario true
+                if (duodenum == null) return;
             }
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver////el body no deja convertirr a high entonces copiar la estrucutura enn body2
             VerifSt(body, true, N_Body[0]);//es necesario true
             if (body == null) return;
 
             //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
+            ss.Structures.FirstOrDefault(s => N_Lungs.Any(x => s.Id.Contains(x))).Id = N_Lungs[0];
+            ss.Structures.FirstOrDefault(s => N_Lung_L.Any(x => s.Id.Contains(x))).Id = N_Lung_L[0];//s = structura s.id su id names es el array de string para ver
+            ss.Structures.FirstOrDefault(s => N_Lung_R.Any(x => s.Id.Contains(x))).Id = N_Lung_R[0];
+            ss.Structures.FirstOrDefault(s => N_Kidney_R.Any(x => s.Id.Contains(x))).Id = N_Kidney_R[0];
+            ss.Structures.FirstOrDefault(s => N_Kidney_L.Any(x => s.Id.Contains(x))).Id = N_Kidney_L[0];
 
             //comienza las estrucuras
             //New Structures 
-            const string PTV_ID12 = "PTV_SurgicalBed";
+            const string PTV_ID12 = "PTV_Liver";
             const string PTV_ID13 = "PTV_LN_Pelvic";
             const string PTV_ID14 = "PTV_RestVagina";
             const string PTV_ID15 = "zPTV_High_4800!";
