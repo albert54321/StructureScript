@@ -190,20 +190,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Prostate(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_SBRT_Prostate";
-            string[] N_Prostate = { "CTV_Prostate", "CTV_Prostata", "1-Prostata" };
-            string[] N_LN = { "CTV_LN_Obturator", "ganglio","ganglios","obturador"};
-            string[] N_VS = { "CTV_SeminalVes", "VS", "Vesiculas", "Vesiculas Sem", "VS+1cm" };
-            string[] N_SIB = { "GTV_SIB", "_SIB", "nodulo" };
-            string[] N_GP = { "CTV_LN_Pelvic", "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
-            string[] N_Urethra = { "Urethra", "Uretra", "uretra"};
-            string[] N_Trigone = { "Trigone", "trigono", "Trigono" };
-            string[] N_Rectum = { "Rectum", "recto", "rectum" };
-            string[] N_Colon = { "Colon", "colon", "sigma" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left", "HI", "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right", "HD", "CFD" };
-            string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B","penile bulb", "B Pene", "Bulbo" };
+            string[] N_Prostate = { "CTV_Prostate",     "CTV_Prostata", "1-Prostata" };
+            string[] N_LN = {       "CTV_LN_Obturator", "ganglio","ganglios","obturador"};
+            string[] N_VS = {       "CTV_SeminalVes",   "VSem", "Vesiculas", "Vesiculas Sem", "VS+1cm" };
+            string[] N_SIB = {      "GTV_SIB",          "_SIB",  "nodulo" };
+            string[] N_GP = {       "CTV_LN_Pelvic",    "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
+            string[] N_Urethra = {  "Urethra",          "Uretra", "uretra"};
+            string[] N_Trigone = {  "Trigone",          "trigono", "Trigono" };
+            string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
+            string[] N_Colon = {    "Colon",            "colon", "sigma" };
+            string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            //cambiar nombres
+            string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left", "HI", "CFI" };//hip joint left
+            string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right", "HD", "CFD" };
+            string[] N_Penile = {   "PenileBulb",       "Penile Bulb", "Pene B","penile bulb", "B Pene", "Bulbo" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -420,22 +421,17 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Breast_ChestWall(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_Breast_ChestWall";
-            string[] N_Breast = { "CTV_Mama",      "1-Mama", "CTV_Breast" ,      "Mama", "zCTV_Mama" };
-            string[] N_LNI =    { "CTV_GL_Axila_1", "2-Ax I", "CTV_LN_Ax_L1",     "Axila I" };
-            string[] N_LNII =   { "CTV_GL_Axila_2", "3-Ax II", "CTV_LN_Ax_L2",     "Axila II" };
+            string[] N_Breast = { "zCTV_Mama",      "1-Mama",   "CTV_Breast", "zCTV_Mama_D", "zCTV_Mama_I" };
+            string[] N_LNI =    { "CTV_GL_Axila_1", "2-Ax I",   "CTV_LN_Ax_L1",     "Axila I" };
+            string[] N_LNII =   { "CTV_GL_Axila_2", "3-Ax II",  "CTV_LN_Ax_L2",     "Axila II" };
             string[] N_LNIII =  { "CTV_GL_Axila_3", "4-Ax III", "CTV_LN_Ax_L3",     "Axila III" };
             string[] N_Rotter = { "CTV_GL_Rotter",  "5-Rotter", "CTV_LN_Rotter",    "7 Rotter" };
-            string[] N_Sclav =  { "CTV_GL_Supra",   "6-Supra", "CTV_LN_Sclav",     "6-SUPRA" };
-            string[] N_IMN =    { "CTV_GL_CMI",     "7-CMI", "CTV_LN_IMN" };
-            string[] N_Dist =   { "CTV_Mama_Dist", "8-MDISTAL", "CTV_Breast_Dist",  "Distal", "10- CTV distal", "zCTV_Mama_Dist" };
-            string[] N_Prox =   { "CTV_Mama_Prox", "9-MPROX", "CTV_Breast_Prox",  "Proximal", "9 CTV proximal", "zCTV_Mama_Prox" };
-            string[] N_SIB =    { "GTV_SIB",        "10-SIB", "SIB", "8 SIB" };//hip joint left
-            string[] N_Chest =  { "CTV_Pared",     "1-Pared", "CTV_Chestwall",    "Pared","PD", "zCTV_Pared" };
-            /*//names for original
-            string NPROX    = "CTV_Mama_Prox-05";
-            string NDIST    = "CTV_Mama_Dist-05";
-            string NSIB     = "GTV_SIB-05";*/
-
+            string[] N_Sclav =  { "CTV_GL_Supra",   "6-Supra",  "CTV_LN_Sclav",     "6-SUPRA" };
+            string[] N_IMN =    { "CTV_GL_CMI",     "7-CMI",    "CTV_LN_IMN" };
+            string[] N_Dist =   { "CTV_Mama_Dist",  "8-MDISTAL", "CTV_Breast_Dist",  "Distal", "10- CTV distal", "zCTV_Mama_Dist" };
+            string[] N_Prox =   { "CTV_Mama_Prox",  "9-MPROX",   "CTV_Breast_Prox",  "Proximal", "9 CTV proximal", "zCTV_Mama_Prox" };
+            string[] N_SIB =    { "GTV_SIB",        "10-SIB",    "8 SIB" };
+            string[] N_Chest =  { "CTV_Pared",      "1-Pared",   "CTV_Chestwall",    "Pared", "zCTV_Pared" };
             //bad names
             string[] N_Body = { "Body",     "Outer Contour", "body" };
             string[] N_SC = { "SpinalCord", "Spinal Cord", "Spinal, Cord" };
@@ -445,7 +441,10 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_BR = { "Breast_R",   "MDer" };
             string[] N_BL = { "Breast_L",   "MIzq", };
             string[] N_Tr = { "Trachea",    "Traquea", "traquea" };
-
+            /*//names for original
+            string NPROX    = "CTV_Mama_Prox-05";
+            string NDIST    = "CTV_Mama_Dist-05";
+            string NSIB     = "GTV_SIB-05";*/
             if (context.Patient == null || context.StructureSet == null)
             {
                 System.Windows.MessageBox.Show("Please load a patient, 3D image, and structure set before running this script.", SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -464,6 +463,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Breast[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;//es la unica por el momento para terminar la aplicacion
             }
+            else if (result == DialogResult.Yes && ctv_ID1 != null) ctv_ID1.Id = N_Breast[0];
             Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
             if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
             {
@@ -900,6 +900,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                     System.Windows.MessageBox.Show(string.Format("Dont forget to join body with surface!\n (Unir Contorno externo con la superficie)"), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
+            if (result==DialogResult.Yes && result3 == DialogResult.No) ctv_ID1.Id = "CTV_Mama";
 
         }
 
@@ -907,25 +908,25 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "Script_Rectum20Fx";
             //ctv
-            string[] N_SIB = { "_GTV_SIB", "SIB"};
-            string[] N_Lat = { "_CTV_LN_Lateral", "Laterales", "laterales" };
-            string[] N_Meso = { "_CTV_Mesorectum", "Mesorecto", "mesorecto" };
-            string[] N_Inf = { "_CTV_Inf_Rectum", "Inferior", "inferior" };
-            string[] N_Pre = { "_CTV_LN_Presacra", "Presacro", "presacro" };
-            string[] N_Ing = { "_CTV_LN_Inguinal", "Inguinal" };
+            string[] N_SIB = {  "GTV_SIB",          "_SIB"};
+            string[] N_Lat = {  "CTV_LN_Lateral",   "Laterales", "laterales" };
+            string[] N_Meso = { "CTV_Mesorectum",   "Mesorecto", "mesorecto" };
+            string[] N_Inf = {  "CTV_Inf_Rectum",   "Inferior", "inferior" };
+            string[] N_Pre = {  "CTV_LN_Presacra",  "Presacro", "presacro" };
+            string[] N_Ing = {  "CTV_LN_Inguinal",  "Inguinal" };
             //oar
-            string[] N_Colon = { "Colon", "colon","sigma" };
-            string[] N_Bladder = { "Bladder", "Vejiga","vejiga" };
-            string[] N_Bowel = { "Bowel", "Intestino", "intestino","intestinos" };
-            string[] N_Body = { "Body", "Outer Contour" };
+            string[] N_Colon = {"Colon",            "colon","sigma" };
+            string[] N_Bladder={"Bladder",          "Vejiga","vejiga" };
+            string[] N_Bowel = {"Bowel",            "Intestino", "intestino","intestinos" };
+            string[] N_Body = { "Body",             "Outer Contour" };
             //cambiar nombre
-            string[] N_Prostate = { "Prostate", "Prostata","prostata" };
-            string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano" };
-            string[] N_GM = { "Gluteus_Maximus", "Gluteo Mayor", "gluteos" };
-            string[] N_GS = { "Gluteal_Skin", "Piel Glutea", "pielG", "Piel glutea","piel" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
-            string[] N_SC = { "SpinalCord", "Spinal Cord", "Spinal, Cord" };
+            string[] N_Prostate = {"Prostate",      "Prostata","prostata" };
+            string[] N_Penile = { "PenileBulb",     "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano" };
+            string[] N_GM = { "Gluteus_Maximus",    "Gluteo Mayor", "gluteos" };
+            string[] N_GS = { "Gluteal_Skin",       "Piel Glutea", "pielG", "Piel glutea","piel" };
+            string[] N_HJL = { "FemoralJoint_L",    "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "FemoralJoint_R",    "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+            string[] N_SC = { "SpinalCord",         "Spinal Cord", "Spinal, Cord" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -1098,21 +1099,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "CYC";
             //gtv-ctvs
-            string[] N_GTV = { "_GTV_HeadNeck", "GTV_SIB", "SIB", "Tumor", "sib base leng" };
-            string[] N_CTV = { "_CTV_High_Risk", "CTV_Tumor", "CTV_Peritumor" };
-            string[] N_NL = { "_CTV_LN_Neck_L", "cuello izq", "Cuello izq", "cuello izq" };
-            string[] N_NR = { "_CTV_LN_Neck_R", "cuello der", "Cuello d", "cuello derech" };
-            string[] N_ADPR = { "_GTV_ADP_R", "adp der", "ADP D", "sib adp izq" };
-            string[] N_ADPL = { "_GTV_ADP_L", "adp izq", "ADP I" };
-            string[] N_N1 = { "_CTV_LN_NI_A", "Nivel Ia" };//50gy=cuello
+            string[] N_GTV = {  "GTV_HeadNeck",     "GTV_SIB", "SIB", "Tumor", "sib base leng" };
+            string[] N_CTV = {  "CTV_High_Risk",    "CTV_Tumor", "CTV_Peritumor" };
+            string[] N_NL = {   "CTV_LN_Neck_L",    "cuello izq", "Cuello izq", "cuello izq" };
+            string[] N_NR = {   "CTV_LN_Neck_R",    "cuello der", "Cuello d", "cuello derech" };
+            string[] N_ADPR = { "GTV_ADP_R",        "adp der", "ADP D", "sib adp izq" };
+            string[] N_ADPL = { "GTV_ADP_L",        "adp izq", "ADP I" };
+            string[] N_N1 = {   "CTV_LN_NI_A",      "Nivel Ia" };//50gy=cuello
             //oars
-            string[] N_Brainst = { "Brainstem", "tronco", "Tronco" };
-            string[] N_Parotid_L = { "Parotid_L","parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
-            string[] N_Parotid_R = { "Parotid_R","parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc", "sc", "ME" };
-            string[] N_OpticNR = { "OpticNrv_R", "NOD" };//falta
-            string[] N_OpticNL = { "OpticNrv_L", "NOI" };
+            string[] N_Brainst = {  "Brainstem",     "tronco", "Tronco" };
+            string[] N_Parotid_L = { "Parotid_L",   "parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
+            string[] N_Parotid_R = { "Parotid_R",   "parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
+            string[] N_Body = {      "Body",        "Outer Contour", "body" };
+            string[] N_SC = {       "SpinalCord",   "Spinal Cord", "Sc", "sc", "ME" };
+            string[] N_OpticNR = {  "OpticNrv_R",   "NOD" };//falta
+            string[] N_OpticNL = {  "OpticNrv_L",   "NOI" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -1371,30 +1372,30 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "Cervix";
             //gtv-ctvs
-            string[] N_GTV = { "_GTV_Cervix", "Tumor" };
-            string[] N_CTV3 = { "_CTV_Paramet_L" };
-            string[] N_CTV4 = { "_CTV_Paramet_R" };
-            string[] N_CTV5 = { "_CTV_Rest_Uterus" };
-            string[] N_CTV6 = { "_CTV_Rest_Vagina" };
-            string[] N_CTV7 = { "_CTV_LN_Iliac" };
-            string[] N_CTV8 = { "_CTV_LN_Presacra" };
-            string[] N_CTV9 = { "_CTV_LN_Paraaort", "LAO" };
-            string[] N_CTV10 = { "_CTV_ADP_I" };
-            string[] N_CTV13 = { "_CTV_ADP_II"};
-            string[] N_CTV11 = { "_CTV_LN_Pelvic" };
-            string[] N_CTV12 = { "_CTV_Parametrium" };
+            string[] N_GTV = {      "GTV_Cervix",       "Tumor" };  //TU
+            string[] N_CTV3 = {     "CTV_Paramet_L" };          //PARAMETRIO DER
+            string[] N_CTV4 = {     "CTV_Paramet_R" };          //PARAMETRIO IZQ
+            string[] N_CTV5 = {     "CTV_Rest_Uterus" };        //RESTO DE UTERO
+            string[] N_CTV6 = {     "CTV_Rest_Vagina" };        //RESTO DE VAGINA
+            string[] N_CTV7 = {     "CTV_LN_Iliac" };           //ILIACOS
+            string[] N_CTV8 = {     "CTV_LN_Presacra" };        //PRESACROS
+            string[] N_CTV9 = {     "CTV_LN_Paraaort",  "LAO" }; //LAO
+            string[] N_CTV10 = {    "CTV_ADP_I" };              //ADP
+            string[] N_CTV13 = {    "CTV_ADP_II"};              //ADP PEDIDO POR MURINA
+            string[] N_CTV11 = {    "CTV_LN_Pelvic" };          //GANGLIOS PELVICOS
+            string[] N_CTV12 = {    "CTV_Parametrium" };        //PARAMETRIOS UNIDOS SOLO SI LOS DOS PARAMETRIOS VAN A LA MISMA DOSIS
 
             //oars
-            string[] N_Colon = { "Colon", "colon" };
-            string[] N_Bladder = { "Bladder","Vejiga","vejiga"};
-            string[] N_Rectum = { "Rectum", "Recto" };
-            string[] N_Bowel = { "Bowel", "Intestino", "intestino","intestinos", "Intestinos" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_FJL = { "FemoralJoint_L"};
-            string[] N_FJR = { "FemoralJoint_R" };
-            string[] N_KL = { "Kidney_L" };
-            string[] N_KR = { "Kidney_R" };
-            string[] N_SC = { "SpinalCord", "Spinal Cord", "Sc", "sc", "ME" };
+            string[] N_Colon = {    "Colon",            "colon" };
+            string[] N_Bladder = {  "Bladder",          "Vejiga","vejiga"};
+            string[] N_Rectum = {   "Rectum",           "Recto" };
+            string[] N_Bowel = {    "Bowel",            "Intestino", "intestino","intestinos", "Intestinos" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            string[] N_FJL = {      "FemoralJoint_L"};
+            string[] N_FJR = {      "FemoralJoint_R" };
+            string[] N_KL = {       "Kidney_L" };
+            string[] N_KR = {       "Kidney_R" };
+            string[] N_SC = {       "SpinalCord",       "Spinal Cord", "Sc", "sc", "ME" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -1662,20 +1663,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_HDR_15fx(ScriptContext context)
         {
             const string SCRIPT_NAME0 = "HDR_15Fx";
-            string[] N_Prostate = { "CTV_Prostate", "CTV_Prostata", "1-Prostata" };
-            string[] N_LN = { "CTV_LN_Obturator", "ganglio", "ganglios", "obturador" };
-            string[] N_VS = { "CTV_SeminalVes", "Vesiculas", "Vesiculas Sem", "VS+1cm" };
-            string[] N_SIB = { "GTV_SIB", "_SIB", "nodulo" };
-            string[] N_GP = { "CTV_LN_Pelvic", "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
-            string[] N_Urethra = { "Urethra", "Uretra", "uretra" };
-            string[] N_Trigone = { "Trigone", "trigono", "Trigono" };
-            string[] N_Rectum = { "Rectum", "recto", "rectum" };
-            string[] N_Colon = { "Colon", "colon", "sigma" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
-            string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo" };
+            string[] N_Prostate = { "CTV_Prostate",     "CTV_Prostata", "1-Prostata" };
+            string[] N_LN = {       "CTV_LN_Obturator", "ganglio", "ganglios", "obturador" };
+            string[] N_VS = {       "CTV_SeminalVes",   "Vesiculas", "Vesiculas Sem", "VS+1cm" };
+            string[] N_SIB = {      "GTV_SIB",          "_SIB", "nodulo" };
+            string[] N_GP = {       "CTV_LN_Pelvic",    "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
+            string[] N_Urethra = {  "Urethra",          "Uretra", "uretra" };
+            string[] N_Trigone = {  "Trigone",          "trigono", "Trigono" };
+            string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
+            string[] N_Colon = {    "Colon",            "colon", "sigma" };
+            string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            //CAMBIAR NOMBRE
+            string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+            string[] N_Penile = {   "PenileBulb",       "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -1866,20 +1868,21 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Lecho_20fx(ScriptContext context)
         {
             const string SCRIPT_NAME0 = "ProstateBed20Fx";
-            string[] N_Prostate = { "CTV_ProstateBed", "CTV_Prostata", "1-Prostata" };
-            string[] N_LN = { "CTV_LN_Obturator", "ganglio", "ganglios", "obturador" };
-            string[] N_VS = { "CTV_SeminalVes", "VSem", "Vesiculas", "Vesiculas Sem", "VS+1cm" };
-            string[] N_SIB = { "GTV_SIB", "_SIB", "nodulo" };
-            string[] N_GP = { "CTV_LN_Pelvic", "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
-            string[] N_Urethra = { "Urethra", "Uretra", "uretra" };
-            string[] N_Trigone = { "Trigone", "trigono", "Trigono" };
-            string[] N_Rectum = { "Rectum", "recto", "rectum" };
-            string[] N_Colon = { "Colon", "colon", "sigma" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino","INTESTINO" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
-            string[] N_Penile = { "PenileBulb", "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo" };
+            string[] N_Prostate = { "CTV_ProstateBed",  "CTV_Prostata", "1-Prostata" };
+            string[] N_LN = {       "CTV_LN_Obturator", "ganglio", "ganglios", "obturador" };
+            string[] N_VS = {       "CTV_SeminalVes",   "VSem", "Vesiculas", "Vesiculas Sem", "VS+1cm" };
+            string[] N_SIB = {      "GTV_SIB",          "_SIB", "nodulo" };
+            string[] N_GP = {       "CTV_LN_Pelvic",    "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
+            string[] N_Urethra = {  "Urethra",          "Uretra", "uretra" };
+            string[] N_Trigone = {  "Trigone",          "trigono", "Trigono" };
+            string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
+            string[] N_Colon = {    "Colon",            "colon", "sigma" };
+            string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino","INTESTINO" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            //CAMBIAR NOMBRE
+            string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+            string[] N_Penile = {   "PenileBulb",       "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -2091,15 +2094,16 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Bladder_20fx(ScriptContext context)
         {
             const string SCRIPT_NAME0 = "Bladder20Fx";
-            string[] N_Bladder = { "CTV_Bladder", "CTV_Vejiga", "Vejiga" };
-            string[] N_LN = { "CTV_LN_Pelvic", "CTV_Ganglio", "Pelvicos" };
-            string[] N_SIB = { "GTV_SIB", "_SIB", "nodulo" };
-            string[] N_Rectum = { "Rectum", "recto", "rectum" };
-            string[] N_Colon = { "Colon", "colon", "sigma" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+            string[] N_Bladder = { "CTV_Bladder",       "CTV_Vejiga", "Vejiga" };
+            string[] N_LN = {       "CTV_LN_Pelvic",    "CTV_Ganglio", "Pelvicos" };
+            string[] N_SIB = {      "GTV_SIB",          "_SIB", "nodulo" };
+            string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
+            string[] N_Colon = {    "Colon",            "colon", "sigma" };
+            string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino", "intestino" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            //CAMBIAR NOMBRE
+            string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
 
             if (context.Patient == null || context.StructureSet == null)
             {
@@ -2239,15 +2243,16 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Endometrium_20fx(ScriptContext context)//gonzalez hilda //cipolletti  susana elisab
         {
             const string SCRIPT_NAME0 = "Endometrium20Fx";
-            string[] N_Bladder = { "GTV_SurgicalBed", "LQ" };
-            string[] N_LN = { "CTV_LN_Pelvic", "CTV_Ganglio", "Pelvicos" };
-            string[] N_RV = { "CTV_RestVagina", "RV" };//rest vagina
-            string[] N_Rectum = { "Rectum", "recto", "rectum" };
-            string[] N_Colon = { "Colon", "colon", "sigma", "COLON" };
-            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
-            string[] N_HJL = { "FemoralJoint_L", "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R", "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+            string[] N_Bladder = {      "GTV_SurgicalBed",  "LQ" };
+            string[] N_LN = {           "CTV_LN_Pelvic",    "CTV_Ganglio", "Pelvicos" };
+            string[] N_RV = {           "CTV_RestVagina",   "RV" };//rest vagina
+            string[] N_Rectum = {       "Rectum",           "recto",  "rectum" };
+            string[] N_Colon = {        "Colon",            "colon",   "sigma", "COLON" };
+            string[] N_Bowel = {        "Bowel",            "bowels",  "intestinos", "Intestino", "intestino", "INTESTINO" };
+            string[] N_Body = {         "Body",             "Outer Contour", "body" };
+            //CAMBIAR NOMBRE
+            string[] N_HJL = {          "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = {          "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
 
             if (context.Patient == null || context.StructureSet == null)
             {

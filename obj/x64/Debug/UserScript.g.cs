@@ -148,7 +148,7 @@ namespace Script_App_V1 {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Script_App_V3.esapi;component/userscript.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Script_App_V2.esapi;component/userscript.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\UserScript.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
