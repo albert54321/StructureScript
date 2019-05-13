@@ -434,13 +434,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Chest =  { "CTV_Pared",      "1-Pared",   "CTV_Chestwall",    "Pared", "zCTV_Pared" };
             //bad names
             string[] N_Body = { "Body",     "Outer Contour", "body" };
-            string[] N_SC = { "SpinalCord", "Spinal Cord", "Spinal, Cord" };
-            string[] N_LL = { "Lung_L",     "Lung Left", "Lung, Left" };
-            string[] N_LR = { "Lung_R",     "Lung Right", "Lung, Right" };
-            string[] N_Es = { "Esophagus",  "Esofago" };
-            string[] N_BR = { "Breast_R",   "MDer" };
-            string[] N_BL = { "Breast_L",   "MIzq", };
-            string[] N_Tr = { "Trachea",    "Traquea", "traquea" };
+            string[] N_SC = { "MedulaEspinal", "SpinalCord", "Spinal Cord", "Spinal, Cord" };
+            string[] N_LL = { "Pulmon_I", "Lung_L",     "Lung Left", "Lung, Left" };
+            string[] N_LR = { "Pulmon_D", "Lung_R",     "Lung Right", "Lung, Right" };
+            string[] N_Es = { "Esofago","Esophagus" };
+            string[] N_BR = { "Mama_D","Breast_R",   "MDer" };
+            string[] N_BL = { "Mama_I", "Breast_L",   "MIzq", };
+            string[] N_Tr = { "Traquea", "Trachea",  "traquea" };//aumentar corazon
             /*//names for original
             string NPROX    = "CTV_Mama_Prox-05";
             string NDIST    = "CTV_Mama_Dist-05";
