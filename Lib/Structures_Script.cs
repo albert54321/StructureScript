@@ -2386,17 +2386,17 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Higado_3fx(ScriptContext context)//CanAddStructure n34741
         {
             const string SCRIPT_NAME0 = "Liver_3Fx";
-            string[] N_Liver = {    "GTV_Liver","ITV", "GTV MT hepatic" };
-            string[] N_Stomach = {  "Stomach",  "Estomago", "estomago" };
-            string[] N_Esophagus = { "Esophagus",    "Esofago", "esofago"};
-            string[] N_Bowel = {    "Bowel",    "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
-            string[] N_Body = {     "Body",     "Outer Contour", "body" };
+            string[] N_Liver = { "GTV_Liver", "ITV", "GTV MT hepatic" };
+            string[] N_Stomach = { "Stomach", "Estomago", "estomago" };
+            string[] N_Esophagus = { "Esophagus", "Esofago", "esofago" };
+            string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
+            string[] N_Body = { "Body", "Outer Contour", "body" };
             string[] N_Duodenum = { "Duodenum", "Duodeno", "duodeno" };//hip joint left
 
             string[] N_Lungs = { "Lungs", "Pulmones", "pulmones" };
             string[] N_Lung_L = { "Lung_L", "Pulmon Izq", "Lung L" };//Lung R
             string[] N_Lung_R = { "Lung_R", "Pulmon Der", "Lung R" };//Lung R
-            string[] N_Kidney_L = { "Kidney_L", "RD"};
+            string[] N_Kidney_L = { "Kidney_L", "RD" };
             string[] N_Kidney_R = { "Kidney_R", "RI" };//
 
             if (context.Patient == null || context.StructureSet == null)
@@ -2410,9 +2410,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_Liver.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure stomach = ss.Structures.FirstOrDefault(s => N_Stomach.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure esophagus = ss.Structures.FirstOrDefault(s => N_Esophagus.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure bowel = ss.Structures.FirstOrDefault(s => N_Stomach.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure duodenum = ss.Structures.FirstOrDefault(s => N_Duodenum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            
+
 
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
             if (!HighResol(ctv_ID2) || !HighResol(stomach) || !HighResol(esophagus) || !HighResol(bowel) || !HighResol(duodenum))
@@ -2420,15 +2420,10 @@ namespace VMS.TPS//tiene que ser igual que el main
                 Low = false;
                 VerifSt(ctv_ID2, true, N_Liver[0]);//es necesario true
                 if (ctv_ID2 == null) return;
-                VerifSt(stomach, true, N_Stomach[0]);//es necesario true/false
-                if (stomach == null) return;
-                VerifSt(esophagus, true, N_Esophagus[0]);//es necesario true
-                if (esophagus == null) return;
-                VerifSt(bowel, true, N_Bowel[0]);//es necesario true
-                if (bowel == null) return;
-                VerifSt(duodenum, true, N_Duodenum[0]);//es necesario true
-                if (duodenum == null) return;
-                
+                VerifSt(stomach, false, N_Stomach[0]);//es necesario true/false
+                VerifSt(esophagus, false, N_Esophagus[0]);//es necesario true
+                VerifSt(bowel, false, N_Bowel[0]);//es necesario true  
+                VerifSt(duodenum, false, N_Duodenum[0]);//es necesario true               
             }
             else
             {
@@ -2437,10 +2432,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                 if (ctv_ID2 == null) return;
                 VerifStLow(stomach, false, N_Stomach[0]);//es necesario true/false
                 VerifStLow(esophagus, false, N_Esophagus[0]);//es necesario true
-                VerifStLow(bowel, true, N_Bowel[0]);//es necesario true
-                if (bowel == null) return;
+                VerifStLow(bowel, false, N_Bowel[0]);//es necesario true
                 VerifStLow(duodenum, false, N_Duodenum[0]);//es necesario true
-                if (duodenum == null) return;
             }
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver////el body no deja convertirr a high entonces copiar la estrucutura enn body2
             VerifSt(body, true, N_Body[0]);//es necesario true
@@ -2480,14 +2473,65 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure prv_esop = ss.AddStructure("CONTROL", PRV_esophagus);
             Structure prv_duodenum = ss.AddStructure("CONTROL", PRV_duode);
             Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
-            /*
+            Structure prv_stomach = ss.AddStructure("CONTROL", PRV_stomach);
+            Structure prv_total = ss.AddStructure("CONTROL", "zPRV_total!");
+
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
-                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID18); St.Add(ptv_ID20);
-                St.Add(ptv_ID21); St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_bowel);
+                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(prv_esop); St.Add(prv_duodenum); St.Add(prv_bowel); St.Add(prv_stomach);
                 foreach (Structure x in St) x.ConvertToHighResolution();
-            }*/
+            }
+            DialogResult result = System.Windows.Forms.MessageBox.Show("Tiene Compresor o es con Expiracion?" + "\n" + "If Yes, the volume has Compressor(Compresor)." + "\n" + "If No, the volume is in Expiration(Expiracion/Gatting)." + "\n" + "If Cancel, stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
+            if (result == DialogResult.Yes) ptv_ID12.SegmentVolume = ctv_ID2.Margin(5);
+            else if (result == DialogResult.No) ptv_ID12.SegmentVolume = ctv_ID2.Margin(3);
+            else return;
+            ptv_ID13.SegmentVolume = ptv_ID12;
+            if (esophagus != null)
+            {
+                prv_esop.SegmentVolume = esophagus.Margin(4);
+                prv_total.SegmentVolume = prv_total.Or(prv_esop);
+            }
+            else
+            {
+                ss.RemoveStructure(esophagus);
+                ss.RemoveStructure(prv_esop);
+            }
+            if (duodenum != null)
+            {
+                prv_duodenum.SegmentVolume = duodenum.Margin(4);
+                prv_total.SegmentVolume = prv_total.Or(prv_duodenum);
+                ptv_ID16.SegmentVolume = prv_duodenum.And(ptv_ID12);
+            }
+            else
+            {
+                ss.RemoveStructure(duodenum);
+                ss.RemoveStructure(prv_duodenum);
+                ss.RemoveStructure(ptv_ID16);
+            }
+            if (bowel != null)
+            {
+                prv_bowel.SegmentVolume = bowel.Margin(4);
+                prv_total.SegmentVolume = prv_total.Or(prv_bowel);
+                ptv_ID15.SegmentVolume = prv_bowel.And(ptv_ID12);
+            }
+            else
+            {
+                ss.RemoveStructure(bowel);
+                ss.RemoveStructure(prv_bowel);
+                ss.RemoveStructure(ptv_ID15);
+            }
+            if (stomach != null) 
+            {
+                prv_stomach.SegmentVolume = stomach.Margin(4);
+                prv_total.SegmentVolume = prv_total.Or(prv_stomach);
+            }
+            else
+            {
+                ss.RemoveStructure(stomach);
+                ss.RemoveStructure(prv_stomach);
+            }
+            if (prv_total != null) ptv_ID14.SegmentVolume = ptv_ID12.Sub(prv_total);
         }
     }
 }
