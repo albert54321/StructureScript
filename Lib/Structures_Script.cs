@@ -421,7 +421,7 @@ namespace VMS.TPS//tiene que ser igual que el main
         public void St_Breast_ChestWall(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_Breast_ChestWall";
-            string[] N_Breast = { "zCTV_Mama",      "1-Mama",   "CTV_Breast", "zCTV_Mama_D", "zCTV_Mama_I" };
+            string[] N_Breast = { "zCTV_Mama",      "1-Mama",   "CTV_Breast",       "zCTV_Mama_I", "zCTV_Mama_D" };
             string[] N_LNI =    { "CTV_GL_Axila_1", "2-Ax I",   "CTV_LN_Ax_L1",     "Axila I" };
             string[] N_LNII =   { "CTV_GL_Axila_2", "3-Ax II",  "CTV_LN_Ax_L2",     "Axila II" };
             string[] N_LNIII =  { "CTV_GL_Axila_3", "4-Ax III", "CTV_LN_Ax_L3",     "Axila III" };
@@ -438,7 +438,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_LL = { "Pulmon_I", "Lung_L",     "Lung Left", "Lung, Left" };
             string[] N_LR = { "Pulmon_D", "Lung_R",     "Lung Right", "Lung, Right" };
             string[] N_Es = { "Esofago","Esophagus" };
-            string[] N_BR = { "Mama_D","Breast_R",   "MDer" };
+            string[] N_BR = { "Mama_Der","Breast_R",   "MDer", "MD" };
             string[] N_BL = { "Mama_I", "Breast_L",   "MIzq", };
             string[] N_Tr = { "Traquea", "Trachea",  "traquea" };//aumentar corazon
             /*//names for original
@@ -456,14 +456,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             //bool resol=ss.Structures. Any(x => x.IsHighResolution); //encuentra un elemeto de alta resolucion el problema esta que te encuentra de todo
             
             DialogResult result = System.Windows.Forms.MessageBox.Show("Breast or Chest wall or Prosthesis?" + "\n" + "If Yes, the volume is Breast(Mama)." + "\n" + "If No, the volume is Chest wall(Pared)." + "\n" + "If Cancel, the volume is chestwall with expander(Expansor).", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
-            Structure ctv_ID1 = ss.Structures.FirstOrDefault(s => N_Breast.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            //if (result == DialogResult.Yes) VerifSt(ctv_ID1, true, N_Breast[0]);//es necesario true
-            if (result == DialogResult.Yes && ctv_ID1 == null)// esto no lo convierto en alta resolucion para que haga la superficie, despues si
-            {
-                System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Breast[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return;//es la unica por el momento para terminar la aplicacion
-            }
-            else if (result == DialogResult.Yes && ctv_ID1 != null) ctv_ID1.Id = N_Breast[0];
+            
             Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
             if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
             {
@@ -486,7 +479,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ctv_ID10 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));
             
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
-            if (!HighResol(ctv_ID1) || !HighResol(ctv_ID2)|| !HighResol(ctv_ID3)|| !HighResol(ctv_ID4)|| !HighResol(ctv_ID5)|| !HighResol(ctv_ID6)|| !HighResol(ctv_ID7)|| !HighResol(ctv_ID8)|| !HighResol(ctv_ID9)|| !HighResol(ctv_ID10) || !HighResol(ctv_ID11))
+            if (!HighResol(ctv_ID2)|| !HighResol(ctv_ID3)|| !HighResol(ctv_ID4)|| !HighResol(ctv_ID5)|| !HighResol(ctv_ID6)|| !HighResol(ctv_ID7)|| !HighResol(ctv_ID8)|| !HighResol(ctv_ID9)|| !HighResol(ctv_ID10) || !HighResol(ctv_ID11))
             {
                 Low = false;
                 //VerifSt(ctv_ID1, true, N_Breast[0]);
@@ -511,7 +504,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             else
             {
                 Low = true;
-                VerifStLow(ctv_ID1, true, N_Breast[0]);
+                //VerifStLow(ctv_ID1, true, N_Breast[0]);
                 VerifStLow(ctv_ID2, false, N_LNI[0]);
                 VerifStLow(ctv_ID3, false, N_LNII[0]);
                 VerifStLow(ctv_ID4, false, N_LNIII[0]);
@@ -536,7 +529,15 @@ namespace VMS.TPS//tiene que ser igual que el main
                 }
 
             }
-            
+            Structure ctv_ID1 = ss.Structures.FirstOrDefault(s => N_Breast.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            //if (result == DialogResult.Yes) VerifSt(ctv_ID1, true, N_Breast[0]);//es necesario true
+            if (result == DialogResult.Yes && ctv_ID1 == null)// esto no lo convierto en alta resolucion para que haga la superficie, despues si
+            {
+                System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Breast[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;//es la unica por el momento para terminar la aplicacion
+            }
+            else if (result == DialogResult.Yes && ctv_ID1 != null) ctv_ID1.Id = N_Breast[0];
+
             //if (result == DialogResult.Cancel && ctv_ID11 == null) return;
             Structure body0 = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));
             VerifSt(body0, true, N_Body[0]);
@@ -2455,17 +2456,14 @@ namespace VMS.TPS//tiene que ser igual que el main
             //comienza las estrucuras
             //New Structures 
             const string PTV_ID12 = "PTV_Liver";
-            const string PTV_ID13 = "PTV_LN_Pelvic";
-            const string PTV_ID14 = "PTV_RestVagina";
-            const string PTV_ID15 = "zPTV_High_4800!";
-            const string PTV_ID16 = "zPTV_Low_4500!";
-            const string PTV_ID18 = "zPTV48-BowelPRV!";//pude estar vacio
-            const string PTV_ID20 = "zPTV_BowelPRV05!";
-            const string PTV_ID21 = "zPTV_Total!";
-
-            const string PRV_Rectum = "Rectum_PRV05";
-            const string PRV_colon = "Colon_PRV05";//
+            const string PTV_ID13 = "zPTV_High_4800!";
+            const string PTV_ID14 = "zPTV-PRVs!";
+            const string PTV_ID15 = "zPTV_BowelPRV05!";
+            const string PTV_ID16 = "zPTV_DuodePRV05!";
+            const string PRV_esophagus = "Esophagus_PRV05";
+            const string PRV_duode = "Duodenum_PRV05";//
             const string PRV_bowel = "Bowel_PRV05";//
+            const string PRV_stomach = "Stomach_PRV05";//
 
             //============================
             // GENERATE 5mm expansion of PTV
@@ -2478,21 +2476,18 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
             Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//4800
             Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//48-int
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);//intersec int
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//total
 
-            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
+            Structure prv_esop = ss.AddStructure("CONTROL", PRV_esophagus);
+            Structure prv_duodenum = ss.AddStructure("CONTROL", PRV_duode);
             Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
-
+            /*
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
                 St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID18); St.Add(ptv_ID20);
                 St.Add(ptv_ID21); St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_bowel);
                 foreach (Structure x in St) x.ConvertToHighResolution();
-            }
+            }*/
         }
     }
 }
