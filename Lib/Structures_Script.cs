@@ -66,17 +66,6 @@ namespace VMS.TPS//tiene que ser igual que el main
                 if (st1.Id != name) st1.Id = name;
             }
         }
-        public void VerifSt1(Structure st1, bool need, string name)//solo para cambiar nombre
-        {
-            if (st1 == null || st1.IsEmpty)
-            {
-                System.Windows.MessageBox.Show(string.Format("'{0}' not found!", name), SCRIPT_NAME, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-            else
-            {
-                if (st1.Id != name) st1.Id = name;
-            }
-        }
         public bool HighResol(Structure s)//verifica su una estructura es alta resol devuelve a= false si es alta resol
         {
             bool a;
@@ -158,7 +147,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             list.Add(new Structures_Creation
             {
                 ID = "Script_Liver_Fx3(Higado)",//saint fausto
-                approved = false,
+                approved = true,
                 SCRIPT_NAME = "Bladder_Structures",
                 number = 9
             });
@@ -266,10 +255,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifSt(body, true, N_Body[0]);//es necesario true
             if (body == null) return;
 
-            //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id=N_HJL[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
-            ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x))).Id =N_Penile[0];
+            //solo cambia nombre voy a crear structuras y cambiar id
+            Structure hjl = ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure penile = ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjl, false, N_HJL[0]);
+            VerifStLow(hjr, false, N_HJR[0]);
+            VerifStLow(penile, false, N_Penile[0]);
 
             //comienza las estrucuras
             //New Structures 
@@ -544,19 +536,19 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             //solo cambia nombre
             Structure sc = ss.Structures.FirstOrDefault(s => N_SC.Any(x => s.Id.Contains(x)));
-            VerifSt1(sc, false, N_SC[0]);
+            VerifStLow(sc, false, N_SC[0]);
             Structure ll = ss.Structures.FirstOrDefault(s => N_LL.Any(x => s.Id.Contains(x)));
-            VerifSt1(ll, false, N_LL[0]);
+            VerifStLow(ll, false, N_LL[0]);
             Structure lr = ss.Structures.FirstOrDefault(s => N_LR.Any(x => s.Id.Contains(x)));
-            VerifSt1(lr, false, N_LR[0]);
+            VerifStLow(lr, false, N_LR[0]);
             Structure es = ss.Structures.FirstOrDefault(s => N_Es.Any(x => s.Id.Contains(x)));
-            VerifSt1(es, false, N_Es[0]);
+            VerifStLow(es, false, N_Es[0]);
             Structure br = ss.Structures.FirstOrDefault(s => N_BR.Any(x => s.Id.Contains(x)));
-            VerifSt1(br, false, N_BR[0]);
+            VerifStLow(br, false, N_BR[0]);
             Structure bl = ss.Structures.FirstOrDefault(s => N_BL.Any(x => s.Id.Contains(x)));
-            VerifSt1(bl, false, N_BL[0]);
+            VerifStLow(bl, false, N_BL[0]);
             Structure tr = ss.Structures.FirstOrDefault(s => N_Tr.Any(x => s.Id.Contains(x)));
-            VerifSt1(tr, false, N_Tr[0]);
+            VerifStLow(tr, false, N_Tr[0]);
 
             DialogResult result2 = System.Windows.Forms.MessageBox.Show("Fraction: 16Fx or 20Fx?" + "\n" + "If Yes, the volume is 16Fx." + "\n" + "If No, the volume is 20Fx." + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result2 == DialogResult.Cancel) return;
@@ -838,7 +830,6 @@ namespace VMS.TPS//tiene que ser igual que el main
                     ptv_ID23.Id = PTV_ID23_ + "!";
                     ptv_ID25.Id = PTV_ID25_ + "!";
                 }
-
             }
 
 
@@ -943,9 +934,15 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ctv_ID5 = ss.Structures.FirstOrDefault(s => N_Inf.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure ctv_ID6 = ss.Structures.FirstOrDefault(s => N_Pre.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure ctv_ID7 = ss.Structures.FirstOrDefault(s => N_Ing.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            //OAR
+            Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure bladder = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver        
+            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            
+
 
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
-            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(ctv_ID7) )
+            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(ctv_ID7) || !HighResol(colon) || !HighResol(bladder) || !HighResol(bowel) )
             {
                 Low = false;
                 VerifSt(ctv_ID2, true, N_SIB[0]);//es necesario true
@@ -955,6 +952,9 @@ namespace VMS.TPS//tiene que ser igual que el main
                 VerifSt(ctv_ID5, false, N_Inf[0]);//es necesario true
                 VerifSt(ctv_ID6, false, N_Pre[0]);//es necesario true
                 VerifSt(ctv_ID7, false, N_Ing[0]);//es necesario true
+                VerifSt(colon, false, N_Colon[0]);
+                VerifSt(bladder, false, N_Bladder[0]);//es necesario true
+                VerifSt(bowel, false, N_Bowel[0]);//es necesario true
             }
             else
             {
@@ -966,40 +966,35 @@ namespace VMS.TPS//tiene que ser igual que el main
                 VerifStLow(ctv_ID5, false, N_Inf[0]);//es necesario true
                 VerifStLow(ctv_ID6, false, N_Pre[0]);//es necesario true
                 VerifStLow(ctv_ID7, false, N_Ing[0]);//es necesario true
+                VerifStLow(colon, false, N_Colon[0]);
+                VerifStLow(bladder, false, N_Bladder[0]);//es necesario true
+                VerifStLow(bowel, false, N_Bowel[0]);//es necesario true
             }
 
-            Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(colon, false, N_Colon[0]);
-
-            Structure bladder = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(bladder, false, N_Bladder[0]);//es necesario true
-
-            Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(bowel, false, N_Bowel[0]);//es necesario true
-
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(body, false, N_Body[0]);//es necesario true
+            VerifStLow(body, false, N_Body[0]);//es necesario true
+            
             //solo cambia nombre
             Structure pros = ss.Structures.FirstOrDefault(s => N_Prostate.Any(x => s.Id.Contains(x)));
-            VerifSt1(pros, false, N_Prostate[0]);
+            VerifStLow(pros, false, N_Prostate[0]);
 
             Structure penile = ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x)));
-            VerifSt1(penile, false, N_Penile[0]);
+            VerifStLow(penile, false, N_Penile[0]);
 
             Structure gm = ss.Structures.FirstOrDefault(s => N_GM.Any(x => s.Id.Contains(x)));
-            VerifSt1(gm, false, N_GM[0]);
+            VerifStLow(gm, false, N_GM[0]);
 
             Structure gs = ss.Structures.FirstOrDefault(s => N_GS.Any(x => s.Id.Contains(x)));
-            VerifSt1(gs, false, N_GS[0]);
+            VerifStLow(gs, false, N_GS[0]);
 
             Structure hjl = ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x)));
-            VerifSt1(hjl, false, N_HJL[0]);
+            VerifStLow(hjl, false, N_HJL[0]);
 
             Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));
-            VerifSt1(hjr, false, N_HJR[0]);
+            VerifStLow(hjr, false, N_HJR[0]);
 
             Structure sc = ss.Structures.FirstOrDefault(s => N_SC.Any(x => s.Id.Contains(x)));
-            VerifSt1(sc, false, N_SC[0]);
+            VerifStLow(sc, false, N_SC[0]);
 
             const string PTV_ID12 = "PTV_SIB";
             const string PTV_ID13 = "PTV_LN_Lateral";
@@ -1180,12 +1175,12 @@ namespace VMS.TPS//tiene que ser igual que el main
                 if (parotidR == null) return;//
             }
             Structure optic_r = ss.Structures.FirstOrDefault(s => N_OpticNR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(optic_r, false, N_OpticNR[0]);//
+            VerifStLow(optic_r, false, N_OpticNR[0]);//
             Structure optic_l = ss.Structures.FirstOrDefault(s => N_OpticNL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(optic_l, false, N_OpticNL[0]);//
+            VerifStLow(optic_l, false, N_OpticNL[0]);//
 
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(body, false, N_Body[0]);//
+            VerifStLow(body, true, N_Body[0]);//
 
             Structure body0 = ss.AddStructure("CONTROL", "Body0");
             body0.SegmentVolume = body;
