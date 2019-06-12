@@ -19,10 +19,10 @@ W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Scr
 W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\UserScript.baml
 W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\WindowCredit.baml
 W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V1.csproj.CoreCompileInputs.cache
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\plugins\Script_App_V2.esapi.dll
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\plugins\Script_App_V2.esapi.pdb
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V2.esapi_MarkupCompile.cache
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V2.esapi_MarkupCompile.lref
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V2.esapi.g.resources
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V2.esapi.dll
-W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V2.esapi.pdb
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\plugins\Script_App_V3.esapi.dll
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\plugins\Script_App_V3.esapi.pdb
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi_MarkupCompile.cache
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi_MarkupCompile.lref
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi.g.resources
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi.dll
+W:\FISICA\CARPETAS PERSONALES\Alberto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi.pdb

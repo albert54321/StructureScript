@@ -191,8 +191,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino" };
             string[] N_Body = {     "Body",             "Outer Contour", "body" };
             //cambiar nombres
-            string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left", "HI", "CFI" };//hip joint left
-            string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right", "HD", "CFD" };
+            string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left", "CFI" };//hip joint left
+            string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right", "CFD" };
             string[] N_Penile = {   "PenileBulb",       "Penile Bulb", "Pene B","penile bulb", "B Pene", "Bulbo" };
 
             if (context.Patient == null || context.StructureSet == null)
@@ -769,7 +769,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 Cropbody(ctv_ID8, buffered_outer);
                 Cropbody(ctv_ID9, buffered_outer);
                 Cropbody(ctv_ID10, buffered_outer);
-                Cropbody(ctv_ID11, buffered_outer);
+                //Cropbody(ctv_ID11, buffered_outer);
 
                 Cropbody(ptv_ID12, buffered_outer);
                 Cropbody(ptv_ID13, buffered_outer);
@@ -824,11 +824,11 @@ namespace VMS.TPS//tiene que ser igual que el main
                 }
                 else if(result3==DialogResult.No)//lo coloco asi porque sino me sale que ya existe el id
                 {
-                    ptv_ID20.Id = PTV_ID20_+"!";
-                    ptv_ID21.Id = PTV_ID21_ + "!";
-                    ptv_ID22.Id = PTV_ID22_ + "!";//por defecto esta en fx16
-                    ptv_ID23.Id = PTV_ID23_ + "!";
-                    ptv_ID25.Id = PTV_ID25_ + "!";
+                    ptv_ID20.Id = PTV_ID20_+".";
+                    ptv_ID21.Id = PTV_ID21_ + ".";
+                    ptv_ID22.Id = PTV_ID22_ + ".";//por defecto esta en fx16
+                    ptv_ID23.Id = PTV_ID23_ + ".";
+                    ptv_ID25.Id = PTV_ID25_ + ".";
                 }
             }
 
@@ -1095,7 +1095,7 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "CYC";
             //gtv-ctvs
-            string[] N_GTV = {  "GTV_HeadNeck",     "GTV_SIB", "SIB", "Tumor", "sib base leng" };
+            string[] N_GTV = {  "GTV_HeadNeck",     "GTV_SIB", "SIB", "sib base leng" };
             string[] N_CTV = {  "CTV_High_Risk",    "CTV_Tumor", "CTV_Peritumor" };
             string[] N_NL = {   "CTV_LN_Neck_L",    "cuello izq", "Cuello izq", "cuello izq" };
             string[] N_NR = {   "CTV_LN_Neck_R",    "cuello der", "Cuello d", "cuello derech" };
@@ -1118,6 +1118,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             StructureSet ss = context.StructureSet;
             context.Patient.BeginModifications();   // enable writing with this script.
+            DialogResult result = System.Windows.Forms.MessageBox.Show("Unio los huecos de aire del contorno externo? Recuerde que el script retrae con respecto a esta estructura" , SCRIPT_NAME0, MessageBoxButtons.YesNo);
+            if (result == DialogResult.No) return;// mensaje para no perder los CTVs
 
             Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_GTV.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure ctv_ID3 = ss.Structures.FirstOrDefault(s => N_CTV.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
@@ -1245,7 +1247,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             //---------------------------------------
             //comienza la manipulacion de estructuras
             //----------------------------------------
-            buff_body.SegmentVolume = body0.Margin(-4.0);
+            buff_body.SegmentVolume = body0.Margin(-5.0);
             ptv_ID12.SegmentVolume = ctv_ID2.Margin(5.0); //PTV GTV
             Cropbody(ctv_ID2, buff_body);
             Cropbody(ptv_ID12, buff_body);
@@ -1264,7 +1266,6 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID17); //PTV 6700
                 Cropbody(ctv_ID7, buff_body);
                 Cropbody(ptv_ID17, buff_body);
-                Cropbody(ptv_ID23, buff_body);
             }
 
             ptv_ID13.SegmentVolume = ctv_ID3.Margin(5.0); //PTV CTV
@@ -1314,6 +1315,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             ptv_ID25.SegmentVolume = ptv_ID25.Or(ptv_ID22);
             ptv_ID25.SegmentVolume = ptv_ID25.Or(ptv_ID23);//ptv total
             Cropbody(ptv_ID25, buff_body);
+            Cropbody(ptv_ID23, buff_body);
 
             auxi.SegmentVolume = (parotidL.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 2))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0));//.Margin(30);//anado
             auxi2.SegmentVolume = (parotidR.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 50, 0, 50, 50, 0));
@@ -1736,9 +1738,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (body == null) return;
 
             //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
-            ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x))).Id = N_Penile[0];
+            Structure hjl = ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure penile = ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjl,false, N_HJL[0]);//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjr, false, N_HJR[0]);
+            VerifStLow(penile,false, N_Penile[0]);
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
@@ -1941,9 +1946,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (body == null) return;
 
             //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
-            ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x))).Id = N_Penile[0];
+            Structure hjl = ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure penile = ss.Structures.FirstOrDefault(s => N_Penile.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjl, false, N_HJL[0]);//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjr, false, N_HJR[0]);
+            VerifStLow(penile, false, N_Penile[0]);
 
             //comienza las estrucuras
             //New Structures 
@@ -2148,9 +2156,11 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (body == null) return;
 
             //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
-
+            Structure hjl = ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjl, false, N_HJL[0]);//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjr, false, N_HJR[0]);
+            
             //comienza las estrucuras
             //New Structures 
             const string PTV_ID12 = "PTV_Bladder";
@@ -2297,8 +2307,10 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (body == null) return;
 
             //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x))).Id = N_HJL[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x))).Id = N_HJR[0];
+            Structure hjl = ss.Structures.FirstOrDefault(s => N_HJL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjl, false, N_HJL[0]);//s = structura s.id su id names es el array de string para ver
+            VerifStLow(hjr, false, N_HJR[0]);
 
             //comienza las estrucuras
             //New Structures 
@@ -2435,11 +2447,16 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (body == null) return;
 
             //solo cambia nombre
-            ss.Structures.FirstOrDefault(s => N_Lungs.Any(x => s.Id.Contains(x))).Id = N_Lungs[0];
-            ss.Structures.FirstOrDefault(s => N_Lung_L.Any(x => s.Id.Contains(x))).Id = N_Lung_L[0];//s = structura s.id su id names es el array de string para ver
-            ss.Structures.FirstOrDefault(s => N_Lung_R.Any(x => s.Id.Contains(x))).Id = N_Lung_R[0];
-            ss.Structures.FirstOrDefault(s => N_Kidney_R.Any(x => s.Id.Contains(x))).Id = N_Kidney_R[0];
-            ss.Structures.FirstOrDefault(s => N_Kidney_L.Any(x => s.Id.Contains(x))).Id = N_Kidney_L[0];
+            Structure lungs = ss.Structures.FirstOrDefault(s => N_Lungs.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure lungl = ss.Structures.FirstOrDefault(s => N_Lung_L.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure lungr = ss.Structures.FirstOrDefault(s => N_Lung_R.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure kidneyl = ss.Structures.FirstOrDefault(s => N_Kidney_R.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure kidneyr = ss.Structures.FirstOrDefault(s => N_Kidney_L.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifStLow(lungs, false, N_Lungs[0]);
+            VerifStLow(lungl, false, N_Lung_L[0]);
+            VerifStLow(lungr, false, N_Lung_R[0]);
+            VerifStLow(kidneyl, false, N_Kidney_L[0]);
+            VerifStLow(kidneyr, false, N_Kidney_R[0]);
 
             //comienza las estrucuras
             //New Structures 
