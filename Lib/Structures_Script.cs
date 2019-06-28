@@ -48,7 +48,15 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             else {
                 if(name != "Body" && name != "Outer Contour" && st1.CanConvertToHighResolution()) st1.ConvertToHighResolution();
-                if (st1.Id != name) st1.Id = name;              
+                try
+                {
+                    if (st1.Id != name) st1.Id = name;
+                }
+                catch (Exception e)
+                {
+                    st1.Id = name + ".";
+                }
+                //if (st1.Id != name) st1.Id = name;              
             }
         }
         public void VerifStLow(Structure st1, bool need, string name)//cambia el nombre y NO convierte en alta resolucion
@@ -63,7 +71,15 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             else
             {
-                if (st1.Id != name) st1.Id = name;
+                try
+                {
+                    if (st1.Id != name) st1.Id = name;
+                }
+                catch (Exception e)
+                {
+                    st1.Id = name+".";
+                }
+                
             }
         }
         public bool HighResol(Structure s)//verifica su una estructura es alta resol devuelve a= false si es alta resol
@@ -426,13 +442,15 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Chest =  { "CTV_Pared",      "1-Pared",   "CTV_Chestwall",    "Pared", "zCTV_Pared" };
             //bad names
             string[] N_Body = { "Body",     "Outer Contour", "body" };
-            string[] N_SC = { "MedulaEspinal", "SpinalCord", "Spinal Cord", "Spinal, Cord" };
+            string[] N_SC = { "MedulaEspinal", "SpinalCord", "Spinal Cord", "Spinal, Cord","medula" };
             string[] N_LL = { "Pulmon_I", "Lung_L",     "Lung Left", "Lung, Left" };
             string[] N_LR = { "Pulmon_D", "Lung_R",     "Lung Right", "Lung, Right" };
             string[] N_Es = { "Esofago","Esophagus" };
             string[] N_BR = { "Mama_Der","Breast_R",   "MDer", "MD" };
             string[] N_BL = { "Mama_I", "Breast_L",   "MIzq", };
             string[] N_Tr = { "Traquea", "Trachea",  "traquea" };//aumentar corazon
+            string[] N_Cor = { "Corazon", "Heart", "corazon" };//aumentar corazon
+            string[] N_Intes = { "Intestino", "Bowel", "corazon" };//aumentar corazon
             /*//names for original
             string NPROX    = "CTV_Mama_Prox-05";
             string NDIST    = "CTV_Mama_Dist-05";
@@ -549,6 +567,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifStLow(bl, false, N_BL[0]);
             Structure tr = ss.Structures.FirstOrDefault(s => N_Tr.Any(x => s.Id.Contains(x)));
             VerifStLow(tr, false, N_Tr[0]);
+            Structure cor = ss.Structures.FirstOrDefault(s => N_Cor.Any(x => s.Id.Contains(x)));
+            VerifStLow(tr, false, N_Cor[0]);
 
             DialogResult result2 = System.Windows.Forms.MessageBox.Show("Fraction: 16Fx or 20Fx?" + "\n" + "If Yes, the volume is 16Fx." + "\n" + "If No, the volume is 20Fx." + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result2 == DialogResult.Cancel) return;
@@ -830,6 +850,16 @@ namespace VMS.TPS//tiene que ser igual que el main
                     ptv_ID23.Id = PTV_ID23_ + ".";
                     ptv_ID25.Id = PTV_ID25_ + ".";
                 }
+                /*try
+                {
+                    ptv_ID20.Id = PTV_ID20_;
+                    ptv_ID21.Id = PTV_ID21_;
+                    ptv_ID22.Id = PTV_ID22_;//por defecto esta en fx16
+                    ptv_ID23.Id = PTV_ID23_;
+                    ptv_ID25.Id = PTV_ID25_;
+                }
+                catch {  }
+                */
             }
 
 
