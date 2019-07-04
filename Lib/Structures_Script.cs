@@ -192,6 +192,16 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
         }//crop 0.5cm del body
 
+        public bool IsResim(StructureSet ss)
+        {
+            bool resim = false;
+            if (ss.Structures.Any(x => x.Id.Contains("PTV")))
+            {
+                resim = true;
+            }
+            return resim;
+        }
+
         public void St_Prostate(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_SBRT_Prostate";
@@ -281,26 +291,51 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             //comienza las estrucuras
             //New Structures 
-            const string PTV_ID12 = "PTV_Prostate";
-            const string PTV_ID13 = "PTV_LN_Obturator";
-            const string PTV_ID14 = "PTV_Urethra!";
-            const string PTV_ID15 = "PTV_Trigone!";
-            const string PTV_ID16 = "PTV_RectumPRV05!";
-            const string PTV_ID17 = "PTV-PRVs!";
-            const string PTV_ID18 = "PTV_SeminalVes";//
-            const string PTV_ID19 = "PTV_Total!";
-            const string PTV_ID20 = "PTV_High_3625";
-            const string PTV_ID20_ = "PTV_High_4000";
-            const string PTV_ID21 = "PTV_Low_2500";
-            const string PTV_ID22 = "PTV_Mid_2750";
-            const string PTV_ID23 = "PTV_SIB";
-            const string PTV_ID24 = "PTV_LN_Pelvic";
-            const string PRV_Rectum = "Rectum_PRV05";
-            const string Rect_ant = "Rectum_A";
-            const string Rect_post = "Rectum_P";
-            const string PRV_colon = "Colon_PRV05";//
-            const string PRV_bowel = "Bowel_PRV05";//
-
+            string PTV_ID12 = "PTV_Prostate";
+            string PTV_ID13 = "PTV_LN_Obturator";
+            string PTV_ID14 = "PTV_Urethra!";
+            string PTV_ID15 = "PTV_Trigone!";
+            string PTV_ID16 = "PTV_RectumPRV05!";
+            string PTV_ID17 = "PTV-PRVs!";
+            string PTV_ID18 = "PTV_SeminalVes";//
+            string PTV_ID19 = "PTV_Total!";
+            string PTV_ID20 = "PTV_High_3625";
+            string PTV_ID20_ = "PTV_High_4000";
+            string PTV_ID21 = "PTV_Low_2500";
+            string PTV_ID22 = "PTV_Mid_2750";
+            string PTV_ID23 = "PTV_SIB";
+            string PTV_ID24 = "PTV_LN_Pelvic";
+            string PRV_Rectum = "Rectum_PRV05";
+            string Rect_ant = "Rectum_A";
+            string Rect_post = "Rectum_P";
+            string PRV_colon = "Colon_PRV05";//
+            string PRV_bowel = "Bowel_PRV05";//
+            
+            if (IsResim(ss) )
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("Se ha detectado PTVs, el plan es resimilacion?", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if(result0==DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13.Remove(PTV_ID13.Length - 1);
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16.Remove(PTV_ID16.Length - 1);
+                    PTV_ID17 += ".";
+                    PTV_ID18 += ".";
+                    PTV_ID19 += ".";
+                    PTV_ID20 += ".";
+                    PTV_ID21 += ".";
+                    PTV_ID22 += ".";
+                    PTV_ID23 += ".";
+                    PTV_ID24 += ".";
+                    PRV_Rectum += ".";
+                    Rect_ant += ".";
+                    Rect_post += ".";
+                    PRV_colon += ".";
+                    PRV_bowel += ".";
+                }
+            }
             DialogResult result = System.Windows.Forms.MessageBox.Show("Dose prescription is 36.25Gy?"+ "\n" +"If Yes, dose prescription is 36.25Gy" + "\n" +"If No, dose prescription is 40Gy" + "\n" + "If Cancel, End aplication", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel) return;
             Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
@@ -450,7 +485,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_BL = { "Mama_I", "Breast_L",   "MIzq", };
             string[] N_Tr = { "Traquea", "Trachea",  "traquea" };//aumentar corazon
             string[] N_Cor = { "Corazon", "Heart", "corazon" };//aumentar corazon
-            string[] N_Intes = { "Intestino", "Bowel", "corazon" };//aumentar corazon
+            string[] N_Intes = { "Intestino", "Bowel", "intestino" };//aumentar corazon
             /*//names for original
             string NPROX    = "CTV_Mama_Prox-05";
             string NDIST    = "CTV_Mama_Dist-05";
@@ -475,7 +510,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                     System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Chest[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return;//es la unica por el momento para terminar la aplicacion
                 }
-                else ctv_ID11.Id = N_Chest[0];
+                else VerifStLow(ctv_ID11, true, N_Chest[0]); 
             }
             //Crea las estructuras necesarias
             Structure ctv_ID2 = ss.Structures.FirstOrDefault(s => N_LNI.Any(x => s.Id.Contains(x)));
@@ -546,7 +581,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 System.Windows.MessageBox.Show(string.Format("'{0}' not found!", N_Breast[0]), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;//es la unica por el momento para terminar la aplicacion
             }
-            else if (result == DialogResult.Yes && ctv_ID1 != null) ctv_ID1.Id = N_Breast[0];
+            else if (result == DialogResult.Yes && ctv_ID1 != null) VerifStLow( ctv_ID1,true, N_Breast[0]);
 
             //if (result == DialogResult.Cancel && ctv_ID11 == null) return;
             Structure body0 = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));
@@ -568,7 +603,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure tr = ss.Structures.FirstOrDefault(s => N_Tr.Any(x => s.Id.Contains(x)));
             VerifStLow(tr, false, N_Tr[0]);
             Structure cor = ss.Structures.FirstOrDefault(s => N_Cor.Any(x => s.Id.Contains(x)));
-            VerifStLow(tr, false, N_Cor[0]);
+            VerifStLow(cor, false, N_Cor[0]);
 
             DialogResult result2 = System.Windows.Forms.MessageBox.Show("Fraction: 16Fx or 20Fx?" + "\n" + "If Yes, the volume is 16Fx." + "\n" + "If No, the volume is 20Fx." + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result2 == DialogResult.Cancel) return;
@@ -582,37 +617,76 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ctv_ID10.Id = NSIB;
             }*/
             //New Structures Breast 16fx
-            const string PTV_ID12 = "PTV_GL_Axila_1";//"PTV_LN_Ax_L1";     //"PTV_Ax I"
-            const string PTV_ID13 = "PTV_GL_Axila_2";//"PTV_LN_Ax_L2";     //"PTV_Ax II"
-            const string PTV_ID14 = "PTV_GL_Axila_3";//"PTV_LN_Ax_L3";     //"PTV_Ax III"
-            const string PTV_ID15 = "PTV_GL_Rotter";//"PTV_LN_Rotter";    //"PTV_Rotter"
-            const string PTV_ID16 = "PTV_GL_Supra";//"PTV_LN_Supra";//"PTV_LN_Sclav";     //"PTV_Supra"
-            const string PTV_ID17 = "PTV_GL_CMI";//"PTV_LN_CMI"; //"PTV_LN_IMN";       //"PTV_CMI"
-            const string PTV_ID18 = "PTV_Mama_Dist";//"PTV_Breast_Dist";  //"PTV_MDISTAL"
-            const string PTV_ID19 = "PTV_Mama_Prox";//"PTV_Breast_Prox";  //"PTV_MPROX"
-            const string PTV_ID_20 = "PTV_GTV_SIB";//"PTV_GTV_SIB";     //"PTV_SIB"
-            const string PTV_ID20 = "zPTV_High_5200!";  //"PTV_52Gy"
-            const string PTV_ID21 = "zPTV_Low_4000!";   //PTV_40Gy
-            const string PTV_ID22 = "zPTV_Mid_4100!";   //PTV_41Gy
-            const string PTV_ID23 = "zPTV_Mid_4320!";   //PTV_43.2Gy
-            const string PTV_ID24 = "zPTV_Total!";      //PTV_Total
-            const string Ring = "zAnillo";//"zRing";                //Anillo
-            const string Surface = "zSuperficie";//"zSurface";          //Superficie
+            string PTV_ID12 = "PTV_GL_Axila_1";//"PTV_LN_Ax_L1";     //"PTV_Ax I"
+            string PTV_ID13 = "PTV_GL_Axila_2";//"PTV_LN_Ax_L2";     //"PTV_Ax II"
+            string PTV_ID14 = "PTV_GL_Axila_3";//"PTV_LN_Ax_L3";     //"PTV_Ax III"
+            string PTV_ID15 = "PTV_GL_Rotter";//"PTV_LN_Rotter";    //"PTV_Rotter"
+            string PTV_ID16 = "PTV_GL_Supra";//"PTV_LN_Supra";//"PTV_LN_Sclav";     //"PTV_Supra"
+            string PTV_ID17 = "PTV_GL_CMI";//"PTV_LN_CMI"; //"PTV_LN_IMN";       //"PTV_CMI"
+            string PTV_ID18 = "PTV_Mama_Dist";//"PTV_Breast_Dist";  //"PTV_MDISTAL"
+            string PTV_ID19 = "PTV_Mama_Prox";//"PTV_Breast_Prox";  //"PTV_MPROX"
+            string PTV_ID_20 = "PTV_GTV_SIB";//"PTV_GTV_SIB";     //"PTV_SIB"
+            string PTV_ID20 = "zPTV_High_5200!";  //"PTV_52Gy"
+            string PTV_ID21 = "zPTV_Low_4000!";   //PTV_40Gy
+            string PTV_ID22 = "zPTV_Mid_4100!";   //PTV_41Gy
+            string PTV_ID23 = "zPTV_Mid_4320!";   //PTV_43.2Gy
+            string PTV_ID24 = "zPTV_Total!";      //PTV_Total
+            string Ring = "zAnillo";//"zRing";                //Anillo
+            string Surface = "zSuperficie";//"zSurface";          //Superficie
 
             //20fx Breast
-            const string PTV_ID20_ = "zPTV_High_5640!"; //PTV_56.4Gy//tengo un problema con los IDS por eso le quito el signo de admiracion
-            const string PTV_ID21_ = "zPTV_Low_4300!";  //PTV_43Gy
-            const string PTV_ID22_ = "zPTV_Mid_4600!";  //PTV_46Gy
-            const string PTV_ID23_ = "zPTV_Mid_4540!";  //PTV_45.4Gy
+            string PTV_ID20_ = "zPTV_High_5640!"; //PTV_56.4Gy//tengo un problema con los IDS por eso le quito el signo de admiracion
+            string PTV_ID21_ = "zPTV_Low_4300!";  //PTV_43Gy
+            string PTV_ID22_ = "zPTV_Mid_4600!";  //PTV_46Gy
+            string PTV_ID23_ = "zPTV_Mid_4540!";  //PTV_45.4Gy
 
             //Chest wall 16fx
-            const string PTV_ID25 = "zPTV_High_4400!";  //PTV_44Gy
+            string PTV_ID25 = "zPTV_High_4400!";  //PTV_44Gy
 
             //Chest wall 20fx
-            const string PTV_ID25_ = "zPTV_High_4700"; //PTV_47Gy//problema con el id
+            string PTV_ID25_ = "zPTV_High_4700!"; //PTV_47Gy//problema con el id
             //const string PTV_ID26_ = "zPTV_Mid_4600!";  //PTV_46Gy
-            const string PTV_ID27 = "PTV_Pared";//"PTV_Chestwall";  //PTV pared
+            string PTV_ID27 = "PTV_Pared";//"PTV_Chestwall";  //PTV pared
 
+            if (IsResim(ss))
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16 += ".";
+                    PTV_ID17 += ".";
+                    PTV_ID18 += ".";
+                    PTV_ID19 += ".";
+                    PTV_ID20 += ".";
+                    PTV_ID_20 += ".";
+                    PTV_ID21 += ".";
+                    PTV_ID22 += ".";
+                    PTV_ID23 += ".";
+                    PTV_ID24 += ".";
+                    PTV_ID25 += ".";
+                    PTV_ID27 += ".";
+                    Ring += ".";
+                    Surface += ".";
+                    PTV_ID20_ += ".";
+                    PTV_ID21_ += ".";
+                    PTV_ID22_ += ".";
+                    PTV_ID23_ += ".";
+                    PTV_ID25_ += ".";
+                }
+            }
+
+            if (result2 == DialogResult.No)
+            {
+                PTV_ID20 = PTV_ID20_;  //"PTV_52Gy"
+                PTV_ID21 = PTV_ID21_;   //PTV_40Gy
+                PTV_ID22 = PTV_ID22_;   //PTV_41Gy
+                PTV_ID23 = PTV_ID23_;   //PTV_41Gy
+                PTV_ID25 = PTV_ID25_;   //PTV_41Gy
+            }
 
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
             Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
@@ -649,7 +723,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 else if (ctv_ID1.IsHighResolution)
                 {
                     is_high = 1;
-                    ctv_ID1.Id = N_Breast[0];
+                    VerifStLow(ctv_ID1, true, N_Breast[0]);
                 }
             }
             else if (!(ctv_ID11 == null))
@@ -830,7 +904,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ss.RemoveStructure(ring);
                 ss.RemoveStructure(surface);
             }
-
+            /*
             //ver si es de 16 o 20 FX
             if (result2 == DialogResult.No)
             {
@@ -859,8 +933,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                     ptv_ID25.Id = PTV_ID25_;
                 }
                 catch {  }
-                */
-            }
+                
+            }*/
 
 
             //Remove strutures null     
@@ -922,7 +996,15 @@ namespace VMS.TPS//tiene que ser igual que el main
                     System.Windows.MessageBox.Show(string.Format("Dont forget to join body with surface!\n (Unir Contorno externo con la superficie)"), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
-            if (result==DialogResult.Yes && result3 == DialogResult.No) ctv_ID1.Id = "CTV_Mama";
+            try
+            {
+                if (result == DialogResult.Yes && result3 == DialogResult.No) ctv_ID1.Id = "CTV_Mama";
+            }
+            catch (Exception e)
+            {
+                ctv_ID1.Id = "CTV_Mama.";
+            }
+            
 
         }
 
@@ -1026,22 +1108,44 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure sc = ss.Structures.FirstOrDefault(s => N_SC.Any(x => s.Id.Contains(x)));
             VerifStLow(sc, false, N_SC[0]);
 
-            const string PTV_ID12 = "PTV_SIB";
-            const string PTV_ID13 = "PTV_LN_Lateral";
-            const string PTV_ID14 = "PTV_Mesorectum";
-            const string PTV_ID15 = "PTV_InfRectum";
-            const string PTV_ID16 = "PTV_LN_Presacral";
-            const string PTV_ID17 = "PTV_LN_Inguinal";
-            const string PTV_ID21 = "zPTV_Low_4600!";
-            const string PTV_ID22 = "zPTV_Mid_4800!";
-            const string PTV_ID22_ = "zPTV_Low_4800!";
-            const string PTV_ID23 = "zPTV_High_5200!";
-            const string PTV_ID24 = "zPTV_High_5400!";
-            const string PTV_ID25 = "zPTV_High_5900!";
+            string PTV_ID12 = "PTV_SIB";
+            string PTV_ID13 = "PTV_LN_Lateral";
+            string PTV_ID14 = "PTV_Mesorectum";
+            string PTV_ID15 = "PTV_InfRectum";
+            string PTV_ID16 = "PTV_LN_Presacral";
+            string PTV_ID17 = "PTV_LN_Inguinal";
+            string PTV_ID21 = "zPTV_Low_4600!";
+            string PTV_ID22 = "zPTV_Mid_4800!";
+            string PTV_ID22_ = "zPTV_Low_4800!";
+            string PTV_ID23 = "zPTV_High_5200!";
+            string PTV_ID24 = "zPTV_High_5400!";
+            string PTV_ID25 = "zPTV_High_5900!";
             //const string PTV_ID26 = "zPTV_Low_4900!";
-            const string PTV_ID27 = "zPTV_Total!";
-            const string PRV_Colon = "Colon_PRV05";//
-            const string PRV_Bowel = "Bowel_PRV05";//
+            string PTV_ID27 = "zPTV_Total!";
+            string PRV_Colon = "Colon_PRV05";//
+            string PRV_Bowel = "Bowel_PRV05";//
+
+            if (IsResim(ss))//resimulacion??
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16.Remove(PTV_ID16.Length - 1);
+                    PTV_ID17 += ".";
+                    PTV_ID21 += ".";
+                    PTV_ID22 += ".";
+                    PTV_ID23 += ".";
+                    PTV_ID24 += ".";
+                    PTV_ID25 += ".";
+                    PTV_ID27 += ".";
+                    PRV_Colon += ".";
+                    PRV_Bowel += ".";
+                }
+            }
 
             DialogResult result = System.Windows.Forms.MessageBox.Show("OPtions:" + "\n" + "1.-If Yes, SIB of 52Gy" + "\n" +
     "2.-If No, SIB of 54Gy" + "\n" + "3.-If Cancel, SIB of 59Gy", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
@@ -1217,25 +1321,51 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure body0 = ss.AddStructure("CONTROL", "Body0");
             body0.SegmentVolume = body;
 
-            const string Dientes = "zTeeth";
-            const string Inf = "zInferior_Region";
-            const string MR = "zMouth_Region";
-            const string Af = "zArtifact";
-            const string Lips = "zLips";
-            const string PTV_ID12 = "PTV_GTV_HeadNeck";
-            const string PTV_ID13 = "PTV_High_Risk";
-            const string PTV_ID14 = "PTV_LN_Neck_L";
-            const string PTV_ID15 = "PTV_LN_Neck_R";
-            const string PTV_ID16 = "PTV_GTV_ADP_R";
-            const string PTV_ID17 = "PTV_GTV_ADP_L";
-            const string PTV_ID18 = "PTV_LN_NI_A";
-            const string PTV_ID21 = "zPTV_Low_5000!";
-            const string PTV_ID22 = "zPTV_Mid_5800!";
-            const string PTV_ID23 = "zPTV_High_6700!";
-            const string PTV_ID25 = "zPTV_Total!";
-            const string PRV_Brainstem = "Brainstem_PRV05";
-            const string PRV_SC = "SpinalCord_PRV05";//
+            string Dientes = "zTeeth";
+            string Inf = "zInferior_Region";
+            string MR = "zMouth_Region";
+            string Af = "zArtifact";
+            string Lips = "zLips";
+            string PTV_ID12 = "PTV_GTV_HeadNeck";
+            string PTV_ID13 = "PTV_High_Risk";
+            string PTV_ID14 = "PTV_LN_Neck_L";
+            string PTV_ID15 = "PTV_LN_Neck_R";
+            string PTV_ID16 = "PTV_GTV_ADP_R";
+            string PTV_ID17 = "PTV_GTV_ADP_L";
+            string PTV_ID18 = "PTV_LN_NI_A";
+            string PTV_ID21 = "zPTV_Low_5000!";
+            string PTV_ID22 = "zPTV_Mid_5800!";
+            string PTV_ID23 = "zPTV_High_6700!";
+            string PTV_ID25 = "zPTV_Total!";
+            string PRV_Brainstem = "Brainstem_PRV05";
+            string PRV_SC = "SpinalCord_PRV05";//
 
+            if (IsResim(ss))
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12.Remove(PTV_ID12.Length - 1);
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16 += ".";
+                    PTV_ID17 += ".";
+                    PTV_ID18 += ".";
+                    PTV_ID21 += ".";
+                    PTV_ID22 += ".";
+                    PTV_ID23 += ".";
+                    PTV_ID25 += ".";
+                    Inf.Remove(Inf.Length - 1);
+                    PRV_Brainstem += ".";
+                    PRV_SC += ".";
+                    Dientes += ".";
+                    MR += ".";
+                    Af += ".";
+                    Lips += ".";
+
+                }
+            }
 
             //============================
             // GENERATE  expansion of PTV
@@ -1510,32 +1640,61 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (body == null) return;
 
             //New Structures 
-            const string PTV_ID12 = "PTV_GTV_Cervix";
-            const string PTV_ID13 = "PTV_Paramet_L";
-            const string PTV_ID14 = "PTV_Paramet_R";
-            const string PTV_ID15 = "PTV_Rest_Uterus";
-            const string PTV_ID16 = "PTV_Rest_Vagina";
-            const string PTV_ID17 = "PTV_LN_Iliac";
-            const string PTV_ID18 = "PTV_LN_Presacral";
-            const string PTV_ID19 = "PTV_LN_Paraaort";
-            const string PTV_ID20 = "PTV_ADP_I";
-            const string PTV_ID21 = "zPTV_Low_4300!";
-            const string PTV_ID22 = "zPTV_Mid_4800!";
-            const string PTV_ID23 = "zPTV_High_5840!";
-            const string PTV_ID24 = "zPTV_5840-PRVs!";  //PTV58.4-PRVs
-            const string PTV_ID25 = "zPTV_Total!";
-            const string PTV_ID26 = "zPTV_RectumPRV05";//PTV58.4 interseccion PRV recto
-            const string PTV_ID27 = "zPTV_BladderPRV!"; //PTV58.4 interseccion PRV vejiga
+            string PTV_ID12 = "PTV_GTV_Cervix";
+            string PTV_ID13 = "PTV_Paramet_L";
+            string PTV_ID14 = "PTV_Paramet_R";
+            string PTV_ID15 = "PTV_Rest_Uterus";
+            string PTV_ID16 = "PTV_Rest_Vagina";
+            string PTV_ID17 = "PTV_LN_Iliac";
+            string PTV_ID18 = "PTV_LN_Presacral";
+            string PTV_ID19 = "PTV_LN_Paraaort";
+            string PTV_ID20 = "PTV_ADP_I";
+            string PTV_ID21 = "zPTV_Low_4300!";
+            string PTV_ID22 = "zPTV_Mid_4800!";
+            string PTV_ID23 = "zPTV_High_5840!";
+            string PTV_ID24 = "zPTV_5840-PRVs!";  //PTV58.4-PRVs
+            string PTV_ID25 = "zPTV_Total!";
+            string PTV_ID26 = "zPTV_RectumPRV05";//PTV58.4 interseccion PRV recto
+            string PTV_ID27 = "zPTV_BladderPRV!"; //PTV58.4 interseccion PRV vejiga
                                                         //PTVs de la variante
-            const string PTV_ID28 = "PTV_LN_Pelvic"; //
-            const string PTV_ID29 = "PTV_Parametrium";
-            const string PTV_ID30 = "PTV_ADP_II";
+            string PTV_ID28 = "PTV_LN_Pelvic"; //
+            string PTV_ID29 = "PTV_Parametrium";
+            string PTV_ID30 = "PTV_ADP_II";
 
-            const string PRV_Rectum = "Rectum_PRV05";
-            const string PRV_Colon = "Colon_PRV05";//
-            const string PRV_Bowel = "Bowel_PRV05";//
-            const string PRV_Bladder = "Bladder_PRV05";//
+            string PRV_Rectum = "Rectum_PRV05";
+            string PRV_Colon = "Colon_PRV05";//
+            string PRV_Bowel = "Bowel_PRV05";//
+            string PRV_Bladder = "Bladder_PRV05";//
 
+            if (IsResim(ss))
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16 += ".";
+                    PTV_ID17 += ".";
+                    PTV_ID18.Remove(PTV_ID18.Length - 1);
+                    PTV_ID19 += ".";
+                    PTV_ID20 += ".";
+                    PTV_ID21 += ".";
+                    PTV_ID22 += ".";
+                    PTV_ID23 += ".";
+                    PTV_ID25 += ".";
+                    PTV_ID26.Remove(PTV_ID26.Length - 1);
+                    PTV_ID27.Remove(PTV_ID27.Length - 1);
+                    PTV_ID28 += ".";
+                    PTV_ID29 += ".";
+                    PTV_ID30 += ".";
+                    PRV_Rectum += ".";
+                    PRV_Colon += ".";
+                    PRV_Bowel += ".";
+                    PRV_Bladder += ".";
+                }
+            }
             // create the empty "ptv+5mm" structure ans auxilary structures
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
             Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
@@ -1778,21 +1937,41 @@ namespace VMS.TPS//tiene que ser igual que el main
             // GENERATE 5mm expansion of PTV
             //============================
             //New Structures 
-            const string PTV_ID12 = "PTV_Prostate";
-            const string PTV_ID13 = "PTV_LN_Obturator";
-            const string PTV_ID14 = "PTV_SeminalVes";//
-            const string PTV_ID15 = "PTV_SIB";//
-            const string PTV_ID16 = "PTV_LN_Pelvic";//
+            string PTV_ID12 = "PTV_Prostate";
+            string PTV_ID13 = "PTV_LN_Obturator";
+            string PTV_ID14 = "PTV_SeminalVes";//
+            string PTV_ID15 = "PTV_SIB";//
+            string PTV_ID16 = "PTV_LN_Pelvic";//
                                                      //const string PTV_ID15 = "PTV_Trigone!";//
                                                      //const string PTV_ID16 = "PTV_RectumPRV05!";
                                                      //const string PTV_ID18 = "PTVLn-PTVpros!";
-            const string PTV_ID19 = "PTV_Total!";
-            const string PTV_ID20 = "PTV_High_4320";
-            const string PTV_ID21 = "PTV_Mid_3900";
-            const string Rect_ant = "Rectum_A";
-            const string Rect_post = "Rectum_P";
-            const string PRV_Sigma = "Colon_PRV05!";//
-            const string PRV_Intestino = "Bowel_PRV05!";//
+            string PTV_ID19 = "PTV_Total!";
+            string PTV_ID20 = "PTV_High_4320";
+            string PTV_ID21 = "PTV_Mid_3900";
+            string Rect_ant = "Rectum_A";
+            string Rect_post = "Rectum_P";
+            string PRV_Sigma = "Colon_PRV05!";//
+            string PRV_Intestino = "Bowel_PRV05!";//
+
+            if (IsResim(ss))
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13.Remove(PTV_ID13.Length - 1);
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16 += ".";
+                    PTV_ID19 += ".";
+                    PTV_ID20 += ".";
+                    PTV_ID21 += ".";
+                    Rect_ant += ".";
+                    Rect_post += ".";
+                    PRV_Sigma += ".";
+                    PRV_Intestino += ".";
+                }
+            }
 
             // create the empty "ptv+5mm" structure ans auxilary structures
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//prost
@@ -1985,24 +2164,50 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             //comienza las estrucuras
             //New Structures 
-            const string PTV_ID12 = "PTV_Prostate";
-            const string PTV_ID13 = "PTV_LN_Obturator";
-            const string PTV_ID14 = "zPTV_Urethra!";
-            const string PTV_ID15 = "zPTV_Trigone!";
-            const string PTV_ID16 = "zPTV_RectumPRV05";
-            const string PTV_ID17 = "zPTV-PRVs!";
-            const string PTV_ID18 = "PTV_SeminalVes";//
-            const string PTV_ID19 = "zPTV_Total!";
-            const string PTV_ID20 = "zPTV_High_5840!";
-            const string PTV_ID21 = "zPTV_Low_4400!";
-            const string PTV_ID22 = "zPTV_Mid_4920!";
-            const string PTV_ID23 = "PTV_SIB";
-            const string PTV_ID24 = "PTV_LN_Pelvic";
-            const string PRV_Rectum = "Rectum_PRV05";
-            const string Rect_ant = "Rectum_A";
-            const string Rect_post = "Rectum_P";
-            const string PRV_colon = "Colon_PRV05";//
-            const string PRV_bowel = "Bowel_PRV05";//
+            string PTV_ID12 = "PTV_Prostate";
+            string PTV_ID13 = "PTV_LN_Obturator";
+            string PTV_ID14 = "zPTV_Urethra!";
+            string PTV_ID15 = "zPTV_Trigone!";
+            string PTV_ID16 = "zPTV_RectumPRV05";
+            string PTV_ID17 = "zPTV-PRVs!";
+            string PTV_ID18 = "PTV_SeminalVes";//
+            string PTV_ID19 = "zPTV_Total!";
+            string PTV_ID20 = "zPTV_High_5840!";
+            string PTV_ID21 = "zPTV_Low_4400!";
+            string PTV_ID22 = "zPTV_Mid_4920!";
+            string PTV_ID23 = "PTV_SIB";
+            string PTV_ID24 = "PTV_LN_Pelvic";
+            string PRV_Rectum = "Rectum_PRV05";
+            string Rect_ant = "Rectum_A";
+            string Rect_post = "Rectum_P";
+            string PRV_colon = "Colon_PRV05";//
+            string PRV_bowel = "Bowel_PRV05";//
+
+            if (IsResim(ss))//RE SIMULAICON
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13.Remove(PTV_ID13.Length - 1);
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16.Remove(PTV_ID16.Length - 1);
+                    PTV_ID17 += ".";
+                    PTV_ID18 += ".";
+                    PTV_ID19 += ".";
+                    PTV_ID20 += ".";
+                    PTV_ID21 += ".";
+                    PTV_ID22 += ".";
+                    PTV_ID23 += ".";
+                    PTV_ID24 += ".";
+                    PRV_Rectum += ".";
+                    Rect_ant += ".";
+                    Rect_post += ".";
+                    PRV_colon += ".";
+                    PRV_bowel += ".";
+                }
+            }
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
@@ -2193,21 +2398,41 @@ namespace VMS.TPS//tiene que ser igual que el main
             
             //comienza las estrucuras
             //New Structures 
-            const string PTV_ID12 = "PTV_Bladder";
-            const string PTV_ID13 = "PTV_LN_Pelvic";
-            const string PTV_ID14 = "PTV_SIB";
-            const string PTV_ID15 = "zPTV_High_5600!";
-            const string PTV_ID16 = "zPTV_Low_4500!";
-            const string PTV_ID17 = "zPTV_High_6600!";
-            const string PTV_ID18 = "zPTV56-BowelPRV!";
-            const string PTV_ID19 = "zPTV66-BowelPRV!";
-            const string PTV_ID20 = "zPTV_BowelPRV05!";
-            const string PTV_ID21 = "zPTV_Total!";
+            string PTV_ID12 = "PTV_Bladder";
+            string PTV_ID13 = "PTV_LN_Pelvic";
+            string PTV_ID14 = "PTV_SIB";
+            string PTV_ID15 = "zPTV_High_5600!";
+            string PTV_ID16 = "zPTV_Low_4500!";
+            string PTV_ID17 = "zPTV_High_6600!";
+            string PTV_ID18 = "zPTV56-BowelPRV!";
+            string PTV_ID19 = "zPTV66-BowelPRV!";
+            string PTV_ID20 = "zPTV_BowelPRV05!";
+            string PTV_ID21 = "zPTV_Total!";
             
-            const string PRV_Rectum = "Rectum_PRV05";
-            const string PRV_colon = "Colon_PRV05";//
-            const string PRV_bowel = "Bowel_PRV05";//
+            string PRV_Rectum = "Rectum_PRV05";
+            string PRV_colon = "Colon_PRV05";//
+            string PRV_bowel = "Bowel_PRV05";//
 
+            if (IsResim(ss))//RE SIMULAICON
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16 += ".";
+                    PTV_ID17 += ".";
+                    PTV_ID18.Remove(PTV_ID18.Length - 1);
+                    PTV_ID19.Remove(PTV_ID19.Length - 1);
+                    PTV_ID20.Remove(PTV_ID20.Length - 1);
+                    PTV_ID21 += ".";
+                    PRV_Rectum += ".";
+                    PRV_colon += ".";
+                    PRV_bowel += ".";                    
+                }
+            }
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
@@ -2344,19 +2569,37 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             //comienza las estrucuras
             //New Structures 
-            const string PTV_ID12 = "PTV_SurgicalBed";
-            const string PTV_ID13 = "PTV_LN_Pelvic";
-            const string PTV_ID14 = "PTV_RestVagina";
-            const string PTV_ID15 = "zPTV_High_4800!";
-            const string PTV_ID16 = "zPTV_Low_4500!";
-            const string PTV_ID18 = "zPTV48-BowelPRV!";//pude estar vacio
-            const string PTV_ID20 = "zPTV_BowelPRV05!";
-            const string PTV_ID21 = "zPTV_Total!";
+            string PTV_ID12 = "PTV_SurgicalBed";
+            string PTV_ID13 = "PTV_LN_Pelvic";
+            string PTV_ID14 = "PTV_RestVagina";
+            string PTV_ID15 = "zPTV_High_4800!";
+            string PTV_ID16 = "zPTV_Low_4500!";
+            string PTV_ID18 = "zPTV48-BowelPRV!";//pude estar vacio
+            string PTV_ID20 = "zPTV_BowelPRV05!";
+            string PTV_ID21 = "zPTV_Total!";
 
-            const string PRV_Rectum = "Rectum_PRV05";
-            const string PRV_colon = "Colon_PRV05";//
-            const string PRV_bowel = "Bowel_PRV05";//
+            string PRV_Rectum = "Rectum_PRV05";
+            string PRV_colon = "Colon_PRV05";//
+            string PRV_bowel = "Bowel_PRV05";//
 
+            if (IsResim(ss))//RE SIMULAICON
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    PTV_ID15 += ".";
+                    PTV_ID16 += ".";
+                    PTV_ID18.Remove(PTV_ID18.Length - 1);
+                    PTV_ID20.Remove(PTV_ID20.Length - 1);
+                    PTV_ID21 += ".";
+                    PRV_Rectum += ".";
+                    PRV_colon += ".";
+                    PRV_bowel += ".";
+                }
+            }
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
@@ -2490,16 +2733,34 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             //comienza las estrucuras
             //New Structures 
-            const string PTV_ID12 = "PTV_Liver";
-            const string PTV_ID13 = "zPTV_High_4800!";
-            const string PTV_ID14 = "zPTV-PRVs!";
-            const string PTV_ID15 = "zPTV_BowelPRV05!";
-            const string PTV_ID16 = "zPTV_DuodePRV05!";
-            const string PRV_esophagus = "Esophagus_PRV05";
-            const string PRV_duode = "Duodenum_PRV05";//
-            const string PRV_bowel = "Bowel_PRV05";//
-            const string PRV_stomach = "Stomach_PRV05";//
+            string PTV_ID12 = "PTV_Liver";
+            string PTV_ID13 = "zPTV_High_4800!";
+            string PTV_ID14 = "zPTV-PRVs!";
+            string PTV_ID15 = "zPTV_BowelPRV05!";
+            string PTV_ID16 = "zPTV_DuodePRV05!";
+            string PRV_esophagus = "Esophagus_PRV05";
+            string PRV_duode = "Duodenum_PRV05";//
+            string PRV_bowel = "Bowel_PRV05";//
+            string PRV_stomach = "Stomach_PRV05";//
 
+            if (IsResim(ss))//RE SIMULAICON
+            {
+                DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
+                if (result0 == DialogResult.Yes)
+                {
+                    PTV_ID12 += ".";
+                    PTV_ID13 += ".";
+                    PTV_ID14 += ".";
+                    
+                    PTV_ID16 += ".";
+                    PTV_ID15.Remove(PTV_ID15.Length - 1);
+                    PTV_ID16.Remove(PTV_ID16.Length - 1);
+                    PRV_esophagus += ".";
+                    PRV_duode += ".";
+                    PRV_bowel += ".";
+                    PRV_stomach += ".";
+                }
+            }
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
