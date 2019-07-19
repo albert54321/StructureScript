@@ -486,6 +486,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Tr = { "Traquea", "Trachea",  "traquea" };//aumentar corazon
             string[] N_Cor = { "Corazon", "Heart", "corazon" };//aumentar corazon
             string[] N_Intes = { "Intestino", "Bowel", "intestino" };//aumentar corazon
+            string[] N_Cardiaca = { "Reg_Cardiaca" };//aumentar corazon
+            string[] N_CoroI = { "Reg_CoronariaI" };//aumentar corazon
+            string[] N_VentI = { "Reg_Ventriculo_I" };//aumentar corazon
             /*//names for original
             string NPROX    = "CTV_Mama_Prox-05";
             string NDIST    = "CTV_Mama_Dist-05";
@@ -604,7 +607,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifStLow(tr, false, N_Tr[0]);
             Structure cor = ss.Structures.FirstOrDefault(s => N_Cor.Any(x => s.Id.Contains(x)));
             VerifStLow(cor, false, N_Cor[0]);
-
+            Structure vi = ss.Structures.FirstOrDefault(s => N_VentI.Any(x => s.Id.Contains(x)));
+            VerifStLow(vi, false, N_VentI[0]);
+            Structure artc = ss.Structures.FirstOrDefault(s => N_CoroI.Any(x => s.Id.Contains(x)));
+            VerifStLow(artc, false, N_CoroI[0]);
+            Structure reg_card = ss.Structures.FirstOrDefault(s => N_Cardiaca.Any(x => s.Id.Contains(x)));
+            VerifStLow(reg_card, false, N_Cardiaca[0]);
             DialogResult result2 = System.Windows.Forms.MessageBox.Show("Fraction: 16Fx or 20Fx?" + "\n" + "If Yes, the volume is 16Fx." + "\n" + "If No, the volume is 20Fx." + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result2 == DialogResult.Cancel) return;
 
@@ -628,18 +636,17 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID_20 = "PTV_GTV_SIB";//"PTV_GTV_SIB";     //"PTV_SIB"
             string PTV_ID20 = "zPTV_High_5200!";  //"PTV_52Gy"
             string PTV_ID21 = "zPTV_Low_4000!";   //PTV_40Gy
-            string PTV_ID22 = "zPTV_Mid_4100!";   //PTV_41Gy
-            string PTV_ID23 = "zPTV_Mid_4320!";   //PTV_43.2Gy
+            string PTV_ID22 = "zPTV_Gang_4300!";   //PTV_41Gy
+            string PTV_ID23 = "zPTV_Prox_4300!";   //PTV_43.2Gy
             string PTV_ID24 = "zPTV_Total!";      //PTV_Total
             string Ring = "zAnillo";//"zRing";                //Anillo
             string Surface = "zSuperficie";//"zSurface";          //Superficie
 
             //20fx Breast
-            string PTV_ID20_ = "zPTV_High_5640!"; //PTV_56.4Gy//tengo un problema con los IDS por eso le quito el signo de admiracion
+            string PTV_ID20_ = "zPTV_High_5600!"; //PTV_56.4Gy//tengo un problema con los IDS por eso le quito el signo de admiracion
             string PTV_ID21_ = "zPTV_Low_4300!";  //PTV_43Gy
-            string PTV_ID22_ = "zPTV_Mid_4600!";  //PTV_46Gy
-            string PTV_ID23_ = "zPTV_Mid_4540!";  //PTV_45.4Gy
-
+            string PTV_ID22_ = "zPTV_Gang_4600!";  //PTV_46Gy
+            string PTV_ID23_ = "zPTV_Prox_4600!";  //PTV_45.4Gy
             //Chest wall 16fx
             string PTV_ID25 = "zPTV_High_4400!";  //PTV_44Gy
 
@@ -1526,7 +1533,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID8 == null) ss.RemoveStructure(ptv_ID18);
         }
 
-        public void St_Cervix_25fx(ScriptContext context)
+        public void St_Cervix_25fx(ScriptContext context)//es 20fx
         {
             const string SCRIPT_NAME0 = "Cervix";
             //gtv-ctvs
@@ -1635,8 +1642,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                 if (bowel == null) return;
             }
 
-            Structure body = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            VerifSt(body, true, N_Bowel[0]);
+            Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            VerifSt(body, true, N_Body[0]);
             if (body == null) return;
 
             //New Structures 
@@ -1651,11 +1658,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID20 = "PTV_ADP_I";
             string PTV_ID21 = "zPTV_Low_4300!";
             string PTV_ID22 = "zPTV_Mid_4800!";
+            string PTV_ID22_ = "zPTV48-BowelPRV";
             string PTV_ID23 = "zPTV_High_5840!";
-            string PTV_ID24 = "zPTV_5840-PRVs!";  //PTV58.4-PRVs
+            string PTV_ID24 = "zPTV5840-PRVs!";  //PTV58.4-PRVs
             string PTV_ID25 = "zPTV_Total!";
-            string PTV_ID26 = "zPTV_RectumPRV05";//PTV58.4 interseccion PRV recto
-            string PTV_ID27 = "zPTV_BladderPRV!"; //PTV58.4 interseccion PRV vejiga
+            string PTV_ID26 = "zPTV58_Rectum!";//PTV58.4 interseccion PRV recto
+            string PTV_ID27 = "zPTV58_Bladder!"; //PTV58.4 interseccion PRV vejiga
                                                         //PTVs de la variante
             string PTV_ID28 = "PTV_LN_Pelvic"; //
             string PTV_ID29 = "PTV_Parametrium";
@@ -1724,14 +1732,14 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             Structure auxi = ss.AddStructure("CONTROL", "Auxi");//auxiliar para mochar
 
-            DialogResult result = System.Windows.Forms.MessageBox.Show("OPtions:" + "\n" + "1.-If Yes, Parametrium left(izq) is inside 58.4Gy" + "\n" +
+            DialogResult result = System.Windows.Forms.MessageBox.Show("Options:" + "\n" + "1.-If Yes, Parametrium left(izq) is inside 58.4Gy" + "\n" +
     "2.-If No, Parametrium right(der) is inside 58.4Gy" + "\n" + "3.-If Cancel, both(ambos) of them are inside 58.4Gy", SCRIPT_NAME, MessageBoxButtons.YesNoCancel);
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
                 St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
                 St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(ptv_ID25); St.Add(ptv_ID26); St.Add(ptv_ID27); St.Add(ptv_ID28); St.Add(ptv_ID29); St.Add(ptv_ID30);///////
-                St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_intestino); St.Add(prv_bladder); St.Add(auxi);
+                St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_intestino); St.Add(prv_bladder); St.Add(auxi); //St.Add(rectum); St.Add(bladder); St.Add(bowel);
                 foreach (Structure x in St) x.ConvertToHighResolution();
             }
             ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0); //PTV Tumor cuello
@@ -1782,13 +1790,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (result == DialogResult.Yes)
             {
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 15, 0, 0, 30, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 13, 0, 0, 27, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
                 ptv_ID22.SegmentVolume = ptv_ID14.Or(ptv_ID15); //ptv param d utero 48
             }
             else if (result == DialogResult.No)
             {
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID14);//PTV tumor+param D 58.4
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 30, 0, 0, 15, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 27, 0, 0, 13, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
                 ptv_ID22.SegmentVolume = ptv_ID13.Or(ptv_ID15); //ptv param i utero 48
             }
             else
@@ -1796,7 +1804,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
                 ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID14);//PTV tumor+param D 58.4
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID29);//PTV tumor+param Ambos si hay 58.4
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 26, 0, 0, 26, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 22, 0, 0, 22, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
                 ptv_ID22.SegmentVolume = ptv_ID15.Or(ptv_ID13); //ptv param i utero 48
                 ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14); //ptv param i+d utero 48
                 ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID29); //ptv param i+d+ambos utero 48
@@ -1805,21 +1813,19 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             //Struture Auxiliar for creation of lateral crop in PRV Bladder. esto es solo para parametrio izq
 
-            auxi.SegmentVolume = auxi.And(prv_bladder);// intersection with bladder            
+            auxi.SegmentVolume = auxi.And(bladder);// intersection with bladder            
             auxi.SegmentVolume = auxi.AsymmetricMargin(new AxisAlignedMargins(0, 3, 50, 3, 3, 3, 3)); ;//mochado+3mm+5cm hacia arriba para cortar
-            ptv_ID27.SegmentVolume = auxi.And(ptv_ID23);//PTV58.4*PRV Bladder mochado para que corte lo necesario
-            ptv_ID27.SegmentVolume = ptv_ID27.And(prv_bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
+            ptv_ID27.SegmentVolume = auxi.And(ptv_ID23);//PTV58.4*Bladder mochado para que corte lo necesario modificacdo por carola
+            ptv_ID27.SegmentVolume = ptv_ID27.And(bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
             ////////////////////////////////////////////PTV58.4-Prvs
             ptv_ID24.SegmentVolume = ptv_ID23.Sub(auxi);//PTV58.4-PRVs! - PRV Vejiga+3mm
-            auxi.SegmentVolume = prv_rectum.Margin(3.0);// ahora el auxi es la extension del prv recto
-            ptv_ID24.SegmentVolume = ptv_ID24.Sub(auxi); //PTV58.4-PRVs! - PRV Rectum+3mm
-            auxi.SegmentVolume = prv_intestino.Margin(3.0);// ahora el auxi es la extension del prv intestino
-            ptv_ID24.SegmentVolume = ptv_ID24.Sub(auxi); //PTV58.4-PRVs! - PRV Rectum+3mm
-            auxi.SegmentVolume = prv_colon.Margin(3.0);// ahora el auxi es la extension del prv colon
-            ptv_ID24.SegmentVolume = ptv_ID24.Sub(auxi); //PTV58.4-PRVs! - PRV Rectum+3mm
+            //auxi.SegmentVolume = prv_rectum;// ahora el auxi es la extension del prv recto
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_rectum); //PTV58.4-PRVs! - PRV Rectum+3mm
+            //auxi.SegmentVolume = prv_intestino.Margin(1.0);// ahora el auxi es la extension del prv intestino
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_intestino.Margin(1.0)); //PTV58.4-PRVs! - PRV Rectum+3mm
+            //auxi.SegmentVolume = prv_colon;// ahora el auxi es la extension del prv colon
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_colon); //PTV58.4-PRVs! - PRV Rectum+3mm
                                                          //////////////////////////////////////////////////////
-
-            
 
             ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID23); //48-58.4
 
@@ -1829,8 +1835,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             //PTV total
             ptv_ID25.SegmentVolume = ptv_ID23.Or(ptv_ID22);//58.4+48
             ptv_ID25.SegmentVolume = ptv_ID25.Or(ptv_ID21);//58.4+43
-            //PTV58.4*PRV REC
-            ptv_ID26.SegmentVolume = ptv_ID23.And(prv_rectum);
+            //PTV58.4*RECto dado por carola
+            ptv_ID26.SegmentVolume = ptv_ID23.And(rectum);
 
             ss.RemoveStructure(auxi);
             if (ctv_ID3 == null) ss.RemoveStructure(ptv_ID13);

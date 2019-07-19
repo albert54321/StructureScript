@@ -24,8 +24,8 @@ using System.Windows.Forms;
 
 // TODO: uncomment the line below if the script requires write access.
 [assembly: ESAPIScript(IsWriteable = true)]
-[assembly: AssemblyVersion("1.0.0.142")]
-[assembly: AssemblyFileVersion("1.0.0.142")]
+[assembly: AssemblyVersion("1.0.0.169")]
+[assembly: AssemblyFileVersion("1.0.0.169")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 
@@ -54,7 +54,7 @@ namespace VMS.TPS
             window.Width = MainControl.Width;
             window.Height = MainControl.Height;
             window.Title = "Structure Script";
-            MainControl.Patients.Content = context.Patient.LastName + "," + context.Patient.Name;
+            MainControl.Patients.Content = context.Patient.Name;
             MainControl.ID.Content = context.Patient.Id;
             MainControl.StructSet.Content = context.StructureSet.Id;
             MainControl.ss = ss;//transfiere el paciente actual
