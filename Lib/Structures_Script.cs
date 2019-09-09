@@ -36,6 +36,98 @@ namespace VMS.TPS//tiene que ser igual que el main
         public bool approved { get; set; }// si esta aprobado
         public string SCRIPT_NAME { get; set; }//el nombre que muestra en la applicacion
         public int number { get; set; }
+        //La lista de script es aqui
+        public static List<Structures_Creation> Script()//ScriptContext sc) //hay que aprobar el script aqui sino no va correr
+        {
+            List<Structures_Creation> list = new List<Structures_Creation>();
+            list.Add(new Structures_Creation//esto es una lista de clases dentro
+            {
+                ID = "Script_Breast_ChestWall(Mama/Pared/ParedExpansor)",//nombre que aparece en la lista de la interfaz grafica
+                approved = true,//si el script esta aprobado o no
+                SCRIPT_NAME = "Breast_ChestWall_Structures",//nombre de las advertencias 
+                number = 1//nombre del script se enlaza con Start.
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_SBRT_Prostate(SBRT_prostata)",
+                approved = true,
+                SCRIPT_NAME = "Prostate_Structures",
+                number = 0
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Rectum20Fx(Recto)",
+                approved = true,
+                SCRIPT_NAME = "Rectum_Structures",
+                number = 2
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Head_Neck25Fx(CYC)",
+                approved = true,
+                SCRIPT_NAME = "Head_Neck_Structures",
+                number = 3
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Cervix20Fx(CuelloUtero)",
+                approved = true,
+                SCRIPT_NAME = "Cervix_Structures",
+                number = 4
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Prostate_Combo_HDR_Fx15(Braqui)",
+                approved = true,
+                SCRIPT_NAME = "Prostate_ComboHDR_Structures",
+                number = 5
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_ProstateBed_Fx20(Lecho)",
+                approved = true,
+                SCRIPT_NAME = "ProstateBed_Structures",
+                number = 6
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Bladder_Fx20(Vejiga)",//saint fausto
+                approved = true,
+                SCRIPT_NAME = "Bladder_Structures",
+                number = 7
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Endometrium_Fx20(Endometrio)",//saint fausto
+                approved = true,
+                SCRIPT_NAME = "Bladder_Structures",
+                number = 8
+            });
+            list.Add(new Structures_Creation
+            {
+                ID = "Script_Liver_Fx3(Higado)",//saint fausto
+                approved = true,
+                SCRIPT_NAME = "Bladder_Structures",
+                number = 9
+            });
+            return list;
+        } //ESTAN LIGADOS EL NUMBER AQUI
+        //comienzo del script strutures
+        public void start(int template, ScriptContext context, bool appr)
+        {//ejecuta el scrit seleccionado en User script.c   LIGADO CON VALOR DE TEMPLATE
+            if (template == 0 && appr) St_Prostate(context);
+            else if (template == 1 && appr) St_Breast_ChestWall(context);
+            //else if (template == 2 && appr) St_Breast_ChestWall_RA(context);
+            else if (template == 2 && appr) St_Rectum20fx(context);
+            else if (template == 3 && appr) St_CYC_25fx(context);
+            else if (template == 4 && appr) St_Cervix_25fx(context);
+            else if (template == 5 && appr) St_HDR_15fx(context);//
+            else if (template == 6 && appr) St_Lecho_20fx(context);
+            else if (template == 7 && appr) St_Bladder_20fx(context);//
+            else if (template == 8 && appr) St_Endometrium_20fx(context);//endometrium
+            else if (template == 9 && appr) St_Higado_3fx(context);//endometrium
+            else System.Windows.MessageBox.Show("The Script does not approved for clinical use ");
+        }// Aqui hay que implementar el nuevo script de estructuras y correlacionar los numeros sino no se ejecuta
         public void VerifSt( Structure st1, bool need,string name)//cambia el nombre y convierte en alta resolucion
         {
             if (st1 == null || st1.IsEmpty)
@@ -93,97 +185,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             return a;
         }
-        //La lista de script es aqui
-        public static List<Structures_Creation> Script()//ScriptContext sc) //hay que aprobar el script aqui sino no va correr
-        {
-            List<Structures_Creation> list = new List<Structures_Creation>();
-            list.Add(new Structures_Creation//esto es una lista de clases dentro
-            {
-                ID = "Script_Breast_ChestWall(Mama/Pared/ParedExpansor)",//nombre que aparece en la lista de la interfaz grafica
-                approved = true,//si el script esta aprobado o no
-                SCRIPT_NAME = "Breast_ChestWall_Structures",//nombre de las advertencias 
-                number = 1//nombre del script se enlaza con Start.
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_SBRT_Prostate(SBRT_prostata)",
-                approved = true,
-                SCRIPT_NAME = "Prostate_Structures",
-                number = 0
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Rectum20Fx(Recto)",
-                approved = true,
-                SCRIPT_NAME = "Rectum_Structures",
-                number = 2
-        });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Head_Neck25Fx(CYC)",
-                approved = true,
-                SCRIPT_NAME = "Head_Neck_Structures",
-                number = 3
-        });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Cervix20Fx(CuelloUtero)",
-                approved = true,
-                SCRIPT_NAME = "Cervix_Structures",
-                number = 4
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Prostate_Combo_HDR_Fx15(Braqui)",
-                approved = true,
-                SCRIPT_NAME = "Prostate_ComboHDR_Structures",
-                number = 5
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_ProstateBed_Fx20(Lecho)",
-                approved = true,
-                SCRIPT_NAME = "ProstateBed_Structures",
-                number = 6
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Bladder_Fx20(Vejiga)",//saint fausto
-                approved = true,
-                SCRIPT_NAME = "Bladder_Structures",
-                number = 7
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Endometrium_Fx20(Endometrio)",//saint fausto
-                approved = true,
-                SCRIPT_NAME = "Bladder_Structures",
-                number = 8
-            });
-            list.Add(new Structures_Creation
-            {
-                ID = "Script_Liver_Fx3(Higado)",//saint fausto
-                approved = true,
-                SCRIPT_NAME = "Bladder_Structures",
-                number = 9
-            });
-            return list;
-        } //ESTAN LIGADOS EL NUMBER AQUI
-        //comienzo del script strutures
-        public void start(int template, ScriptContext context, bool appr) {//ejecuta el scrit seleccionado en User script.c   LIGADO CON VALOR DE TEMPLATE
-            if (template == 0 && appr) St_Prostate(context);
-            else if (template == 1 && appr) St_Breast_ChestWall(context);
-            //else if (template == 2 && appr) St_Breast_ChestWall_RA(context);
-            else if (template == 2 && appr) St_Rectum20fx(context);
-            else if (template == 3 && appr) St_CYC_25fx(context);
-            else if (template == 4 && appr) St_Cervix_25fx(context);
-            else if (template == 5 && appr) St_HDR_15fx(context);//
-            else if (template == 6 && appr) St_Lecho_20fx(context);
-            else if (template == 7 && appr) St_Bladder_20fx(context);//
-            else if (template == 8 && appr) St_Endometrium_20fx(context);//endometrium
-            else if (template == 9 && appr) St_Higado_3fx(context);//endometrium
-            else System.Windows.MessageBox.Show("The Script does not approved for clinical use ");
-        }// Aqui hay que implementar el nuevo script de estructuras y correlacionar los numeros sino no se ejecuta
+
         public void Cropbody(Structure st1, Structure body1)
         {
             if (st1 != null && body1 != null && !st1.IsEmpty)   /// Esto es para que 
@@ -364,12 +366,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure rect_post = ss.AddStructure("CONTROL", Rect_post);
             Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
             Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
-            //Structure uretra2 = ss.AddStructure("PTV", "Buffer_U");
+            Structure auxi = ss.AddStructure("CONTROL", "Buffer");
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
                 St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
-                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(prv_rectum); St.Add(rect_ant); St.Add(rect_post); St.Add(prv_colon); St.Add(prv_bowel);
+                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(prv_rectum); St.Add(rect_ant); St.Add(rect_post); St.Add(prv_colon); St.Add(prv_bowel); St.Add(auxi);
                 foreach (Structure x in St) x.ConvertToHighResolution();
             }
             ptv_ID12.SegmentVolume = ctv_ID2.AsymmetricMargin(new AxisAlignedMargins(0, 5, 5, 5, 5, 3, 5));// PTV Prostate asymmetry
@@ -414,6 +416,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             rect_post.SegmentVolume = rectum.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 17, 0, 0, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             rect_ant.SegmentVolume = rectum.Sub(rect_post);
 
+            //ss.RemoveStructure(auxi);
+
             ptv_ID14.SegmentVolume = ptv_ID12.And(uretra);//PTV*U
             ptv_ID15.SegmentVolume = ptv_ID12.And(trigono);//PTV*T
             ptv_ID16.SegmentVolume = ptv_ID12.And(prv_rectum);//PTV*PRVV re
@@ -423,6 +427,11 @@ namespace VMS.TPS//tiene que ser igual que el main
             ptv_ID19.SegmentVolume = ptv_ID12.Or(ptv_ID21);///PTV_total           
             ptv_ID19.SegmentVolume = ptv_ID19.Or(ptv_ID18);///PTV_total
 
+            auxi.SegmentVolume = ptv_ID19.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 50, 0, 2, 50, 50, 2));//esto es para que el recto_A yP solo quede en el ptv y no sa todo el recto
+            auxi.SegmentVolume = auxi.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 30, 0, 0, 30, 30, 0));
+            rect_post.SegmentVolume = rect_post.And(auxi);
+            rect_ant.SegmentVolume = rect_ant.And(auxi);
+            ss.RemoveStructure(auxi);
             //ss.RemoveStructure(uretra2);
             //Remove strutures null   
             if (ctv_ID6 == null && ctv_ID3 == null) ss.RemoveStructure(ptv_ID21);
@@ -1236,10 +1245,10 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "CYC";
             //gtv-ctvs
-            string[] N_GTV = {  "GTV_HeadNeck",     "GTV_SIB", "SIB", "sib base leng" };
-            string[] N_CTV = {  "CTV_High_Risk",    "CTV_Tumor", "CTV_Peritumor" };
-            string[] N_NL = {   "CTV_LN_Neck_L",    "cuello izq", "Cuello izq", "cuello izq" };
-            string[] N_NR = {   "CTV_LN_Neck_R",    "cuello der", "Cuello d", "cuello derech" };
+            string[] N_GTV = {  "GTV_HeadNeck",     "GTV_SIB", "SIB", "sib base leng", "1 GTV supra y gl" };
+            string[] N_CTV = {  "CTV_High_Risk",    "CTV_Tumor", "CTV_Peritumor", "5- CTV peritumor" };
+            string[] N_NL = {   "CTV_LN_Neck_L",    "cuello izq", "Cuello izq", "cuello izq", "3 Cuello izquier" };
+            string[] N_NR = {   "CTV_LN_Neck_R",    "cuello der", "Cuello d", "cuello derech", "4 Cuello derecho" };
             string[] N_ADPR = { "GTV_ADP_R",        "adp der", "ADP D", "sib adp izq" };
             string[] N_ADPL = { "GTV_ADP_L",        "adp izq", "ADP I" };
             string[] N_N1 = {   "CTV_LN_NI_A",      "Nivel Ia" };//50gy=cuello
@@ -1248,7 +1257,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Parotid_L = { "Parotid_L",   "parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
             string[] N_Parotid_R = { "Parotid_R",   "parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
             string[] N_Body = {      "Body",        "Outer Contour", "body" };
-            string[] N_SC = {       "SpinalCord",   "Spinal Cord", "Sc", "sc", "ME" };
+            string[] N_SC = {       "SpinalCord",   "Spinal Cord", "Sc", "sc", "ME" , "Spinal Cord, Nec" };
             string[] N_OpticNR = {  "OpticNrv_R",   "NOD" };//falta
             string[] N_OpticNL = {  "OpticNrv_L",   "NOI" };
 
@@ -1747,7 +1756,11 @@ namespace VMS.TPS//tiene que ser igual que el main
             //else ss.RemoveStructure(ctv_ID3); ss.RemoveStructure(ptv_ID13);
             if (ctv_ID4 != null) ptv_ID14.SegmentVolume = ctv_ID4.Margin(6.0); //PTV param d
             //else ss.RemoveStructure(ctv_ID4); ss.RemoveStructure(ptv_ID14);
-            if (ctv_ID5 != null) ptv_ID15.SegmentVolume = ctv_ID5.Margin(9.0); //PTV Utero
+            if (ctv_ID5 != null)
+            {
+                ptv_ID15.SegmentVolume = ctv_ID5.Margin(9.0); //PTV Utero
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID15); //ptv utero 
+            }
             if (ctv_ID6 != null)
             {
                 ptv_ID16.SegmentVolume = ctv_ID6.Margin(9.0); //PTV Vagina
@@ -1790,34 +1803,45 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (result == DialogResult.Yes)
             {
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 13, 0, 0, 27, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
-                ptv_ID22.SegmentVolume = ptv_ID14.Or(ptv_ID15); //ptv param d utero 48
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14); //ptv param d utero 48
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 14, 0, 0, 28, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             }
             else if (result == DialogResult.No)
             {
-                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID14);//PTV tumor+param D 58.4
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 27, 0, 0, 13, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
-                ptv_ID22.SegmentVolume = ptv_ID13.Or(ptv_ID15); //ptv param i utero 48
+                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID14);//PTV tumor+param D 58.4                
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID13); //ptv param i utero 48
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 28, 0, 0, 14, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             }
             else
             {
-                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
-                ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID14);//PTV tumor+param D 58.4
-                ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID29);//PTV tumor+param Ambos si hay 58.4
+                ptv_ID23.SegmentVolume = ptv_ID12;
+                if (ptv_ID13 != null)
+                {
+                    ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID13);//PTV tumor+param I 58.4
+                    ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID13); //ptv param i utero 48
+                }
+                if (ptv_ID14 != null)
+                {
+                    ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID14);//PTV tumor+param D 58.4
+                    ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14); //ptv param i+d utero 48
+                }
+                if (ptv_ID29 != null)
+                {
+                    ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID29);//PTV tumor+param Ambos si hay 58.4
+                    ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID29); //ptv param i+d+ambos utero 48
+                }
                 auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 22, 0, 0, 22, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
-                ptv_ID22.SegmentVolume = ptv_ID15.Or(ptv_ID13); //ptv param i utero 48
-                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14); //ptv param i+d utero 48
-                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID29); //ptv param i+d+ambos utero 48
             }
-
 
             //Struture Auxiliar for creation of lateral crop in PRV Bladder. esto es solo para parametrio izq
 
             auxi.SegmentVolume = auxi.And(bladder);// intersection with bladder            
+            //ptv_ID27.SegmentVolume = auxi;
             auxi.SegmentVolume = auxi.AsymmetricMargin(new AxisAlignedMargins(0, 3, 50, 3, 3, 3, 3)); ;//mochado+3mm+5cm hacia arriba para cortar
             ptv_ID27.SegmentVolume = auxi.And(ptv_ID23);//PTV58.4*Bladder mochado para que corte lo necesario modificacdo por carola
-            ptv_ID27.SegmentVolume = ptv_ID27.And(bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
+            //ptv_ID27.SegmentVolume = ptv_ID27.And(bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
             ////////////////////////////////////////////PTV58.4-Prvs
+            auxi.SegmentVolume = auxi.Margin(3);
             ptv_ID24.SegmentVolume = ptv_ID23.Sub(auxi);//PTV58.4-PRVs! - PRV Vejiga+3mm
             //auxi.SegmentVolume = prv_rectum;// ahora el auxi es la extension del prv recto
             ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_rectum); //PTV58.4-PRVs! - PRV Rectum+3mm
@@ -1826,9 +1850,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             //auxi.SegmentVolume = prv_colon;// ahora el auxi es la extension del prv colon
             ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_colon); //PTV58.4-PRVs! - PRV Rectum+3mm
                                                          //////////////////////////////////////////////////////
-
             ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID23); //48-58.4
-
             ptv_ID21.SegmentVolume = ptv_ID19.Sub(ptv_ID22); //43-48
             ptv_ID21.SegmentVolume = ptv_ID21.Sub(ptv_ID23); //43-58.4
 
@@ -1846,11 +1868,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID7 == null) ss.RemoveStructure(ptv_ID17);
             if (ctv_ID8 == null) ss.RemoveStructure(ptv_ID18);
             if (ctv_ID9 == null) ss.RemoveStructure(ptv_ID19);
-
             if (ctv_ID11 == null) ss.RemoveStructure(ptv_ID28);
             if (ctv_ID12 == null) ss.RemoveStructure(ptv_ID29);
             if (ctv_ID13 == null) ss.RemoveStructure(ptv_ID30);
-
         }
 
         public void St_HDR_15fx(ScriptContext context)
