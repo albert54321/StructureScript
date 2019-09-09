@@ -496,8 +496,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Cor = { "Corazon", "Heart", "corazon" };//aumentar corazon
             string[] N_Intes = { "Intestino", "Bowel", "intestino" };//aumentar corazon
             string[] N_Cardiaca = { "Reg_Cardiaca" };//aumentar corazon
-            string[] N_CoroI = { "Reg_CoronariaI" };//aumentar corazon
-            string[] N_VentI = { "Reg_Ventriculo_I" };//aumentar corazon
+            string[] N_CoroI = { "Reg_A_CoronariaI","Reg_CoronariaI", "Reg_Coronaria_I" };//aumentar corazon
+            string[] N_VentI = { "Reg_Ventriculo_I", "Reg_VentriculoI" };//aumentar corazon
             /*//names for original
             string NPROX    = "CTV_Mama_Prox-05";
             string NDIST    = "CTV_Mama_Dist-05";
