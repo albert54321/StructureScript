@@ -495,7 +495,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Tr = { "Traquea", "Trachea",  "traquea" };//aumentar corazon
             string[] N_Cor = { "Corazon", "Heart", "corazon" };//aumentar corazon
             string[] N_Intes = { "Intestino", "Bowel", "intestino" };//aumentar corazon
-            string[] N_Cardiaca = { "Reg_Cardiaca" };//aumentar corazon
+            string[] N_Cardiaca = { "Reg_Cardiaca_Izq" };//aumentar corazon
             string[] N_CoroI = { "Reg_A_CoronariaI","Reg_CoronariaI", "Reg_Coronaria_I" };//aumentar corazon
             string[] N_VentI = { "Reg_Ventriculo_I", "Reg_VentriculoI" };//aumentar corazon
             /*//names for original
@@ -622,10 +622,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifStLow(artc, false, N_CoroI[0]);
             Structure reg_card = ss.Structures.FirstOrDefault(s => N_Cardiaca.Any(x => s.Id.Contains(x)));
             VerifStLow(reg_card, false, N_Cardiaca[0]);
+
+
             DialogResult result2 = System.Windows.Forms.MessageBox.Show("Fraction: 16Fx or 20Fx?" + "\n" + "If Yes, the volume is 16Fx." + "\n" + "If No, the volume is 20Fx." + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result2 == DialogResult.Cancel) return;
 
-            DialogResult result3 = System.Windows.Forms.MessageBox.Show("Breast ChestWall Start/RA?" + "\n" + " If Yes is Start (Mama/Pared Inicio)" + "\n" + "If No, is RA (Mama/Pared RA)" + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
+            DialogResult result3 = System.Windows.Forms.MessageBox.Show("Breast ChestWall Start/RA?" + "\n" + " If Yes is Start/CT_Modificada(Mama/Pared Inicio)" + "\n" + "If No, is RA/CT_Original (Mama/Pared RA)" + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result3 == DialogResult.Cancel) return;
             /*else if (result3 == DialogResult.No && result == DialogResult.Yes) esto era para colocar -05 pero no fue viable
             {
@@ -648,6 +650,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID22 = "zPTV_Gang_4300!";   //PTV_41Gy
             string PTV_ID23 = "zPTV_Prox_4300!";   //PTV_43.2Gy
             string PTV_ID24 = "zPTV_Total!";      //PTV_Total
+
+            string PTV_ID28 = "zPTV_Mid_4300!";      //PTV_gg+prox mid 16fx
+            string PTV_ID28_ = "zPTV_Mid_4600!";      //PTV_gg+prox mid 20fx
             string Ring = "zAnillo";//"zRing";                //Anillo
             string Surface = "zSuperficie";//"zSurface";          //Superficie
 
@@ -692,6 +697,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PTV_ID22_ += ".";
                     PTV_ID23_ += ".";
                     PTV_ID25_ += ".";
+                    PTV_ID28 += ".";
+                    PTV_ID28_ += ".";
                 }
             }
 
@@ -702,6 +709,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 PTV_ID22 = PTV_ID22_;   //PTV_41Gy
                 PTV_ID23 = PTV_ID23_;   //PTV_41Gy
                 PTV_ID25 = PTV_ID25_;   //PTV_41Gy
+                PTV_ID28 = PTV_ID28_;   //PTV_43Gy
             }
 
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
@@ -720,6 +728,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ptv_ID24 = ss.AddStructure("PTV", PTV_ID24);
             Structure ptv_ID25 = ss.AddStructure("PTV", PTV_ID25);
             Structure ptv_ID27 = ss.AddStructure("PTV", PTV_ID27);
+            Structure ptv_ID28 = ss.AddStructure("PTV", PTV_ID28);
             Structure ring = ss.AddStructure("CONTROL", Ring);
             Structure surface = ss.AddStructure("AVOIDANCE", Surface);
             Structure buffered_outer = ss.AddStructure("CONTROL", "outer-5");
@@ -758,7 +767,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
                 St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20); St.Add(ptv_ID_20); St.Add(ptv_ID25); St.Add(ptv_ID27);
-                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(surface); St.Add(ctv_ID_1); St.Add(body); //St.Add(buffered_outer); St.Add(ring); 
+                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(surface); St.Add(ctv_ID_1); St.Add(body); St.Add(ptv_ID28); //St.Add(buffered_outer); St.Add(ring); 
                 if (ctv_ID1 != null && !ctv_ID1.IsHighResolution) St.Add(ctv_ID1);// necesito colocar el null primero porque si no me da error cuando aplico ishihresolution a una estructura vacia
                 if (ctv_ID11 != null && !ctv_ID11.IsHighResolution) St.Add(ctv_ID11);
                 foreach (Structure x in St) x.ConvertToHighResolution();
@@ -804,6 +813,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID15);//41Gy46
             ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID16);//41Gy46
             ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID17);//41Gy46
+
+
             //if (!ptv_ID22.IsEmpty && !ptv_ID20.IsEmpty &&) ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID20);//41Gy-52Gy
                                                                                                         /* string message = string.Format("{0} volume = {1}\n{2} volume = {3}",
                                                                                                          ptv_ID17.Id, ptv_ID17.Volume, ptv_ID22.Id, ptv_ID22.Volume);
@@ -866,6 +877,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ring.SegmentVolume = ring.Sub(buffered_ring);
                 ring.SegmentVolume = ring.And(body);
             }
+
             else if (result3 == DialogResult.No)
             {
 
@@ -909,6 +921,9 @@ namespace VMS.TPS//tiene que ser igual que el main
                     ptv_ID24.SegmentVolume = ptv_ID22.Or(ptv_ID25);//pared
                 }
             }
+            ptv_ID28.SegmentVolume = ptv_ID22;
+            if (ptv_ID23!=null && ptv_ID22!=null)ptv_ID28.SegmentVolume = ptv_ID22.Or(ptv_ID23);
+            if(ptv_ID23!=null&&ptv_ID22==null) ptv_ID28.SegmentVolume = ptv_ID23;
 
             //Remove Auxilary Structure      
             ss.RemoveStructure(buffered_ring);
@@ -999,11 +1014,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 ss.RemoveStructure(ptv_ID20);
                 ss.RemoveStructure(ptv_ID_20);
+                ss.RemoveStructure(ptv_ID22);/////////////////////////////////////////////ESTO PUEDE ESTAR MAL
             }
 
             if ((ctv_ID2 == null) && (ctv_ID3 == null) && (ctv_ID4 == null) && (ctv_ID5 == null) && (ctv_ID6 == null) && (ctv_ID7 == null))
             {
                 ss.RemoveStructure(ptv_ID22);
+                ss.RemoveStructure(ptv_ID23);//////////////////////////////ESTO PUEDE ESTAR MAL
             }
             if (result3 == DialogResult.Yes)
             {
