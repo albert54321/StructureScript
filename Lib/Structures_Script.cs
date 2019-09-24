@@ -431,7 +431,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             auxi.SegmentVolume = auxi.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 30, 0, 0, 30, 30, 0));
             rect_post.SegmentVolume = rect_post.And(auxi);
             rect_ant.SegmentVolume = rect_ant.And(auxi);
-            ss.RemoveStructure(auxi);
+            
             //ss.RemoveStructure(uretra2);
             //Remove strutures null   
             if (ctv_ID6 == null && ctv_ID3 == null) ss.RemoveStructure(ptv_ID21);
@@ -458,6 +458,14 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ss.RemoveStructure(ctv_ID5);
                 ss.RemoveStructure(ptv_ID23);
             }
+            else
+            {
+                ptv_ID23.SegmentVolume = ptv_ID23.Sub(uretra.Margin(2));//ptv sib-u
+                ptv_ID23.SegmentVolume = ptv_ID23.Sub(prv_rectum.Margin(2)); //ptv sib-prv rec
+                ptv_ID23.SegmentVolume = ptv_ID23.Sub(trigono.Margin(2));//ptv sib-trigon
+                ptv_ID20.SegmentVolume = ptv_ID20.Sub(ptv_ID23);//36.25-sib
+                ptv_ID17.SegmentVolume = ptv_ID17.Sub(ptv_ID23);//ptv-prvs-sib
+            }
             if (bowel == null)
             {
                 ss.RemoveStructure(bowel);
@@ -468,6 +476,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ss.RemoveStructure(colon);
                 ss.RemoveStructure(prv_colon);
             }
+            ss.RemoveStructure(auxi);//tieneq estar ahi porqu lo uso en ctv5
         }
         
         public void St_Breast_ChestWall(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
