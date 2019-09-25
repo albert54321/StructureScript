@@ -2135,8 +2135,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_VS = {       "CTV_SeminalVes",   "VSem", "Vesiculas", "Vesiculas Sem", "VS+1cm" };
             string[] N_SIB = {      "GTV_SIB",          "_SIB", "nodulo" };
             string[] N_GP = {       "CTV_LN_Pelvic",    "Pelviano", "Pelvico", "ganglios pelvicos", "RegGanglionares" };
-            string[] N_Urethra = {  "Urethra",          "Uretra", "uretra" };
-            string[] N_Trigone = {  "Trigone",          "trigono", "Trigono" };
+            //string[] N_Urethra = {  "Urethra",          "Uretra", "uretra" };
+            //string[] N_Trigone = {  "Trigone",          "trigono", "Trigono" };
             string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
             string[] N_Colon = {    "Colon",            "colon", "sigma" };
             string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino","INTESTINO" };
@@ -2159,14 +2159,14 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ctv_ID4 = ss.Structures.FirstOrDefault(s => N_VS.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure ctv_ID5 = ss.Structures.FirstOrDefault(s => N_SIB.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure ctv_ID6 = ss.Structures.FirstOrDefault(s => N_GP.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure uretra = ss.Structures.FirstOrDefault(s => N_Urethra.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-            Structure trigono = ss.Structures.FirstOrDefault(s => N_Trigone.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            //Structure uretra = ss.Structures.FirstOrDefault(s => N_Urethra.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            //Structure trigono = ss.Structures.FirstOrDefault(s => N_Trigone.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure colon = ss.Structures.FirstOrDefault(s => N_Colon.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
 
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
-            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(uretra) || !HighResol(trigono) || !HighResol(rectum) || !HighResol(colon) || !HighResol(bowel))
+            if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(rectum) || !HighResol(colon) || !HighResol(bowel))
             {
                 Low = false;
                 VerifSt(ctv_ID2, true, N_Prostate[0]);//es necesario true
@@ -2175,10 +2175,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                 VerifSt(ctv_ID4, false, N_VS[0]);//es necesario true
                 VerifSt(ctv_ID5, false, N_SIB[0]);//es necesario true
                 VerifSt(ctv_ID6, false, N_GP[0]);//es necesario true
-                VerifSt(uretra, true, N_Urethra[0]);//es necesario true
-                if (uretra == null) return;
-                VerifSt(trigono, true, N_Trigone[0]);//es necesario true
-                if (trigono == null) return;
+                //VerifSt(uretra, true, N_Urethra[0]);//es necesario true
+                //VerifSt(trigono, true, N_Trigone[0]);//es necesario true
                 VerifSt(rectum, true, N_Rectum[0]);//es necesario true
                 if (rectum == null) return;
                 VerifSt(colon, false, N_Colon[0]);//es necesario true
@@ -2193,10 +2191,8 @@ namespace VMS.TPS//tiene que ser igual que el main
                 VerifStLow(ctv_ID4, false, N_VS[0]);//es necesario true
                 VerifStLow(ctv_ID5, false, N_SIB[0]);//es necesario true
                 VerifStLow(ctv_ID6, false, N_GP[0]);//es necesario true
-                VerifStLow(uretra, true, N_Urethra[0]);//es necesario true
-                if (uretra == null) return;
-                VerifStLow(trigono, true, N_Trigone[0]);//es necesario true
-                if (trigono == null) return;
+                //VerifStLow(uretra, true, N_Urethra[0]);//es necesario true
+                //VerifStLow(trigono, true, N_Trigone[0]);//es necesario true
                 VerifStLow(rectum, true, N_Rectum[0]);//es necesario true
                 if (rectum == null) return;
                 VerifStLow(colon, false, N_Colon[0]);//es necesario true
@@ -2218,10 +2214,10 @@ namespace VMS.TPS//tiene que ser igual que el main
             //New Structures 
             string PTV_ID12 = "PTV_Prostate";
             string PTV_ID13 = "PTV_LN_Obturator";
-            string PTV_ID14 = "zPTV_Urethra!";
-            string PTV_ID15 = "zPTV_Trigone!";
+//            string PTV_ID14 = "zPTV_Urethra!";
+//            string PTV_ID15 = "zPTV_Trigone!";
             string PTV_ID16 = "zPTV_RectumPRV05";
-            string PTV_ID17 = "zPTV-PRVs!";
+//            string PTV_ID17 = "zPTV-PRVs!";
             string PTV_ID18 = "PTV_SeminalVes";//
             string PTV_ID19 = "zPTV_Total!";
             string PTV_ID20 = "zPTV_High_5840!";
@@ -2242,10 +2238,10 @@ namespace VMS.TPS//tiene que ser igual que el main
                 {
                     PTV_ID12 += ".";
                     PTV_ID13.Remove(PTV_ID13.Length - 1);
-                    PTV_ID14 += ".";
-                    PTV_ID15 += ".";
+                    //PTV_ID14 += ".";
+                    //PTV_ID15 += ".";
                     PTV_ID16.Remove(PTV_ID16.Length - 1);
-                    PTV_ID17 += ".";
+                    //PTV_ID17 += ".";
                     PTV_ID18 += ".";
                     PTV_ID19 += ".";
                     PTV_ID20 += ".";
@@ -2268,10 +2264,10 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
             Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
+            //Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
+            //Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
             Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
+            //Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
             Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);
             Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);//ptv20 arriba
             Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
@@ -2288,7 +2284,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
-                St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
+                St.Add(ptv_ID12); St.Add(ptv_ID13);  St.Add(ptv_ID16);  St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
                 St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(prv_rectum); St.Add(rect_ant); St.Add(rect_post); St.Add(prv_colon); St.Add(prv_bowel);
                 foreach (Structure x in St) x.ConvertToHighResolution();
             }
@@ -2334,12 +2330,12 @@ namespace VMS.TPS//tiene que ser igual que el main
             rect_post.SegmentVolume = rectum.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 17, 0, 0, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             rect_ant.SegmentVolume = rectum.Sub(rect_post);
 
-            ptv_ID14.SegmentVolume = ptv_ID12.And(uretra);//PTV*U
-            ptv_ID15.SegmentVolume = ptv_ID12.And(trigono);//PTV*T
+            //ptv_ID14.SegmentVolume = ptv_ID12.And(uretra);//PTV*U
+            //ptv_ID15.SegmentVolume = ptv_ID12.And(trigono);//PTV*T
             ptv_ID16.SegmentVolume = ptv_ID12.And(prv_rectum);//PTV*PRVV re
-            ptv_ID17.SegmentVolume = uretra.Or(trigono);//U+T
-            ptv_ID17.SegmentVolume = ptv_ID17.Or(prv_rectum);//U+T+PrvRe
-            ptv_ID17.SegmentVolume = ptv_ID12.Sub(ptv_ID17);//PTV pros-(U+T+PrvRe)
+            //ptv_ID17.SegmentVolume = uretra.Or(trigono);//U+T
+            //ptv_ID17.SegmentVolume = ptv_ID17.Or(prv_rectum);//U+T+PrvRe
+            //ptv_ID17.SegmentVolume = ptv_ID12.Sub(ptv_ID17);//PTV pros-(U+T+PrvRe)
             ptv_ID19.SegmentVolume = ptv_ID12.Or(ptv_ID21);///PTV_total           
             ptv_ID19.SegmentVolume = ptv_ID19.Or(ptv_ID18);///PTV_total
 
