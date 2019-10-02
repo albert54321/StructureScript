@@ -21,11 +21,12 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Media;//da los colores
 using System.Windows.Forms;
+using System.IO;
 
 // TODO: uncomment the line below if the script requires write access.
 [assembly: ESAPIScript(IsWriteable = true)]
-[assembly: AssemblyVersion("1.0.0.186")]
-[assembly: AssemblyFileVersion("1.0.0.186")]
+[assembly: AssemblyVersion("1.0.0.188")]
+[assembly: AssemblyFileVersion("1.0.0.188")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 
@@ -42,8 +43,11 @@ namespace VMS.TPS
             /*SBRT_Prostate x = new SBRT_Prostate();
             string id = x.Class_ID;
             x.St_Prostate(context);*/
-            
 
+
+            string text = File.ReadAllText(@"U:\14-Scripts Eclipse\Nombres_e_Instructivos\Lic_NET_dot\Licence.txt", Encoding.UTF8);
+            Structures_Creation text2 = new Structures_Creation();
+            if (text != text2.Key) System.Windows.MessageBox.Show("You dont have a valid key");
 
             // TODO : Add here your code that is called when the script is launched from Eclipse
             StructureSet ss = context.StructureSet;

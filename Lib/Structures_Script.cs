@@ -36,6 +36,7 @@ namespace VMS.TPS//tiene que ser igual que el main
         public bool approved { get; set; }// si esta aprobado
         public string SCRIPT_NAME { get; set; }//el nombre que muestra en la applicacion
         public int number { get; set; }
+        public string Key { get; } = "PHYSICS_ALBERTO_ALARCON";
         //La lista de script es aqui
         public static List<Structures_Creation> Script()//ScriptContext sc) //hay que aprobar el script aqui sino no va correr
         {
