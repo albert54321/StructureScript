@@ -673,7 +673,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID23_ = "zPTV_Prox_4600!";  //PTV_45.4Gy
             //Chest wall 16fx
             string PTV_ID25 = "zPTV_High_4400!";  //PTV_44Gy
-
+            string PTV_ID22__ = "zPTV_Low_4100!";   //PTV_41Gy
             //Chest wall 20fx
             string PTV_ID25_ = "zPTV_High_4700!"; //PTV_47Gy//problema con el id
             //const string PTV_ID26_ = "zPTV_Mid_4600!";  //PTV_46Gy
@@ -1009,6 +1009,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ss.RemoveStructure(ptv_ID25);
                 ss.RemoveStructure(ptv_ID27);
             }
+            else if (ptv_ID22!=null && result2 == DialogResult.Yes) ptv_ID22.Id = PTV_ID22__;
             if (ctv_ID8 == null)
             {
                 ss.RemoveStructure(ptv_ID18);
