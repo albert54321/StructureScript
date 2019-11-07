@@ -226,7 +226,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
             string[] N_Colon = {    "Colon",            "colon", "sigma" };
             string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino" };
-            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body","BODY" };
             //cambiar nombres
             string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left", "CFI" };//hip joint left
             string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right", "CFD" };
@@ -503,7 +503,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_SIB = { "GTV_SIB", "10-SIB", "8 SIB" };
             string[] N_Chest = { "CTV_Pared", "1-Pared", "CTV_Chestwall", "Pared", "zCTV_Pared" };
             //bad names
-            string[] N_Body = { "Body", "Outer Contour", "body" };
+            string[] N_Body = { "Body", "Outer Contour", "body", "BODY" };
             string[] N_SC = { "MedulaEspinal", "SpinalCord", "Spinal Cord", "Spinal, Cord", "medula" };
             string[] N_LL = { "Pulmon_I", "Lung_L", "Lung Left", "Lung, Left" };
             string[] N_LR = { "Pulmon_D", "Lung_R", "Lung Right", "Lung, Right" };
@@ -1096,7 +1096,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Colon = {"Colon",            "colon","sigma" };
             string[] N_Bladder={"Bladder",          "Vejiga","vejiga" };
             string[] N_Bowel = {"Bowel",            "Intestino", "intestino","intestinos" };
-            string[] N_Body = { "Body",             "Outer Contour" };
+            string[] N_Body = { "Body",             "Outer Contour", "BODY" };
             //cambiar nombre
             string[] N_Prostate = {"Prostate",      "Prostata","prostata" };
             string[] N_Penile = { "PenileBulb",     "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano" };
@@ -1314,7 +1314,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Brainst = {  "Brainstem",     "tronco", "Tronco" };
             string[] N_Parotid_L = { "Parotid_L",   "parotida izq", "parotid i", "Parotid Gland, L", "Parotida Izq" };
             string[] N_Parotid_R = { "Parotid_R",   "parotida der", "parotid d", "Parotid Gland, R", "Parotida D" };
-            string[] N_Body = {      "Body",        "Outer Contour", "body" };
+            string[] N_Body = {      "Body",        "Outer Contour", "body", "BODY" };
             string[] N_SC = {       "SpinalCord",   "Spinal Cord", "Sc", "sc", "ME" , "Spinal Cord, Nec" };
             string[] N_OpticNR = {  "OpticNrv_R",   "NOD" };//falta
             string[] N_OpticNL = {  "OpticNrv_L",   "NOI" };
@@ -1604,31 +1604,32 @@ namespace VMS.TPS//tiene que ser igual que el main
         {
             const string SCRIPT_NAME0 = "Cervix";
             //gtv-ctvs
-            string[] N_GTV = {      "GTV_Cervix",       "Tumor" };  //TU
+            string[] N_GTV = {      "GTV_Cervix",       "Tumor","GTV" };  //TU
             string[] N_CTV3 = {     "CTV_Paramet_L" };          //PARAMETRIO DER
             string[] N_CTV4 = {     "CTV_Paramet_R" };          //PARAMETRIO IZQ
-            string[] N_CTV5 = {     "CTV_Rest_Uterus" };        //RESTO DE UTERO
+            string[] N_CTV5 = {     "CTV_Rest_Uterus", "RU" };        //RESTO DE UTERO
             string[] N_CTV6 = {     "CTV_Rest_Vagina" };        //RESTO DE VAGINA
             string[] N_CTV7 = {     "CTV_LN_Iliac" };           //ILIACOS
             string[] N_CTV8 = {     "CTV_LN_Presacra" };        //PRESACROS
-            string[] N_CTV9 = {     "CTV_LN_Paraaort",  "LAO" }; //LAO
+            string[] N_CTV9 = {     "CTV_LN_Paraaort",  "LAO", "RP" }; //LAO
             string[] N_CTV10 = {    "CTV_ADP_I" };              //ADP
             string[] N_CTV13 = {    "CTV_ADP_II"};              //ADP PEDIDO POR MURINA
-            string[] N_CTV11 = {    "CTV_LN_Pelvic" };          //GANGLIOS PELVICOS
-            string[] N_CTV12 = {    "CTV_Parametrium" };        //PARAMETRIOS UNIDOS SOLO SI LOS DOS PARAMETRIOS VAN A LA MISMA DOSIS
+            string[] N_CTV11 = {    "CTV_LN_Pelvic", "RG" };          //GANGLIOS PELVICOS
+            string[] N_CTV12 = {    "CTV_Parametrium", "PARAMETRIOS" };        //PARAMETRIOS UNIDOS SOLO SI LOS DOS PARAMETRIOS VAN A LA MISMA DOSIS
 
             //oars
-            string[] N_Colon = {    "Colon",            "colon" };
+            string[] N_Colon = {    "Colon",            "colon", "COLON" };
             string[] N_Bladder = {  "Bladder",          "Vejiga","vejiga"};
             string[] N_Rectum = {   "Rectum",           "Recto" };
-            string[] N_Bowel = {    "Bowel",            "Intestino", "intestino","intestinos", "Intestinos" };
-            string[] N_Body = {     "Body",             "Outer Contour", "body" };
-            string[] N_FJL = {      "FemoralJoint_L"};
-            string[] N_FJR = {      "FemoralJoint_R" };
-            string[] N_KL = {       "Kidney_L" };
-            string[] N_KR = {       "Kidney_R" };
+            string[] N_Bowel = {    "Bowel",            "Intestino", "intestino","intestinos", "Intestinos", "INTESTINO" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body", "BODY" };
+            string[] N_FJL = {      "FemoralJoint_L", "Hip Joint, Left" };
+            string[] N_FJR = {      "FemoralJoint_R", "Hip Joint, Right" };
+            string[] N_KL = {       "Kidney_L", "Kidney, Left" };
+            string[] N_KR = {       "Kidney_R" , "Kidney, Right" };
             string[] N_SC = {       "SpinalCord",       "Spinal Cord", "Sc", "sc", "ME" };
-
+            string[] N_LIVER = {     "Liver", "Higado" };
+            string[] GASTRO = { "Gastrointest_Reg" };
             if (context.Patient == null || context.StructureSet == null)
             {
                 System.Windows.MessageBox.Show("Please load a patient, 3D image, and structure set before running this script.", SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -1653,7 +1654,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure bladder = ss.Structures.FirstOrDefault(s => N_Bladder.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure rectum = ss.Structures.FirstOrDefault(s => N_Rectum.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             Structure bowel = ss.Structures.FirstOrDefault(s => N_Bowel.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
-
+            Structure hjl = ss.Structures.FirstOrDefault(s => N_FJL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure hjr = ss.Structures.FirstOrDefault(s => N_FJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure nkl = ss.Structures.FirstOrDefault(s => N_KL.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure nkr = ss.Structures.FirstOrDefault(s => N_KR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure nsc = ss.Structures.FirstOrDefault(s => N_SC.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure nliver = ss.Structures.FirstOrDefault(s => N_LIVER.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
+            Structure gastro = ss.Structures.FirstOrDefault(s => GASTRO.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             bool Low = false; //determina si las estructuras son baja resolucion, por defecto es alta
             if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(ctv_ID7) || !HighResol(ctv_ID8) || !HighResol(ctv_ID9) || !HighResol(ctv_ID10) || !HighResol(ctv_ID11) || 
                 !HighResol(ctv_ID12)|| !HighResol(ctv_ID13) || !HighResol(colon)|| !HighResol(bladder) || !HighResol(rectum)|| !HighResol(bowel))
@@ -1712,6 +1719,15 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifSt(body, true, N_Body[0]);
             if (body == null) return;
+
+            //Solo cambia nombre
+            VerifSt(hjl, false, N_FJL[0]);//es necesario true
+            VerifSt(hjr, false, N_FJR[0]);//es necesario true
+            VerifSt(nkl, false, N_KL[0]);//es necesario true
+            VerifSt(nkr, false, N_KR[0]);//es necesario true
+            VerifSt(nsc, false, N_SC[0]);//es necesario true
+            VerifSt(nliver, false, N_LIVER[0]);//es necesario true
+            VerifSt(gastro, false, GASTRO[0]);
 
             //New Structures 
             string PTV_ID12 = "PTV_GTV_Cervix";
@@ -1833,8 +1849,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID8 != null)
             {
                 ptv_ID18.SegmentVolume = ctv_ID8.Margin(6.0); //PTV gang presa
-                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID18); //ptv param d utero + vagina + g iliaco+presac48
-                
+                ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID18); //ptv param d utero + vagina + g iliaco+presac48          
             }
 
             //else ss.RemoveStructure(ctv_ID8); ss.RemoveStructure(ptv_ID18);
@@ -1862,13 +1877,13 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID13);//PTV tumor+param I 58.4
                 ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14); //ptv param d utero 48
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 14, 0, 0, 28, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 14, 0, 0, 28, 0, 0)).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 0, 50, 0, 0, 0, 0)); ;// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             }
             else if (result == DialogResult.No)
             {
                 ptv_ID23.SegmentVolume = ptv_ID12.Or(ptv_ID14);//PTV tumor+param D 58.4                
                 ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID13); //ptv param i utero 48
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 28, 0, 0, 14, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 28, 0, 0, 14, 0, 0)).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 0, 50, 0, 0, 0, 0)); ;// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             }
             else
             {
@@ -1888,25 +1903,27 @@ namespace VMS.TPS//tiene que ser igual que el main
                     ptv_ID23.SegmentVolume = ptv_ID23.Or(ptv_ID29);//PTV tumor+param Ambos si hay 58.4
                     ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID29); //ptv param i+d+ambos utero 48
                 }
-                auxi.SegmentVolume = ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 22, 0, 0, 22, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
+                auxi.SegmentVolume = (ptv_ID23.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 25, 0, 0, 25, 0, 0))).AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Outer, 0, 50, 0, 0, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             }
 
             //Struture Auxiliar for creation of lateral crop in PRV Bladder. esto es solo para parametrio izq
 
-            auxi.SegmentVolume = auxi.And(bladder);// intersection with bladder            
-            //ptv_ID27.SegmentVolume = auxi;
+            ptv_ID27.SegmentVolume = auxi.And(bladder);// intersection with bladder
+            ptv_ID27.SegmentVolume = ptv_ID27.And(ptv_ID23);//lo intersecto para que nos e vaya por arriba
+            ptv_ID24.SegmentVolume = ptv_ID23.Sub(ptv_ID27.Margin(6)); //PTV58.4-PRVs! - PRV Rectum+3mm
+            /*//ptv_ID27.SegmentVolume = auxi;
             auxi.SegmentVolume = auxi.AsymmetricMargin(new AxisAlignedMargins(0, 3, 50, 3, 3, 3, 3)); ;//mochado+3mm+5cm hacia arriba para cortar
             ptv_ID27.SegmentVolume = auxi.And(ptv_ID23);//PTV58.4*Bladder mochado para que corte lo necesario modificacdo por carola
-            //ptv_ID27.SegmentVolume = ptv_ID27.And(bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
+            ptv_ID27.SegmentVolume = ptv_ID27.And(bladder);//PTV58.4*PRV Bladder mochado para que corte lo necesario
             ////////////////////////////////////////////PTV58.4-Prvs
             auxi.SegmentVolume = auxi.Margin(3);
-            ptv_ID24.SegmentVolume = ptv_ID23.Sub(auxi);//PTV58.4-PRVs! - PRV Vejiga+3mm
+            ptv_ID24.SegmentVolume = ptv_ID23.Sub(auxi);//PTV58.4-PRVs! - PRV Vejiga+3mm*/
             //auxi.SegmentVolume = prv_rectum;// ahora el auxi es la extension del prv recto
             ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_rectum); //PTV58.4-PRVs! - PRV Rectum+3mm
             //auxi.SegmentVolume = prv_intestino.Margin(1.0);// ahora el auxi es la extension del prv intestino
-            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_intestino.Margin(1.0)); //PTV58.4-PRVs! - PRV Rectum+3mm
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_intestino.Margin(3.0)); //PTV58.4-PRVs! - PRV Rectum+3mm
             //auxi.SegmentVolume = prv_colon;// ahora el auxi es la extension del prv colon
-            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_colon); //PTV58.4-PRVs! - PRV Rectum+3mm
+            if (colon!=null)ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_colon); //PTV58.4-PRVs! - PRV Rectum+3mm
                                                          //////////////////////////////////////////////////////
             ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID23); //48-58.4
             ptv_ID21.SegmentVolume = ptv_ID19.Sub(ptv_ID22); //43-48
@@ -1944,7 +1961,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
             string[] N_Colon = {    "Colon",            "colon", "sigma" };
             string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino" };
-            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body", "BODY" };
             //CAMBIAR NOMBRE
             string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
             string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
@@ -2172,7 +2189,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
             string[] N_Colon = {    "Colon",            "colon", "sigma" };
             string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino","INTESTINO" };
-            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body", "BODY" };
             //CAMBIAR NOMBRE
             string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
             string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
@@ -2419,7 +2436,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Rectum = {   "Rectum",           "recto", "rectum" };
             string[] N_Colon = {    "Colon",            "colon", "sigma" };
             string[] N_Bowel = {    "Bowel",            "bowels", "intestinos", "Intestino", "intestino" };
-            string[] N_Body = {     "Body",             "Outer Contour", "body" };
+            string[] N_Body = {     "Body",             "Outer Contour", "body", "BODY" };
             //CAMBIAR NOMBRE
             string[] N_HJL = {      "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
             string[] N_HJR = {      "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
@@ -2590,7 +2607,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Rectum = {       "Rectum",           "recto",  "rectum" };
             string[] N_Colon = {        "Colon",            "colon",   "sigma", "COLON" };
             string[] N_Bowel = {        "Bowel",            "bowels",  "intestinos", "Intestino", "intestino", "INTESTINO" };
-            string[] N_Body = {         "Body",             "Outer Contour", "body" };
+            string[] N_Body = {         "Body",             "Outer Contour", "body", "BODY" };
             //CAMBIAR NOMBRE
             string[] N_HJL = {          "FemoralJoint_L",   "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
             string[] N_HJR = {          "FemoralJoint_R",   "Hip Joint, Right", "Hip Joint Right",  "CFD" };
@@ -2654,6 +2671,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID14 = "PTV_RestVagina";
             string PTV_ID15 = "zPTV_High_4800!";
             string PTV_ID16 = "zPTV_Low_4500!";
+            string PTV_ID17 = "zPTV_Mid_4600!";
             string PTV_ID18 = "zPTV48-BowelPRV!";//pude estar vacio
             string PTV_ID20 = "zPTV_BowelPRV05!";
             string PTV_ID21 = "zPTV_Total!";
@@ -2691,6 +2709,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
             Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//4800
             Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
+            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);//4600
             Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//48-int
             Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);//intersec int
             Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//total
@@ -2728,6 +2747,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID4 != null)
             {
                 ptv_ID14.SegmentVolume = ctv_ID4.Margin(9.0);//sib
+                ptv_ID17.SegmentVolume = ptv_ID14.Sub(ptv_ID15);//46-48
                 if (ctv_ID3 == null) ptv_ID16.SegmentVolume = ptv_ID14;
                 ptv_ID16.SegmentVolume = ptv_ID16.Or(ptv_ID14);//45 gg+rv
                 ptv_ID16.SegmentVolume = ptv_ID16.Sub(ptv_ID15);//45-48
@@ -2750,7 +2770,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Stomach = { "Stomach", "Estomago", "estomago" };
             string[] N_Esophagus = { "Esophagus", "Esofago", "esofago" };
             string[] N_Bowel = { "Bowel", "bowels", "intestinos", "Intestino", "intestino", "INTESTINO" };
-            string[] N_Body = { "Body", "Outer Contour", "body" };
+            string[] N_Body = { "Body", "Outer Contour", "body", "BODY" };
             string[] N_Duodenum = { "Duodenum", "Duodeno", "duodeno" };//hip joint left
 
             string[] N_Lungs = { "Lungs", "Pulmones", "pulmones" };

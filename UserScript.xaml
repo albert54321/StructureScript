@@ -22,12 +22,13 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </StackPanel.RenderTransform>
-            <Label Content="Patient :" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FFFBF7F7" FontSize="13" Margin="0,15,0,0"/>
+            <Label Content="Patient :" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FFFBF7F7" FontSize="13" Margin="0,15
+                   ,0,0" RenderTransformOrigin="0.916,-0.286"/>
             <Label Content="Patient ID :" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FFFBF7F7" FontSize="13" Margin="-55,70,0,0"/>
             <Label Content="StructureSet :" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#FFFBF7F7" FontSize="13" Margin="-74,115,0,0"/>
-            <Label Name="Patients" Content="************************" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="184" Foreground="#FF114A9C" FontSize="11" Margin="0,20,0,0" Background="#FFF7F2F2"/>
-            <Label Name="ID" Content="*********************" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="110" Foreground="#FF1E2999" FontSize="11" Margin="-182,70,0,0" Background="#FFF7F2F2"/>
-            <Label Name="StructSet" Content="*********************" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="110" Foreground="#FF163895" FontSize="11" Margin="-180,120,0,0" Background="#FFFDFDFD"/>
+            <Label x:Name="Patients" Content="************************" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="184" Foreground="#FF114A9C" FontSize="11" Margin="0,20,0,0" Background="#FFF7F2F2"/>
+            <Label x:Name="ID" Content="*********************" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="110" Foreground="#FF1E2999" FontSize="11" Margin="-182,70,0,0" Background="#FFF7F2F2"/>
+            <Label x:Name="StructSet" Content="*********************" VerticalAlignment="Top" HorizontalAlignment="Left" Height="25" Width="110" Foreground="#FF163895" FontSize="11" Margin="-180,120,0,0" Background="#FFFDFDFD"/>
             <Button x:Name="apply" MinWidth="90" Margin="-360,200,0,0" VerticalAlignment="Top" Height="25" Content="Apply" Click="apply_button" Width="91" FontSize="12"/>
             <Button x:Name="close" MinWidth="90" Margin="-100,200,0,0" VerticalAlignment="Top" Height="25" Content="Close" Click="close_button" Width="91" FontSize="12"/>
         </StackPanel>
