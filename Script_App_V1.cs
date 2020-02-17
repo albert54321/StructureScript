@@ -25,8 +25,8 @@ using System.IO;
 
 // TODO: uncomment the line below if the script requires write access.
 [assembly: ESAPIScript(IsWriteable = true)]
-[assembly: AssemblyVersion("1.0.0.206")]
-[assembly: AssemblyFileVersion("1.0.0.206")]
+[assembly: AssemblyVersion("1.0.0.222")]
+[assembly: AssemblyFileVersion("1.0.0.222")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 
@@ -52,7 +52,9 @@ namespace VMS.TPS
             // TODO : Add here your code that is called when the script is launched from Eclipse
             StructureSet ss = context.StructureSet;
             context.Patient.BeginModifications();
-
+            if (context.StructureSet == null) { throw new ArgumentNullException("Required input StructureSet is not available"); }
+            if (context.StructureSet.Structures == null) { throw new ArgumentNullException("Required input Structures is not available"); }
+            
             var MainControl = new Script_App_V1.UserScript();//llamo la ventana del mainwindow
             window.Content = MainControl;//le doy propiedades
             window.Width = MainControl.Width;
