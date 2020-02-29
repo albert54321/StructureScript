@@ -1116,25 +1116,25 @@ namespace VMS.TPS//tiene que ser igual que el main
             const string SCRIPT_NAME0 = "Script_Rectum20Fx";
             //ctv
             string[] N_SIB = {  "GTV_SIB",          "_SIB", "SIB" };
-            string[] N_Lat = {  "CTV_LN_Lateral",   "Laterales", "laterales" };
-            string[] N_Meso = { "CTV_Mesorectum",   "Mesorecto", "mesorecto", "meso" };
-            string[] N_Inf = {  "CTV_Inf_Rectum",   "Inferior", "inferior" };
-            string[] N_Pre = {  "CTV_LN_Presacra",  "Presacro", "presacro" };
-            string[] N_Ing = {  "CTV_LN_Inguinal",  "Inguinal" };
+            string[] N_Lat = { "CTV_GL_Lateral",   "Laterales", "laterales" };
+            string[] N_Meso = { "CTV_Mesorecto",   "Mesorecto", "mesorecto", "meso" };
+            string[] N_Inf = { "CTV_Recto_Inf",   "Inferior", "inferior" };
+            string[] N_Pre = { "CTV_GL_PreSacro",  "Presacro", "presacro" };
+            string[] N_Ing = { "CTV_GL_Inguinal",  "Inguinal" };
             //oar
             string[] N_Colon = {"Colon",            "colon","sigma" };
-            string[] N_Bladder={"Bladder",          "Vejiga","vejiga" };
-            string[] N_Bowel = {"Bowel",            "Intestino", "intestino","intestinos" };
+            string[] N_Bladder={ "Vejiga", "Bladder",          "vejiga" };
+            string[] N_Bowel = { "Intestino", "Bowel",            "intestino","intestinos" };
             string[] N_Body = { "Body",             "Outer Contour", "BODY" };
             //cambiar nombre
-            string[] N_Prostate = {"Prostate",      "Prostata","prostata" };
-            string[] N_Penile = { "PenileBulb",     "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano","bulbo" };
-            string[] N_GM = { "Gluteus_Maximus",    "Gluteo Mayor", "gluteos", "Gluteo mayor" };
-            string[] N_GS = { "Gluteal_Skin",       "Piel Glutea", "pielG", "Piel glutea","piel", "piel glutea" };
-            string[] N_HJL = { "FemoralJoint_L",    "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
-            string[] N_HJR = { "FemoralJoint_R",    "Hip Joint, Right", "Hip Joint Right",  "CFD" };
-            string[] N_SC = { "SpinalCord",         "Spinal Cord", "Spinal, Cord" };
-
+            string[] N_Prostate = { "Prostata",   "Prostate",      "prostata" };
+            string[] N_Penile = { "BulboPeniano", "PenileBulb",     "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano","bulbo" };
+            string[] N_GM = { "GluteoMayor", "Gluteus_Maximus",    "Gluteo Mayor", "gluteos", "Gluteo mayor" };
+            string[] N_GS = { "GluteoPiel", "Gluteal_Skin",       "Piel Glutea", "pielG", "Piel glutea","piel", "piel glutea" };
+            string[] N_HJL = { "CabezaFemnoral_I", "FemoralJoint_L",    "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJR = { "CabezaFemoral_D", "FemoralJoint_R",    "Hip Joint, Right", "Hip Joint Right",  "CFD" };
+            string[] N_SC = { "MedulaEspinal","SpinalCord",         "Spinal Cord", "Spinal, Cord" };
+            string[] N_Vagina = { "Vagina", "vagina"};
             if (context.Patient == null || context.StructureSet == null)
             {
                 System.Windows.MessageBox.Show("Please load a patient, 3D image, and structure set before running this script.", SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -1211,12 +1211,15 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure sc = ss.Structures.FirstOrDefault(s => N_SC.Any(x => s.Id.Contains(x)));
             VerifStLow(sc, false, N_SC[0]);
 
+            Structure vagina = ss.Structures.FirstOrDefault(s => N_Vagina.Any(x => s.Id.Contains(x)));
+            VerifStLow(vagina, false, N_Vagina[0]);
+
             string PTV_ID12 = "PTV_SIB";
-            string PTV_ID13 = "PTV_LN_Lateral";
-            string PTV_ID14 = "PTV_Mesorectum";
-            string PTV_ID15 = "PTV_InfRectum";
-            string PTV_ID16 = "PTV_LN_Presacral";
-            string PTV_ID17 = "PTV_LN_Inguinal";
+            string PTV_ID13 = "PTV_GL_Lateral";
+            string PTV_ID14 = "PTV_Mesorecto";
+            string PTV_ID15 = "PTV_Recto_Inf";
+            string PTV_ID16 = "PTV_GL_Presacro";
+            string PTV_ID17 = "PTV_GL_Inguinal";
             string PTV_ID21 = "zPTV_Low_4600!";
             string PTV_ID22 = "zPTV_Mid_4800!";
             string PTV_ID22_ = "zPTV_Low_4800!";
@@ -1254,11 +1257,11 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             DialogResult result = System.Windows.Forms.MessageBox.Show("OPtions:" + "\n" + "1.-If Yes, SIB of 52Gy" + "\n" +
     "2.-If No, SIB of 54Gy" + "\n" + "3.-If Cancel, SIB of 59Gy", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
-            DialogResult result2 = System.Windows.Forms.MessageBox.Show("Do you continue?", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result2 == DialogResult.No) return;
             //============================
             // GENERATE  expansion of PTV
             //============================
+            Structure buffered_outer = ss.AddStructure("PTV", "Aux");
+            buffered_outer.SegmentVolume = body.Margin(-5.0);
 
             // create the empty "ptv+5mm" structure ans auxilary structures
             Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
@@ -1282,13 +1285,35 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0); //PTV sib
             ptv_ID23.SegmentVolume = ptv_ID12;//ptv 52gy
-            if (ctv_ID3 != null) ptv_ID13.SegmentVolume = ctv_ID3.Margin(6.0); //PTV latera
+            Cropbody(ptv_ID12, buffered_outer);
+            Cropbody(ptv_ID23, buffered_outer);
+            if (ctv_ID3 != null)
+            {
+                ptv_ID13.SegmentVolume = ctv_ID3.Margin(6.0); //PTV latera
+                Cropbody(ptv_ID13, buffered_outer);
+            }
             //else ss.RemoveStructure(ctv_ID3); ss.RemoveStructure(ptv_ID13);
-            if (ctv_ID4 != null) ptv_ID14.SegmentVolume = ctv_ID4.Margin(9.0); //PTV mesorecto
+            if (ctv_ID4 != null)
+            {
+                ptv_ID14.SegmentVolume = ctv_ID4.Margin(9.0); //PTV mesorecto
+                Cropbody(ptv_ID14, buffered_outer);
+            }
             //else ss.RemoveStructure(ctv_ID4); ss.RemoveStructure(ptv_ID14);
-            if (ctv_ID5 != null) ptv_ID15.SegmentVolume = ctv_ID5.Margin(9.0); //PTV inf
-            if (ctv_ID6 != null) ptv_ID16.SegmentVolume = ctv_ID6.Margin(6.0); //PTV presacral
-            if (ctv_ID7 != null) ptv_ID17.SegmentVolume = ctv_ID7.Margin(6.0); //PTV inguinal
+            if (ctv_ID5 != null)
+            {
+                ptv_ID15.SegmentVolume = ctv_ID5.Margin(9.0); //PTV inf
+                Cropbody(ptv_ID15, buffered_outer);
+            }
+            if (ctv_ID6 != null)
+            {
+                ptv_ID16.SegmentVolume = ctv_ID6.Margin(6.0); //PTV presacral
+                Cropbody(ptv_ID16, buffered_outer);
+            }
+            if (ctv_ID7 != null)
+            {
+                ptv_ID17.SegmentVolume = ctv_ID7.Margin(6.0); //PTV inguinal
+                Cropbody(ptv_ID17, buffered_outer);
+            }
 
             if (!ptv_ID13.IsEmpty) ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID13);                //union ptv 48   22=48
             if (!ptv_ID14.IsEmpty) ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID14);
@@ -1302,7 +1327,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             ptv_ID27.SegmentVolume = ptv_ID23;// ptv total = sib
             if (!ptv_ID22.IsEmpty) ptv_ID27.SegmentVolume = ptv_ID27.Or(ptv_ID22);//58.4+48
             if (!ptv_ID21.IsEmpty) ptv_ID27.SegmentVolume = ptv_ID27.Or(ptv_ID21);//58.4+43
-
+            Cropbody(ptv_ID22, buffered_outer);
+            Cropbody(ptv_ID21, buffered_outer);
+            Cropbody(ptv_ID27, buffered_outer);
             if (colon != null) prv_colon.SegmentVolume = colon.Margin(5.0);// PRV 
             if (bowel != null) prv_intestino.SegmentVolume = bowel.Margin(5.0);// PRV 
 
@@ -1326,6 +1353,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ss.RemoveStructure(ptv_ID21);
                 ptv_ID22.Id = PTV_ID22_;
             }
+            ss.RemoveStructure(buffered_outer);
         }
 
         public void St_CYC_25fx(ScriptContext context)
