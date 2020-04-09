@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Script_App_V1"
         mc:Ignorable="d"
-        Height="496.596" Width="730.664">
+        Height="500" Width="730">
     <UserControl.Background>
         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="#FF101E5D" Offset="0.307"/>

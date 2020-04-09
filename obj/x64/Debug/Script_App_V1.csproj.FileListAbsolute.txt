@@ -77,3 +77,4 @@ W:\FISICA\CARPETAS PERSONALES\Albrto Alarcon\Eclipse script\ProjectsEclipse\Scri
 W:\FISICA\CARPETAS PERSONALES\Albrto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi.g.resources
 W:\FISICA\CARPETAS PERSONALES\Albrto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi.dll
 W:\FISICA\CARPETAS PERSONALES\Albrto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V3.esapi.pdb
+W:\FISICA\CARPETAS PERSONALES\Albrto Alarcon\Eclipse script\ProjectsEclipse\Script_App_V1\obj\x64\Debug\Script_App_V1.csproj.CoreCompileInputs.cache

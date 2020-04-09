@@ -42,7 +42,7 @@ namespace Script_App_V1
             List<VMS.TPS.Structures_Creation> dqm = VMS.TPS.Structures_Creation.Script();//lamo a la clase y la inicializo como es una lista 
             foreach (VMS.TPS.Structures_Creation x in dqm)
             {
-                if (x.ID==Select_1.Content.ToString() ) xapply.start(x.number, sc ,x.approved);
+                if (x.ID==Select_1.Content.ToString() ) xapply.Start(x.number, sc ,x.approved);
             }
             
             System.Windows.MessageBox.Show("Process Ending ");

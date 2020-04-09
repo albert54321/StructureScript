@@ -34,7 +34,7 @@ namespace VMS.TPS//tiene que ser igual que el main
         public Structures_Creation() { } //esto es para poder invocar a la clase
         public string ID { get; set; }//nombre del script a ejecutar
         public bool approved { get; set; }// si esta aprobado
-        public string SCRIPT_NAME { get; set; }//el nombre que muestra en la applicacion
+        public string SCRIPT_NAME { get; set; } ="Script";//el nombre que muestra en la applicacion////////////////////ojo el default name puede estar mal ya que lod defino despues
         public int number { get; set; }
         public string Key { get; } = "PHYSICS_ALBERTO_ALARCON";
         //La lista de script es aqui
@@ -114,14 +114,14 @@ namespace VMS.TPS//tiene que ser igual que el main
             return list;
         } //ESTAN LIGADOS EL NUMBER AQUI
         //comienzo del script strutures
-        public void start(int template, ScriptContext context, bool appr)
+        public void Start(int template, ScriptContext context, bool appr)
         {//ejecuta el scrit seleccionado en User script.c   LIGADO CON VALOR DE TEMPLATE
             if (template == 0 && appr) St_Prostate(context);
             else if (template == 1 && appr) St_Breast_ChestWall(context);
             //else if (template == 2 && appr) St_Breast_ChestWall_RA(context);
             else if (template == 2 && appr) St_Rectum20fx(context);
             else if (template == 3 && appr) St_CYC_25fx(context);
-            else if (template == 4 && appr) St_Cervix_25fx(context);
+            else if (template == 4 && appr) St_Cervix_20fx(context);
             else if (template == 5 && appr) St_HDR_15fx(context);//
             else if (template == 6 && appr) St_Lecho_20fx(context);
             else if (template == 7 && appr) St_Bladder_20fx(context);//
@@ -135,7 +135,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 if (inicio) 
                 {
-                    System.Windows.MessageBox.Show(string.Format("'{0}' not found!", name), SCRIPT_NAME, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    System.Windows.MessageBox.Show(string.Format("'{0}' not found!", name), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     if (need == true)
                     {
                         System.Windows.MessageBox.Show("Script doesnt execute");
@@ -169,7 +169,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 if (inicio)
                 {
-                    System.Windows.MessageBox.Show(string.Format("'{0}' not found!", name), SCRIPT_NAME, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    System.Windows.MessageBox.Show(string.Format("'{0}' not found!", name), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     if (need == true)
                     {
                         System.Windows.MessageBox.Show("Script doesnt execute");
@@ -226,6 +226,57 @@ namespace VMS.TPS//tiene que ser igual que el main
                 resim = true;
             }
             return resim;
+        }
+
+        private void FindCouch(StructureSet ss, ScriptContext context)
+        {
+            if (!ss.Structures.Any(x => x.Id.Contains("Couch")))
+            {
+                System.Windows.MessageBox.Show("Cant find structure Couch, add the Couch in the StructureSet.(No se encontro  la camilla, añada y vuelva a comenzar el script)");
+            };
+            if (string.IsNullOrEmpty(context.Image.Series.ImagingDeviceId))
+            {
+                System.Windows.MessageBox.Show("Add in Imaging device: Somaton SPIRIT, forget it. (Añada en series -> Dispositivo de Imagenes : Somaton SPIRIT, olvido colocarlo)");
+            }
+        }
+
+        public DialogResult question()//pregunta para paraar en mitad antes de la optimizacion
+        {
+            DialogResult desicion = System.Windows.Forms.MessageBox.Show("Do you Continue? Desea continuar?", "Warning", MessageBoxButtons.YesNo);
+            return desicion;
+        }
+
+        private Structure Add_structure(StructureSet structure_set, string name, string dicom_type)
+        {
+            if (name.Length > 16) throw new Exception($"El Id/Name de la structura {name} es mayor que 16 caracteres corrija esto.");
+            Structure structure = structure_set.AddStructure(dicom_type, "_");
+            if (structure_set.Structures.Any(x => x.Id == name))
+            {
+                if (structure_set.Structures.FirstOrDefault(x => x.Id == name).IsEmpty)
+                {
+                    structure_set.RemoveStructure(structure);
+                    structure = structure_set.Structures.FirstOrDefault(x => x.Id == name);
+                }
+                else
+                {
+                    try
+                    {
+                        if (name.Length == 16) structure.Id = name.Remove(name.Length - 1);
+                        else structure.Id = name + ".";
+                    }
+                    catch (Exception)
+                    {
+                        if (name.Length == 16) structure.Id = name.Remove(name.Length - 1);
+                        else structure.Id = name + "_";
+                    }
+                }
+                return structure;
+            }
+            else
+            {
+                structure.Id = name;
+                return structure;
+            }
         }
 
         public void St_Prostate(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
@@ -362,6 +413,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_bowel += ".";
                 }
             }
+            FindCouch(ss, context);
             DialogResult result = System.Windows.Forms.MessageBox.Show("Dose prescription is 36.25Gy?"+ "\n" +"If Yes, dose prescription is 36.25Gy" + "\n" +"If No, dose prescription is 40Gy" + "\n" + "If Cancel, End aplication", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel) return;
             Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
@@ -503,7 +555,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             ss.RemoveStructure(auxi);//tieneq estar ahi porqu lo uso en ctv5
         }
         
-        public void BreastStructureCreation(StructureSet ss,DialogResult result, DialogResult result2, DialogResult result3,bool inicio) 
+        public void BreastStructureCreation(StructureSet ss,DialogResult result, DialogResult result2, DialogResult result3,bool inicio, ScriptContext context) 
         {
             const string SCRIPT_NAME0 = "Script_Breast_ChestWall";
             string[] N_Breast = { "zCTV_Mama", "1-Mama", "CTV_Breast", "zCTV_Mama_I", "zCTV_Mama_D" };
@@ -531,6 +583,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Cardiaca = { "Reg_Cardiaca_Izq" };//aumentar corazon
             string[] N_CoroI = { "Reg_A_CoronariaI", "Reg_CoronariaI", "Reg_Coronaria_I" };//aumentar corazon
             string[] N_VentI = { "Reg_Ventriculo_I", "Reg_VentriculoI" };//aumentar corazon
+            if(inicio) FindCouch(ss, context);
             Structure ctv_ID11 = ss.Structures.FirstOrDefault(s => N_Chest.Any(x => s.Id.Contains(x)));
             if (result == DialogResult.No || result == DialogResult.Cancel) //esto no lo convierto en alta resolucion para que haga la superficie, despues si
             {
@@ -1072,6 +1125,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ctv_ID1.Id = "CTV_Mama.";
             }
         }
+
         public void St_Breast_ChestWall(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
         {
             const string SCRIPT_NAME0 = "Script_Breast_ChestWall";
@@ -1107,8 +1161,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             DialogResult result2 = System.Windows.Forms.MessageBox.Show("Fraction: 16Fx or 20Fx?" + "\n" + "If Yes, the volume is 16Fx." + "\n" + "If No, the volume is 20Fx." + "\n" + "If Cancel, Stop Script", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result2 == DialogResult.Cancel) return;
             //le tengo que pasar el structure set y luego los result 12 y para el result 3 debeser yes si estoy en la modificada y no si estoy en  la original
-            BreastStructureCreation(CT_modificada, result, result2, DialogResult.Yes,true);//aca hace lo de la mama modificada
-            BreastStructureCreation(CT_Original, result, result2, DialogResult.No,false);//aca hace lo de la mama modificada
+            BreastStructureCreation(CT_modificada, result, result2, DialogResult.Yes,true,context);//aca hace lo de la mama modificada
+            BreastStructureCreation(CT_Original, result, result2, DialogResult.No,false,context);//aca hace lo de la mama modificada
         }
 
         public void St_Rectum20fx(ScriptContext context /*, System.Windows.Window window, ScriptEnvironment environment*/)
@@ -1131,7 +1185,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Penile   = { "BulboPeniano",         "PenileBulb",     "Penile Bulb", "Pene B", "penile bulb", "B Pene", "Bulbo", "bulbo peneano","bulbo" };
             string[] N_GM       = { "GluteoMayor",          "Gluteus_Maximus",    "Gluteo Mayor", "gluteos", "Gluteo mayor" };
             string[] N_GS       = { "GluteoPiel",           "Gluteal_Skin",       "Piel Glutea", "pielG", "Piel glutea","piel", "piel glutea" };
-            string[] N_HJL      = { "CabezaFemnoral_I",     "FemoralJoint_L",    "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
+            string[] N_HJL      = { "CabezaFemoral_I",     "FemoralJoint_L",    "Hip Joint, Left", "Hip Joint Left",  "CFI" };//hip joint left
             string[] N_HJR      = { "CabezaFemoral_D",      "FemoralJoint_R",    "Hip Joint, Right", "Hip Joint Right",  "CFD" };
             string[] N_SC       = { "MedulaEspinal",        "SpinalCord",         "Spinal Cord", "Spinal, Cord" };
             string[] N_Vagina   = { "Vagina",               "vagina"};
@@ -1160,8 +1214,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (!HighResol(ctv_ID2) || !HighResol(ctv_ID3) || !HighResol(ctv_ID4) || !HighResol(ctv_ID5) || !HighResol(ctv_ID6) || !HighResol(ctv_ID7) || !HighResol(colon) || !HighResol(bladder) || !HighResol(bowel) )
             {
                 Low = false;
-                VerifSt(ctv_ID2, true, N_SIB[0]);//es necesario true
-                if (ctv_ID2 == null) return;
+                VerifSt(ctv_ID2, false, N_SIB[0]);//es necesario true
                 VerifSt(ctv_ID3, false, N_Lat[0]);//es necesario true
                 VerifSt(ctv_ID4, false, N_Meso[0]);//es necesario true
                 VerifSt(ctv_ID5, false, N_Inf[0]);//es necesario true
@@ -1174,8 +1227,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             else
             {
                 Low = true;
-                VerifStLow(ctv_ID2, true, N_SIB[0]);//es necesario true
-                if (ctv_ID2 == null) return;
+                VerifStLow(ctv_ID2, false, N_SIB[0]);//es necesario true                
                 VerifStLow(ctv_ID3, false, N_Lat[0]);//es necesario true
                 VerifStLow(ctv_ID4, false, N_Meso[0]);//es necesario true
                 VerifStLow(ctv_ID5, false, N_Inf[0]);//es necesario true
@@ -1214,7 +1266,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure vagina = ss.Structures.FirstOrDefault(s => N_Vagina.Any(x => s.Id.Contains(x)));
             VerifStLow(vagina, false, N_Vagina[0]);
 
-            string PTV_ID12 = "PTV_SIB";
+            string PTV_ID12 = "PTV_SIB";//no hay ninguno mas de 15
             string PTV_ID13 = "PTV_GL_Lateral";
             string PTV_ID14 = "PTV_Mesorecto";
             string PTV_ID15 = "PTV_Recto_Inf";
@@ -1230,9 +1282,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID27 = "zPTV_Total!";
             string PRV_Colon = "Colon_PRV05";//
             string PRV_Bowel = "Intestino_PRV05";//
-            DialogResult result_1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result_1 == DialogResult.No)
-            { return; }
+            FindCouch(ss, context);//se fija si no te olvidaste la camila o el CT
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             if (IsResim(ss))//resimulacion??
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
@@ -1283,10 +1334,13 @@ namespace VMS.TPS//tiene que ser igual que el main
                 foreach (Structure x in St) x.ConvertToHighResolution();
             }
 
-            ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0); //PTV sib
-            ptv_ID23.SegmentVolume = ptv_ID12;//ptv 52gy
-            Cropbody(ptv_ID12, buffered_outer);
-            Cropbody(ptv_ID23, buffered_outer);
+            if (ctv_ID2 != null)
+            {
+                ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0); //PTV sib
+                ptv_ID23.SegmentVolume = ptv_ID12;//ptv 52gy
+                Cropbody(ptv_ID12, buffered_outer);
+                Cropbody(ptv_ID23, buffered_outer);
+            }
             if (ctv_ID3 != null)
             {
                 ptv_ID13.SegmentVolume = ctv_ID3.Margin(6.0); //PTV latera
@@ -1320,11 +1374,11 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (!ptv_ID15.IsEmpty) ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID15);
             if (!ptv_ID16.IsEmpty) ptv_ID22.SegmentVolume = ptv_ID22.Or(ptv_ID16);
             ptv_ID21.SegmentVolume = ptv_ID17;//ptv46gy
-            if (!ptv_ID22.IsEmpty) ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID23);//48-52
+            if (!ptv_ID22.IsEmpty && ptv_ID23!=null && !ptv_ID23.IsEmpty) ptv_ID22.SegmentVolume = ptv_ID22.Sub(ptv_ID23);//48-52
             if (!ptv_ID21.IsEmpty) ptv_ID21.SegmentVolume = ptv_ID21.Sub(ptv_ID22);//46-48
 
             //PTV total
-            ptv_ID27.SegmentVolume = ptv_ID23;// ptv total = sib
+            ptv_ID27.SegmentVolume = ptv_ID27.Or(ptv_ID23);// ptv total = sib
             if (!ptv_ID22.IsEmpty) ptv_ID27.SegmentVolume = ptv_ID27.Or(ptv_ID22);//58.4+48
             if (!ptv_ID21.IsEmpty) ptv_ID27.SegmentVolume = ptv_ID27.Or(ptv_ID21);//58.4+43
             Cropbody(ptv_ID22, buffered_outer);
@@ -1343,7 +1397,11 @@ namespace VMS.TPS//tiene que ser igual que el main
                 if (ptv_ID22!=null) ptv_ID22.Id = PTV_ID26;
 
             }
-
+            if (ctv_ID2 == null)
+            {
+                ss.RemoveStructure(ptv_ID23);
+                ss.RemoveStructure(ptv_ID12);
+            }
             if (ctv_ID3 == null) ss.RemoveStructure(ptv_ID13);
             if (ctv_ID4 == null) ss.RemoveStructure(ptv_ID14);
             if (ctv_ID5 == null) ss.RemoveStructure(ptv_ID15);
@@ -1455,9 +1513,9 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure body0 = ss.AddStructure("CONTROL", "Body0");
             body0.SegmentVolume = body;
 
-            string Dientes = "zDientes";
-            string Inf = "zRegion_Inferior";
-            string MR = "zRegion_Boca";
+            string Dientes = "zDientes";//no hay ninguno mas de 15
+            string Inf = "zReg_Inferior";
+            string MR = "zReg_Boca";
             string Af = "zArtefacto";
             string Lips = "zLabios";
             string PTV_ID12 = "PTV_SIB";
@@ -1473,9 +1531,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID25 = "zPTV_Total!";
             string PRV_Brainstem = "Tronco_PRV05";
             string PRV_SC = "MedulaEsp_PRV05";//
-            DialogResult result_1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result_1 == DialogResult.No)
-            { return; }
+            FindCouch(ss, context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
@@ -1499,7 +1556,6 @@ namespace VMS.TPS//tiene que ser igual que el main
                     MR += ".";
                     Af += ".";
                     Lips += ".";
-
                 }
             }
 
@@ -1662,16 +1718,16 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (ctv_ID8 == null) ss.RemoveStructure(ptv_ID18);
         }
 
-        public void St_Cervix_25fx(ScriptContext context)//es 20fx
+        public void St_Cervix_20fx(ScriptContext context)//es 20fx
         {
             const string SCRIPT_NAME0 = "Cervix";
             //gtv-ctvs
             string[] N_GTV      = { "GTV_Cervix",       "Tumor","GTV" };  //TU
-            string[] N_CTV3     = { "CTV_Paramet_L" };          //PARAMETRIO DER
+            string[] N_CTV3     = { "CTV_Paramet_I" };          //PARAMETRIO DER
             string[] N_CTV4     = { "CTV_Paramet_D" };          //PARAMETRIO IZQ
             string[] N_CTV5     = { "CTV_Resto_Utero", "RU" };        //RESTO DE UTERO
             string[] N_CTV6     = { "CTV_Resto_Vagina","RestoVagina" };        //RESTO DE VAGINA
-            string[] N_CTV7     = { "CTV_GL_Iliac" };           //ILIACOS
+            string[] N_CTV7     = { "CTV_GL_Iliacos" };           //ILIACOS
             string[] N_CTV8     = { "CTV_Gl_Presacro" };        //PRESACROS
             string[] N_CTV9     = { "CTV_GL_LumbAort",  "LAO", "RP" }; //LAO
             string[] N_CTV10    = { "CTV_ADP_I" };              //ADP este se anade al de 58.4
@@ -1685,8 +1741,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] N_Rectum   = { "Recto",          "Rectum",           "Recto" };
             string[] N_Bowel    = { "Intestino",       "Bowel",            "intestino","intestinos", "Intestinos", "INTESTINO" };
             string[] N_Body     = { "Body",             "Outer Contour", "body", "BODY" };
-            string[] N_FJL      = { "CabezaFemnoral_I", "FemoralJoint_L", "Hip Joint, Left" };
-            string[] N_FJR      = { "CabezaFemnoral_D", "FemoralJoint_R", "Hip Joint, Right" };
+            string[] N_FJL      = { "CabezaFemoral_I", "FemoralJoint_L", "Hip Joint, Left" };
+            string[] N_FJR      = { "CabezaFemoral_D", "FemoralJoint_R", "Hip Joint, Right" };
             string[] N_KL       = { "Riñon_I","Kidney_L", "Kidney, Left" };
             string[] N_KR       = { "Riñon_D", "Kidney_R" , "Kidney, Right" };
             string[] N_SC       = { "MedulaEspinal","SpinalCord",       "Spinal Cord", "Sc", "sc" };
@@ -1792,14 +1848,14 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifSt(gastro, false, GASTRO[0]);
 
             //New Structures 
-            string PTV_ID12 = "PTV_GTV_Cervix";
-            string PTV_ID13 = "PTV_Paramet_L";
-            string PTV_ID14 = "PTV_Paramet_R";
-            string PTV_ID15 = "PTV_Rest_Uterus";
-            string PTV_ID16 = "PTV_Rest_Vagina";
-            string PTV_ID17 = "PTV_LN_Iliac";
-            string PTV_ID18 = "PTV_LN_Presacral";
-            string PTV_ID19 = "PTV_LN_Paraaort";
+            string PTV_ID12 = "PTV_GTV_Cervix";//no hay ninguno de mas de 15
+            string PTV_ID13 = "PTV_Paramet_I";
+            string PTV_ID14 = "PTV_Paramet_D";
+            string PTV_ID15 = "PTV_RestoUtero";
+            string PTV_ID16 = "PTV_RestoVagina";
+            string PTV_ID17 = "PTV_GL_Iliacos";
+            string PTV_ID18 = "PTV_GL_Presacro";
+            string PTV_ID19 = "PTV_GL_LumbAort";
             string PTV_ID20 = "PTV_ADP_I";
             string PTV_ID21 = "zPTV_Low_4300!";
             string PTV_ID22 = "zPTV_Mid_4800!";
@@ -1807,20 +1863,19 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PTV_ID23 = "zPTV_High_5840!";
             string PTV_ID24 = "zPTV5840-PRVs!";  //PTV58.4-PRVs
             string PTV_ID25 = "zPTV_Total!";
-            string PTV_ID26 = "zPTV58_Rectum!";//PTV58.4 interseccion PRV recto
-            string PTV_ID27 = "zPTV58_Bladder!"; //PTV58.4 interseccion PRV vejiga
+            string PTV_ID26 = "zPTV58_Recto!";//PTV58.4 interseccion PRV recto
+            string PTV_ID27 = "zPTV58_Vejiga!"; //PTV58.4 interseccion PRV vejiga
                                                         //PTVs de la variante
-            string PTV_ID28 = "PTV_LN_Pelvic"; //
-            string PTV_ID29 = "PTV_Parametrium";
+            string PTV_ID28 = "PTV_GL_Pelvicos"; //
+            string PTV_ID29 = "PTV_Parametrios";
             string PTV_ID30 = "PTV_ADP_II";
 
-            string PRV_Rectum = "Rectum_PRV05";
+            string PRV_Rectum = "Recto_PRV05";
             string PRV_Colon = "Colon_PRV05";//
-            string PRV_Bowel = "Bowel_PRV05";//
-            string PRV_Bladder = "Bladder_PRV05";//
-            DialogResult result_1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result_1 == DialogResult.No)
-            { return; }
+            string PRV_Bowel = "Intestino_PRV05";//
+            string PRV_Bladder = "Vejiga_PRV05";//
+            FindCouch(ss, context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
@@ -2130,9 +2185,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string Rect_post = "Rectum_P";
             string PRV_Sigma = "Colon_PRV05!";//
             string PRV_Intestino = "Bowel_PRV05!";//
-            DialogResult result_1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result_1 == DialogResult.No)
-            { return; }
+            FindCouch(ss, context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
@@ -2358,9 +2412,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string Rect_post = "Rectum_P";
             string PRV_colon = "Colon_PRV05";//
             string PRV_bowel = "Bowel_PRV05";//
-            DialogResult result1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result1 == DialogResult.No)
-            { return; }
+            FindCouch(ss,context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
 
             if (IsResim(ss))//RE SIMULAICON
             {
@@ -2574,9 +2627,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure hjr = ss.Structures.FirstOrDefault(s => N_HJR.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifStLow(hjl, false, N_HJL[0]);//s = structura s.id su id names es el array de string para ver
             VerifStLow(hjr, false, N_HJR[0]);
-            DialogResult result1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result1 == DialogResult.No)
-            { return; }
+            FindCouch(ss,context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             //comienza las estrucuras
             //New Structures 
             string PTV_ID12 = "PTV_Bladder";
@@ -2763,9 +2815,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_Rectum = "Rectum_PRV05";
             string PRV_colon = "Colon_PRV05";//
             string PRV_bowel = "Bowel_PRV05";//
-            DialogResult result_1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result_1 == DialogResult.No)
-            { return; }
+            FindCouch(ss, context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             if (IsResim(ss))//RE SIMULAICON
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
@@ -2928,9 +2979,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_duode = "Duodenum_PRV05";//
             string PRV_bowel = "Bowel_PRV05";//
             string PRV_stomach = "Stomach_PRV05";//
-            DialogResult result_1 = System.Windows.Forms.MessageBox.Show("Do you continue? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
-            if (result_1 == DialogResult.No)
-            { return; }
+            FindCouch(ss, context);
+            if (question() == DialogResult.No) return;//pregunta si deseamos continuar
             if (IsResim(ss))//RE SIMULAICON
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);

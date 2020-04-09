@@ -25,8 +25,8 @@ using System.IO;
 
 // TODO: uncomment the line below if the script requires write access.
 [assembly: ESAPIScript(IsWriteable = true)]
-[assembly: AssemblyVersion("1.0.0.224")]
-[assembly: AssemblyFileVersion("1.0.0.224")]
+[assembly: AssemblyVersion("1.0.0.234")]
+[assembly: AssemblyFileVersion("1.0.0.234")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 
