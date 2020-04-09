@@ -218,6 +218,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
         }//crop 0.5cm del body
 
+        //en desuso por la funcion add_structure:
         public bool IsResim(StructureSet ss)
         {
             bool resim = false;
@@ -246,7 +247,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             return desicion;
         }
 
-        private Structure Add_structure(StructureSet structure_set, string name, string dicom_type)
+        private Structure Add_structure(StructureSet structure_set, string dicom_type, string name)
         {
             if (name.Length > 16) throw new Exception($"El Id/Name de la structura {name} es mayor que 16 caracteres corrija esto.");
             Structure structure = structure_set.AddStructure(dicom_type, "_");
@@ -261,12 +262,12 @@ namespace VMS.TPS//tiene que ser igual que el main
                 {
                     try
                     {
-                        if (name.Length == 16) structure.Id = name.Remove(name.Length - 1);
+                        if (name.Length == 16) structure.Id = name.Remove(name.Length - 1) + ".";
                         else structure.Id = name + ".";
                     }
                     catch (Exception)
                     {
-                        if (name.Length == 16) structure.Id = name.Remove(name.Length - 1);
+                        if (name.Length == 16) structure.Id = name.Remove(name.Length - 1)+ "_";
                         else structure.Id = name + "_";
                     }
                 }
@@ -388,7 +389,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_colon = "Colon_PRV05";//
             string PRV_bowel = "Bowel_PRV05";//
             
-            if (IsResim(ss) )
+            /*if (IsResim(ss) )
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("Se ha detectado PTVs, el plan es resimilacion?", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if(result0==DialogResult.Yes)
@@ -412,11 +413,11 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_colon += ".";
                     PRV_bowel += ".";
                 }
-            }
+            }*/
             FindCouch(ss, context);
             DialogResult result = System.Windows.Forms.MessageBox.Show("Dose prescription is 36.25Gy?"+ "\n" +"If Yes, dose prescription is 36.25Gy" + "\n" +"If No, dose prescription is 40Gy" + "\n" + "If Cancel, End aplication", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel) return;
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);
             if (result == DialogResult.No) ptv_ID20.Id = PTV_ID20_;
             
             //============================
@@ -425,24 +426,24 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             // create the empty "ptv+5mm" structure ans auxilary structures
             
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);
-            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);//ptv20 arriba
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
-            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
-            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
-            Structure ptv_ID24 = ss.AddStructure("PTV", PTV_ID24);
-            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
-            Structure rect_ant = ss.AddStructure("CONTROL", Rect_ant);
-            Structure rect_post = ss.AddStructure("CONTROL", Rect_post);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
-            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
-            Structure auxi = ss.AddStructure("CONTROL", "Buffer");
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);
+            Structure ptv_ID19 = Add_structure(ss, "PTV", PTV_ID19);//ptv20 arriba
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);
+            Structure ptv_ID22 = Add_structure(ss, "PTV", PTV_ID22);
+            Structure ptv_ID23 = Add_structure(ss, "PTV", PTV_ID23);
+            Structure ptv_ID24 = Add_structure(ss, "PTV", PTV_ID24);
+            Structure prv_rectum = Add_structure(ss, "CONTROL", PRV_Rectum);
+            Structure rect_ant = Add_structure(ss, "CONTROL", Rect_ant);
+            Structure rect_post = Add_structure(ss, "CONTROL", Rect_post);
+            Structure prv_colon = Add_structure(ss, "CONTROL", PRV_colon);
+            Structure prv_bowel = Add_structure(ss, "CONTROL", PRV_bowel);
+            Structure auxi = Add_structure(ss, "CONTROL", "Buffer");
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
@@ -487,7 +488,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 prv_bowel.SegmentVolume = bowel.Margin(5.0);// PRV colon
             }
-            //Structure aux                 = ss.AddStructure("CONTROL", "auxilary");//axilary
+            //Structure aux                 = Add_structure(ss, "CONTROL", "auxilary");//axilary
             prv_rectum.SegmentVolume = rectum.Margin(5.0);// PRV Rectum
             rect_post.SegmentVolume = rectum.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 17, 0, 0, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             rect_ant.SegmentVolume = rectum.Sub(rect_post);
@@ -742,7 +743,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             //const string PTV_ID26_ = "zPTV_Mid_4600!";  //PTV_46Gy
             string PTV_ID27 = "PTV_Pared";//"PTV_Chestwall";  //PTV pared
 
-            if (IsResim(ss))
+            /*if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -773,7 +774,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PTV_ID28 += ".";
                     PTV_ID28_ += ".";
                 }
-            }
+            }*/
 
             if (result2 == DialogResult.No)
             {
@@ -794,28 +795,28 @@ namespace VMS.TPS//tiene que ser igual que el main
 
                 }
             }            
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);
-            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
-            Structure ptv_ID_20 = ss.AddStructure("PTV", PTV_ID_20);
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
-            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
-            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
-            Structure ptv_ID24 = ss.AddStructure("PTV", PTV_ID24);
-            Structure ptv_ID25 = ss.AddStructure("PTV", PTV_ID25);
-            Structure ptv_ID27 = ss.AddStructure("PTV", PTV_ID27);
-            Structure ptv_ID28 = ss.AddStructure("PTV", PTV_ID28);
-            Structure ring = ss.AddStructure("CONTROL", Ring);
-            Structure surface = ss.AddStructure("AVOIDANCE", Surface);
-            Structure buffered_outer = ss.AddStructure("CONTROL", "outer-5");
-            Structure ctv_ID_1 = ss.AddStructure("CTV", "Breast");//Mama MD o MI
-            Structure body = ss.AddStructure("CONTROL", "High_Body");
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);
+            Structure ptv_ID19 = Add_structure(ss, "PTV", PTV_ID19);
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);
+            Structure ptv_ID_20 = Add_structure(ss, "PTV", PTV_ID_20);
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);
+            Structure ptv_ID22 = Add_structure(ss, "PTV", PTV_ID22);
+            Structure ptv_ID23 = Add_structure(ss, "PTV", PTV_ID23);
+            Structure ptv_ID24 = Add_structure(ss, "PTV", PTV_ID24);
+            Structure ptv_ID25 = Add_structure(ss, "PTV", PTV_ID25);
+            Structure ptv_ID27 = Add_structure(ss, "PTV", PTV_ID27);
+            Structure ptv_ID28 = Add_structure(ss, "PTV", PTV_ID28);
+            Structure ring = Add_structure(ss, "CONTROL", Ring);
+            Structure surface = Add_structure(ss, "AVOIDANCE", Surface);
+            Structure buffered_outer = Add_structure(ss, "CONTROL", "outer-5");
+            Structure ctv_ID_1 = Add_structure(ss, "CTV", "Breast");//Mama MD o MI
+            Structure body = Add_structure(ss, "CONTROL", "High_Body");
             body.SegmentVolume = body0;
             int is_high = 0;// esto  me sirve para hacer la superficie sino es alta resolucion es 0 si es es 1
             if (!(ctv_ID1 == null))
@@ -939,7 +940,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                 ptv_ID24.SegmentVolume = ptv_ID22.Or(ptv_ID25);//pared
             }
 
-            Structure buffered_ring = ss.AddStructure("AVOIDANCE", "b_ring");//luego se quita
+            Structure buffered_ring = Add_structure(ss, "AVOIDANCE", "b_ring");//luego se quita
             if (result3 == DialogResult.Yes)
             {
                 if (is_high == 1 || is_high == 2)// solo entra aqui cuando no pudo hacerlo porque breast, chestwall eran alta resulcuion
@@ -1284,7 +1285,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_Bowel = "Intestino_PRV05";//
             FindCouch(ss, context);//se fija si no te olvidaste la camila o el CT
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
-            if (IsResim(ss))//resimulacion??
+            /*if (IsResim(ss))//resimulacion??
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -1304,29 +1305,29 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_Colon += ".";
                     PRV_Bowel += ".";
                 }
-            }
+            }*/
 
             DialogResult result = System.Windows.Forms.MessageBox.Show("OPtions:" + "\n" + "1.-If Yes, SIB of 52Gy" + "\n" +
     "2.-If No, SIB of 54Gy" + "\n" + "3.-If Cancel, SIB of 59Gy", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             //============================
             // GENERATE  expansion of PTV
             //============================
-            Structure buffered_outer = ss.AddStructure("PTV", "Aux");
+            Structure buffered_outer = Add_structure(ss, "PTV", "Aux");
             buffered_outer.SegmentVolume = body.Margin(-5.0);
 
             // create the empty "ptv+5mm" structure ans auxilary structures
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
-            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
-            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);//ptv sib todos
-            Structure ptv_ID27 = ss.AddStructure("PTV", PTV_ID27);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_Colon);
-            Structure prv_intestino = ss.AddStructure("CONTROL", PRV_Bowel);
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);
+            Structure ptv_ID22 = Add_structure(ss, "PTV", PTV_ID22);
+            Structure ptv_ID23 = Add_structure(ss, "PTV", PTV_ID23);//ptv sib todos
+            Structure ptv_ID27 = Add_structure(ss, "PTV", PTV_ID27);
+            Structure prv_colon = Add_structure(ss, "CONTROL", PRV_Colon);
+            Structure prv_intestino = Add_structure(ss, "CONTROL", PRV_Bowel);
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
@@ -1510,7 +1511,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             Structure body = ss.Structures.FirstOrDefault(s => N_Body.Any(x => s.Id.Contains(x)));//s = structura s.id su id names es el array de string para ver
             VerifStLow(body, true, N_Body[0]);//
 
-            Structure body0 = ss.AddStructure("CONTROL", "Body0");
+            Structure body0 = Add_structure(ss, "CONTROL", "Body0");
             body0.SegmentVolume = body;
 
             string Dientes = "zDientes";//no hay ninguno mas de 15
@@ -1533,7 +1534,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_SC = "MedulaEsp_PRV05";//
             FindCouch(ss, context);
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
-            if (IsResim(ss))
+            /*if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -1557,37 +1558,37 @@ namespace VMS.TPS//tiene que ser igual que el main
                     Af += ".";
                     Lips += ".";
                 }
-            }
+            }*/
 
             //============================
             // GENERATE  expansion of PTV
             //============================
 
             // create the empty "ptv+5mm" structure ans auxilary structures
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//n1
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
-            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
-            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
-            Structure ptv_ID25 = ss.AddStructure("PTV", PTV_ID25);
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);//n1
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);
+            Structure ptv_ID22 = Add_structure(ss, "PTV", PTV_ID22);
+            Structure ptv_ID23 = Add_structure(ss, "PTV", PTV_ID23);
+            Structure ptv_ID25 = Add_structure(ss, "PTV", PTV_ID25);
 
-            Structure prv_brainstem = ss.AddStructure("CONTROL", PRV_Brainstem);
-            Structure prv_sc = ss.AddStructure("CONTROL", PRV_SC);
-            Structure dientes = ss.AddStructure("CONTROL", Dientes);
-            Structure mr = ss.AddStructure("CONTROL", MR);
-            Structure af = ss.AddStructure("CONTROL", Af);
-            Structure inf = ss.AddStructure("CONTROL", Inf);
-            Structure lips = ss.AddStructure("CONTROL", Lips);
+            Structure prv_brainstem = Add_structure(ss, "CONTROL", PRV_Brainstem);
+            Structure prv_sc = Add_structure(ss, "CONTROL", PRV_SC);
+            Structure dientes = Add_structure(ss, "CONTROL", Dientes);
+            Structure mr = Add_structure(ss, "CONTROL", MR);
+            Structure af = Add_structure(ss, "CONTROL", Af);
+            Structure inf = Add_structure(ss, "CONTROL", Inf);
+            Structure lips = Add_structure(ss, "CONTROL", Lips);
 
-            Structure auxi = ss.AddStructure("CONTROL", "Auxi");//auxiliar 
-            Structure auxi2 = ss.AddStructure("CONTROL", "auxi2");//auxiliar 
-            Structure auxi3 = ss.AddStructure("CONTROL", "auxi3");//auxiliar 
-            Structure buff_body = ss.AddStructure("CONTROL", "buff_body");//auxiliar
+            Structure auxi = Add_structure(ss, "CONTROL", "Auxi");//auxiliar 
+            Structure auxi2 = Add_structure(ss, "CONTROL", "auxi2");//auxiliar 
+            Structure auxi3 = Add_structure(ss, "CONTROL", "auxi3");//auxiliar 
+            Structure buff_body = Add_structure(ss, "CONTROL", "buff_body");//auxiliar
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
@@ -1848,18 +1849,18 @@ namespace VMS.TPS//tiene que ser igual que el main
             VerifSt(gastro, false, GASTRO[0]);
 
             //New Structures 
-            string PTV_ID12 = "PTV_GTV_Cervix";//no hay ninguno de mas de 15
+            string PTV_ID12 = "PTV_GTV_Cervix";//no hay ninguno de mas de 15/solo1
             string PTV_ID13 = "PTV_Paramet_I";
             string PTV_ID14 = "PTV_Paramet_D";
-            string PTV_ID15 = "PTV_RestoUtero";
-            string PTV_ID16 = "PTV_RestoVagina";
+            string PTV_ID15 = "PTV_Resto_Utero";
+            string PTV_ID16 = "PTV_Resto_Vagina";
             string PTV_ID17 = "PTV_GL_Iliacos";
             string PTV_ID18 = "PTV_GL_Presacro";
             string PTV_ID19 = "PTV_GL_LumbAort";
             string PTV_ID20 = "PTV_ADP_I";
             string PTV_ID21 = "zPTV_Low_4300!";
             string PTV_ID22 = "zPTV_Mid_4800!";
-            //string PTV_ID22_ = "zPTV48-BowelPRV";me falta colocar la funcion de esto me parece bueno que este
+            string PTV_ID31 = "zPTV48-BowelPRV";//me falta colocar la funcion de esto me parece bueno que este
             string PTV_ID23 = "zPTV_High_5840!";
             string PTV_ID24 = "zPTV5840-PRVs!";  //PTV58.4-PRVs
             string PTV_ID25 = "zPTV_Total!";
@@ -1876,7 +1877,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_Bladder = "Vejiga_PRV05";//
             FindCouch(ss, context);
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
-            if (IsResim(ss))
+            /*if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -1904,35 +1905,36 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_Bowel += ".";
                     PRV_Bladder += ".";
                 }
-            }
+            }*/
             // create the empty "ptv+5mm" structure ans auxilary structures
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);
-            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
-            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
-            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
-            Structure ptv_ID24 = ss.AddStructure("PTV", PTV_ID24);
-            Structure ptv_ID25 = ss.AddStructure("PTV", PTV_ID25);
-            Structure ptv_ID26 = ss.AddStructure("PTV", PTV_ID26);
-            Structure ptv_ID27 = ss.AddStructure("PTV", PTV_ID27);
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);
+            Structure ptv_ID19 = Add_structure(ss, "PTV", PTV_ID19);
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);
+            Structure ptv_ID22 = Add_structure(ss, "PTV", PTV_ID22);
+            Structure ptv_ID23 = Add_structure(ss, "PTV", PTV_ID23);
+            Structure ptv_ID24 = Add_structure(ss, "PTV", PTV_ID24);
+            Structure ptv_ID25 = Add_structure(ss, "PTV", PTV_ID25);
+            Structure ptv_ID26 = Add_structure(ss, "PTV", PTV_ID26);
+            Structure ptv_ID27 = Add_structure(ss, "PTV", PTV_ID27);
 
-            Structure ptv_ID28 = ss.AddStructure("PTV", PTV_ID28);//PTV DE LOS GANGLIOS
-            Structure ptv_ID29 = ss.AddStructure("PTV", PTV_ID29);//PTV DE LOS PARAMETRIOS
-            Structure ptv_ID30 = ss.AddStructure("PTV", PTV_ID30);//ADPII
+            Structure ptv_ID28 = Add_structure(ss, "PTV", PTV_ID28);//PTV DE LOS GANGLIOS
+            Structure ptv_ID29 = Add_structure(ss, "PTV", PTV_ID29);//PTV DE LOS PARAMETRIOS
+            Structure ptv_ID30 = Add_structure(ss, "PTV", PTV_ID30);//ADPII
+            Structure ptv_ID31 = Add_structure(ss, "PTV", PTV_ID31);//ptv48-PRVbowel
 
-            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_Colon);
-            Structure prv_intestino = ss.AddStructure("CONTROL", PRV_Bowel);
-            Structure prv_bladder = ss.AddStructure("CONTROL", PRV_Bladder);
+            Structure prv_rectum = Add_structure(ss, "CONTROL", PRV_Rectum);
+            Structure prv_colon = Add_structure(ss, "CONTROL", PRV_Colon);
+            Structure prv_bowel = Add_structure(ss, "CONTROL", PRV_Bowel);
+            Structure prv_bladder = Add_structure(ss, "CONTROL", PRV_Bladder);
 
-            Structure auxi = ss.AddStructure("CONTROL", "Auxi");//auxiliar para mochar
+            Structure auxi = Add_structure(ss, "CONTROL", "Auxi");//auxiliar para mochar
 
             DialogResult result = System.Windows.Forms.MessageBox.Show("Options:" + "\n" + "1.-If Yes, Parametrium left(izq) is inside 58.4Gy" + "\n" +
     "2.-If No, Parametrium right(der) is inside 58.4Gy" + "\n" + "3.-If Cancel, both(ambos) of them are inside 58.4Gy", SCRIPT_NAME, MessageBoxButtons.YesNoCancel);
@@ -1940,8 +1942,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
                 St.Add(ptv_ID12); St.Add(ptv_ID13); St.Add(ptv_ID14); St.Add(ptv_ID15); St.Add(ptv_ID16); St.Add(ptv_ID17); St.Add(ptv_ID18); St.Add(ptv_ID19); St.Add(ptv_ID20);
-                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(ptv_ID25); St.Add(ptv_ID26); St.Add(ptv_ID27); St.Add(ptv_ID28); St.Add(ptv_ID29); St.Add(ptv_ID30);///////
-                St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_intestino); St.Add(prv_bladder); St.Add(auxi); //St.Add(rectum); St.Add(bladder); St.Add(bowel);
+                St.Add(ptv_ID21); St.Add(ptv_ID22); St.Add(ptv_ID23); St.Add(ptv_ID24); St.Add(ptv_ID25); St.Add(ptv_ID26); St.Add(ptv_ID27); St.Add(ptv_ID28); St.Add(ptv_ID29); St.Add(ptv_ID30); St.Add(ptv_ID31);///////
+                St.Add(prv_rectum); St.Add(prv_colon); St.Add(prv_bowel); St.Add(prv_bladder); St.Add(auxi); //St.Add(rectum); St.Add(bladder); St.Add(bowel);
                 foreach (Structure x in St) x.ConvertToHighResolution();
             }
             ptv_ID12.SegmentVolume = ctv_ID2.Margin(9.0); //PTV Tumor cuello
@@ -1999,7 +2001,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             if (colon != null) prv_colon.SegmentVolume = colon.Margin(5.0);// PRV 
             prv_bladder.SegmentVolume = bladder.Margin(5.0);// PRV 
             prv_rectum.SegmentVolume = rectum.Margin(5.0);// PRV 
-            prv_intestino.SegmentVolume = bowel.Margin(5.0);// PRV 
+            prv_bowel.SegmentVolume = bowel.Margin(5.0);// PRV 
 
             if (result == DialogResult.Yes)
             {
@@ -2052,7 +2054,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             //auxi.SegmentVolume = prv_rectum;// ahora el auxi es la extension del prv recto
             ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_rectum); //PTV58.4-PRVs! - PRV Rectum+3mm
             //auxi.SegmentVolume = prv_intestino.Margin(1.0);// ahora el auxi es la extension del prv intestino
-            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_intestino.Margin(3.0)); //PTV58.4-PRVs! - PRV Rectum+3mm
+            ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_bowel.Margin(3.0)); //PTV58.4-PRVs! - PRV Rectum+3mm
             //auxi.SegmentVolume = prv_colon;// ahora el auxi es la extension del prv colon
             if (colon!=null)ptv_ID24.SegmentVolume = ptv_ID24.Sub(prv_colon); //PTV58.4-PRVs! - PRV Rectum+3mm
                                                          //////////////////////////////////////////////////////
@@ -2065,6 +2067,8 @@ namespace VMS.TPS//tiene que ser igual que el main
             ptv_ID25.SegmentVolume = ptv_ID25.Or(ptv_ID21);//58.4+43
             //PTV58.4*RECto dado por carola
             ptv_ID26.SegmentVolume = ptv_ID23.And(rectum);
+            if (ptv_ID22 != null) ptv_ID31.SegmentVolume = ptv_ID22.Sub(prv_bowel);
+            else ss.RemoveStructure(ptv_ID22);
 
             ss.RemoveStructure(auxi);
             if (gastro==null)ss.RemoveStructure(gastro);
@@ -2187,7 +2191,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_Intestino = "Bowel_PRV05!";//
             FindCouch(ss, context);
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
-            if (IsResim(ss))
+            /*if (IsResim(ss))
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -2205,23 +2209,23 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_Sigma += ".";
                     PRV_Intestino += ".";
                 }
-            }
+            }*/
 
             // create the empty "ptv+5mm" structure ans auxilary structures
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//prost
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);//gg
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//semv
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//sib
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//prost
-            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);//total
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);// 43200
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//3900
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);//prost
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);//gg
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);//semv
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);//sib
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);//prost
+            Structure ptv_ID19 = Add_structure(ss, "PTV", PTV_ID19);//total
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);// 43200
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);//3900
 
-            Structure rect_ant = ss.AddStructure("CONTROL", Rect_ant);
-            Structure rect_post = ss.AddStructure("CONTROL", Rect_post);
-            Structure prv_sigma = ss.AddStructure("CONTROL", PRV_Sigma);
-            Structure prv_intestino = ss.AddStructure("CONTROL", PRV_Intestino);
-            Structure uretra2 = ss.AddStructure("PTV", "Buffer_U");
+            Structure rect_ant = Add_structure(ss, "CONTROL", Rect_ant);
+            Structure rect_post = Add_structure(ss, "CONTROL", Rect_post);
+            Structure prv_sigma = Add_structure(ss, "CONTROL", PRV_Sigma);
+            Structure prv_intestino = Add_structure(ss, "CONTROL", PRV_Intestino);
+            Structure uretra2 = Add_structure(ss, "PTV", "Buffer_U");
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
@@ -2269,7 +2273,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 prv_intestino.SegmentVolume = bowel.Margin(5.0);// PRV Sigma
             }
-            //Structure aux                 = ss.AddStructure("CONTROL", "auxilary");//axilary
+            //Structure aux                 = Add_structure(ss, "CONTROL", "auxilary");//axilary
             if (ctv_ID5 != null) ptv_ID15.SegmentVolume = ctv_ID5.AsymmetricMargin(new AxisAlignedMargins(0, 5, 5, 5, 5, 3, 5));//ptv sib
 
             rect_post.SegmentVolume = rectum.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 17, 0, 0, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
@@ -2415,7 +2419,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             FindCouch(ss,context);
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
 
-            if (IsResim(ss))//RE SIMULAICON
+            /*if (IsResim(ss))//RE SIMULAICON
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -2439,32 +2443,32 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_colon += ".";
                     PRV_bowel += ".";
                 }
-            }
+            }*/
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
 
             // create the empty "ptv+5mm" structure ans auxilary structures
 
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);
-            //Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);
-            //Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);
-            //Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);
-            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);//ptv20 arriba
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);
-            Structure ptv_ID22 = ss.AddStructure("PTV", PTV_ID22);
-            Structure ptv_ID23 = ss.AddStructure("PTV", PTV_ID23);
-            Structure ptv_ID24 = ss.AddStructure("PTV", PTV_ID24);
-            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
-            Structure rect_ant = ss.AddStructure("CONTROL", Rect_ant);
-            Structure rect_post = ss.AddStructure("CONTROL", Rect_post);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
-            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
-            //Structure uretra2 = ss.AddStructure("PTV", "Buffer_U");
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);
+            //Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);
+            //Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);
+            //Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);
+            Structure ptv_ID19 = Add_structure(ss, "PTV", PTV_ID19);//ptv20 arriba
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);
+            Structure ptv_ID22 = Add_structure(ss, "PTV", PTV_ID22);
+            Structure ptv_ID23 = Add_structure(ss, "PTV", PTV_ID23);
+            Structure ptv_ID24 = Add_structure(ss, "PTV", PTV_ID24);
+            Structure prv_rectum = Add_structure(ss, "CONTROL", PRV_Rectum);
+            Structure rect_ant = Add_structure(ss, "CONTROL", Rect_ant);
+            Structure rect_post = Add_structure(ss, "CONTROL", Rect_post);
+            Structure prv_colon = Add_structure(ss, "CONTROL", PRV_colon);
+            Structure prv_bowel = Add_structure(ss, "CONTROL", PRV_bowel);
+            //Structure uretra2 = Add_structure(ss, "PTV", "Buffer_U");
             if (!Low)
             {
                 List<Structure> St = new List<Structure>();//convierto todos a alta resolucion
@@ -2509,7 +2513,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 prv_bowel.SegmentVolume = bowel.Margin(5.0);// PRV colon
             }
-            //Structure aux                 = ss.AddStructure("CONTROL", "auxilary");//axilary
+            //Structure aux                 = Add_structure(ss, "CONTROL", "auxilary");//axilary
             prv_rectum.SegmentVolume = rectum.Margin(5.0);// PRV Rectum
             rect_post.SegmentVolume = rectum.AsymmetricMargin(new AxisAlignedMargins(StructureMarginGeometry.Inner, 0, 17, 0, 0, 0, 0));// Enumeradores Enum: StructureMarginGeometry.Inner se llama con la clase y el identificador esto devuelve un valor de la lista.
             rect_ant.SegmentVolume = rectum.Sub(rect_post);
@@ -2646,7 +2650,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_colon = "Colon_PRV05";//
             string PRV_bowel = "Bowel_PRV05";//
 
-            if (IsResim(ss))//RE SIMULAICON
+            /*if (IsResim(ss))//RE SIMULAICON
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -2665,27 +2669,27 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_colon += ".";
                     PRV_bowel += ".";                    
                 }
-            }
+            }*/
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
 
             // create the empty "ptv+5mm" structure ans auxilary structures
 
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//bladder
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);//ganglios
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//5600
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);//6600
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//56-int
-            Structure ptv_ID19 = ss.AddStructure("PTV", PTV_ID19);//66-int
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);//intersec int
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//total
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);//bladder
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);//ganglios
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);//sib
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);//5600
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);//4500
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);//6600
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);//56-int
+            Structure ptv_ID19 = Add_structure(ss, "PTV", PTV_ID19);//66-int
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);//intersec int
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);//total
 
-            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
-            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
+            Structure prv_rectum = Add_structure(ss, "CONTROL", PRV_Rectum);
+            Structure prv_colon = Add_structure(ss, "CONTROL", PRV_colon);
+            Structure prv_bowel = Add_structure(ss, "CONTROL", PRV_bowel);
 
             if (!Low)
             {
@@ -2817,7 +2821,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_bowel = "Bowel_PRV05";//
             FindCouch(ss, context);
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
-            if (IsResim(ss))//RE SIMULAICON
+            /*if (IsResim(ss))//RE SIMULAICON
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -2834,26 +2838,26 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_colon += ".";
                     PRV_bowel += ".";
                 }
-            }
+            }*/
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
 
             // create the empty "ptv+5mm" structure ans auxilary structures
 
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//bladder
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);//ganglios
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//4800
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
-            Structure ptv_ID17 = ss.AddStructure("PTV", PTV_ID17);//4600
-            Structure ptv_ID18 = ss.AddStructure("PTV", PTV_ID18);//48-int
-            Structure ptv_ID20 = ss.AddStructure("PTV", PTV_ID20);//intersec int
-            Structure ptv_ID21 = ss.AddStructure("PTV", PTV_ID21);//total
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);//bladder
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);//ganglios
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);//sib
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);//4800
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);//4500
+            Structure ptv_ID17 = Add_structure(ss, "PTV", PTV_ID17);//4600
+            Structure ptv_ID18 = Add_structure(ss, "PTV", PTV_ID18);//48-int
+            Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);//intersec int
+            Structure ptv_ID21 = Add_structure(ss, "PTV", PTV_ID21);//total
 
-            Structure prv_rectum = ss.AddStructure("CONTROL", PRV_Rectum);
-            Structure prv_colon = ss.AddStructure("CONTROL", PRV_colon);
-            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
+            Structure prv_rectum = Add_structure(ss, "CONTROL", PRV_Rectum);
+            Structure prv_colon = Add_structure(ss, "CONTROL", PRV_colon);
+            Structure prv_bowel = Add_structure(ss, "CONTROL", PRV_bowel);
 
             if (!Low)
             {
@@ -2981,7 +2985,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             string PRV_stomach = "Stomach_PRV05";//
             FindCouch(ss, context);
             if (question() == DialogResult.No) return;//pregunta si deseamos continuar
-            if (IsResim(ss))//RE SIMULAICON
+            /*if (IsResim(ss))//RE SIMULAICON
             {
                 DialogResult result0 = System.Windows.Forms.MessageBox.Show("PTVs detected, is the plan a re-simulation? ", SCRIPT_NAME0, MessageBoxButtons.YesNo);
                 if (result0 == DialogResult.Yes)
@@ -2998,24 +3002,24 @@ namespace VMS.TPS//tiene que ser igual que el main
                     PRV_bowel += ".";
                     PRV_stomach += ".";
                 }
-            }
+            }*/
             //============================
             // GENERATE 5mm expansion of PTV
             //============================
 
             // create the empty "ptv+5mm" structure ans auxilary structures
 
-            Structure ptv_ID12 = ss.AddStructure("PTV", PTV_ID12);//bladder
-            Structure ptv_ID13 = ss.AddStructure("PTV", PTV_ID13);//ganglios
-            Structure ptv_ID14 = ss.AddStructure("PTV", PTV_ID14);//sib
-            Structure ptv_ID15 = ss.AddStructure("PTV", PTV_ID15);//4800
-            Structure ptv_ID16 = ss.AddStructure("PTV", PTV_ID16);//4500
+            Structure ptv_ID12 = Add_structure(ss, "PTV", PTV_ID12);//bladder
+            Structure ptv_ID13 = Add_structure(ss, "PTV", PTV_ID13);//ganglios
+            Structure ptv_ID14 = Add_structure(ss, "PTV", PTV_ID14);//sib
+            Structure ptv_ID15 = Add_structure(ss, "PTV", PTV_ID15);//4800
+            Structure ptv_ID16 = Add_structure(ss, "PTV", PTV_ID16);//4500
 
-            Structure prv_esop = ss.AddStructure("CONTROL", PRV_esophagus);
-            Structure prv_duodenum = ss.AddStructure("CONTROL", PRV_duode);
-            Structure prv_bowel = ss.AddStructure("CONTROL", PRV_bowel);
-            Structure prv_stomach = ss.AddStructure("CONTROL", PRV_stomach);
-            Structure prv_total = ss.AddStructure("CONTROL", "zPRV_total!");
+            Structure prv_esop = Add_structure(ss, "CONTROL", PRV_esophagus);
+            Structure prv_duodenum = Add_structure(ss, "CONTROL", PRV_duode);
+            Structure prv_bowel = Add_structure(ss, "CONTROL", PRV_bowel);
+            Structure prv_stomach = Add_structure(ss, "CONTROL", PRV_stomach);
+            Structure prv_total = Add_structure(ss, "CONTROL", "zPRV_total!");
 
             if (!Low)
             {
