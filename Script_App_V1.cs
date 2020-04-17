@@ -25,9 +25,11 @@ using System.IO;
 
 // TODO: uncomment the line below if the script requires write access.
 [assembly: ESAPIScript(IsWriteable = true)]
-[assembly: AssemblyVersion("1.0.0.235")]
-[assembly: AssemblyFileVersion("1.0.0.235")]
-[assembly: AssemblyInformationalVersion("1.0")]
+[assembly: AssemblyVersion("1.0.0.249")]
+[assembly: AssemblyFileVersion("1.0.0.249")]
+[assembly: AssemblyCompany("Instituto Zunino")]
+[assembly: AssemblyDescription("Creado por Mgter. Alberto Alarcon Paredes")]
+
 
 
 namespace VMS.TPS
@@ -40,16 +42,10 @@ namespace VMS.TPS
 
         public void Execute(ScriptContext context, System.Windows.Window window/*, ScriptEnvironment environment*/)
         {
-            /*SBRT_Prostate x = new SBRT_Prostate();
-            string id = x.Class_ID;
-            x.St_Prostate(context);*/
-
-
             string text = File.ReadAllText(@"U:\14-Scripts Eclipse\Nombres_e_Instructivos\Lic_NET_dot\Licence.txt", Encoding.UTF8);
             Structures_Creation text2 = new Structures_Creation();
-            if (text != text2.Key) System.Windows.MessageBox.Show("You dont have a valid key");
+            if (text != text2.Key) System.Windows.MessageBox.Show("You dont have a valid key/Contraseña invalida.");
 
-            // TODO : Add here your code that is called when the script is launched from Eclipse
             StructureSet ss = context.StructureSet;
             context.Patient.BeginModifications();
             if (context.StructureSet == null) { throw new ArgumentNullException("Required input StructureSet is not available"); }
@@ -66,27 +62,11 @@ namespace VMS.TPS
             MainControl.ss = ss;//transfiere el paciente actual
             MainControl.sc = context;
 
-
             List<Structures_Creation> dqm = Structures_Creation.Script();//lamo a la clase y la inicializo como es una lista 
-            
             foreach (Structures_Creation x in dqm)//puedo llamar elemento de cada lista
-            {
-
-                /*System.Windows.Forms.ComboBox cb = new System.Windows.Forms.ComboBox();
-                cb.DrawMode
-                cb.Items = s;
-                cb.Foreground = Brushes.Blue;//coloca color a las letras
-                cb.FontSize = 14;
-                cb.Checked += MainControl.Cb_Checked;//coloca el click*/
-                
-                
+            {             
                 MainControl.Combo.Items.Add(x.ID );
-                
-                //MainControl.Combo.Items[0].
-                //MainControl.Combo.Items[0]
-                //MainControl.approved = x.approved;
             }
-//            MainControl.Combo.Items[0].
         }
 
     }
