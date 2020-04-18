@@ -65,43 +65,6 @@ namespace Script_App_V1
             WindowCredit cred = new WindowCredit(); // llamo la ventana de WPF de creditos
             cred.ShowDialog();
         }
-        //public bool approved;
-        private void Combo_DrawItem(object sender, DrawItemEventArgs e)//no entra esta funcion no se porque
-        {
-            //string name = Combo.Items(e.Index);
-            /*e.DrawBackground();
-            System.Drawing.Brush brush;
-            // Get the item text.
-
-            string text = ((System.Windows.Controls.ComboBox)sender).Items[e.Index].ToString();
-            System.Windows.MessageBox.Show(text);
-            if (true)
-            {
-                brush = System.Drawing.Brushes.Green;
-            }
-            else
-            {
-                    brush = System.Drawing.Brushes.Red;
-            }
-            // Draw the text.
-
-            e.Graphics.DrawString(text, ((System.Windows.Forms.Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
-            e.DrawFocusRectangle();*/
-            e.DrawBackground();
-            List<VMS.TPS.Structures_Creation> dqm = VMS.TPS.Structures_Creation.Script();//lamo a la clase y la inicializo como es una lista 
-            var comboBox = (System.Windows.Forms.ComboBox)sender;
-            var fontFamily = (System.Drawing.FontFamily)comboBox.Items[e.Index];
-            var font = new Font(fontFamily, comboBox.Font.SizeInPoints);
-            int b =0;
-            foreach (VMS.TPS.Structures_Creation x in dqm)
-            {
-                if (x.approved) e.Graphics.DrawString(comboBox.Items[b].ToString(), font, System.Drawing.Brushes.Green, e.Bounds);
-                else e.Graphics.DrawString(comboBox.Items[b].ToString(), font, System.Drawing.Brushes.Red, e.Bounds); ;
-                b += 1;
-            }
-        }
-        
-        
 
     }
 }

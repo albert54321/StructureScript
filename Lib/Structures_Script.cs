@@ -146,7 +146,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
             else {
                 if(name != "Body" && name != "Outer Contour" && st1.CanConvertToHighResolution()) st1.ConvertToHighResolution();
-                ChangeName( st1, name);             
+                ChangeName( name,st: st1);             
             }
         }
 
@@ -160,7 +160,7 @@ namespace VMS.TPS//tiene que ser igual que el main
                     if (need == true) System.Windows.MessageBox.Show("Script doesnt execute");
                 }
             }
-            else ChangeName(st1, name);
+            else ChangeName(name, st: st1);
         }
 
         public bool HighResol(Structure s)//verifica su una estructura es alta resol devuelve a= false si es alta resol
@@ -187,10 +187,7 @@ namespace VMS.TPS//tiene que ser igual que el main
         public bool IsResim(StructureSet ss)
         {
             bool resim = false;
-            if (ss.Structures.Any(x => x.Id.Contains("PTV")))
-            {
-                resim = true;
-            }
+            if (ss.Structures.Any(x => x.Id.Contains("PTV"))) resim = true;
             return resim;
         }
 
@@ -261,8 +258,32 @@ namespace VMS.TPS//tiene que ser igual que el main
             }
         }
 
-        private void ChangeName(Structure st, string name)
+        private void ChangeName(string name, Structure st=null, StructureSet ss=null,Image img=null)
         {
+            if (img != null)
+            {
+                try
+                {
+                    img.Id = name;
+                }
+                catch (Exception)
+                {
+                    if (name.Length < 16) img.Id = name + ".";
+                    else img.Id = name.Remove(name.Length - 1) + ".";
+                }
+            }
+            if (ss != null)
+            {
+                try
+                {
+                    ss.Id = name;
+                }
+                catch (Exception)
+                {
+                    if (name.Length < 16) ss.Id = name + ".";
+                    else ss.Id = name.Remove(name.Length - 1) + ".";
+                }
+            }
             if (st != null)
             {
                 try
@@ -415,7 +436,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             DialogResult result = System.Windows.Forms.MessageBox.Show("Dose prescription is 36.25Gy?"+ "\n" +"If Yes, dose prescription is 36.25Gy" + "\n" +"If No, dose prescription is 40Gy" + "\n" + "If Cancel, End aplication", SCRIPT_NAME0, MessageBoxButtons.YesNoCancel);
             if (result == DialogResult.Cancel) return;
             Structure ptv_ID20 = Add_structure(ss, "PTV", PTV_ID20);
-            if (result == DialogResult.No) ChangeName(ptv_ID20, PTV_ID20_);
+            if (result == DialogResult.No) ChangeName(PTV_ID20_, ptv_ID20);
             
             //============================
             // GENERATE 5mm expansion of PTV
@@ -1091,10 +1112,10 @@ namespace VMS.TPS//tiene que ser igual que el main
                     System.Windows.MessageBox.Show(string.Format("Dont forget to join body with surface!\n (Unir Contorno externo con la superficie)"), SCRIPT_NAME0, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             }
-            if (result == DialogResult.Yes && result3 == DialogResult.No) ChangeName(ctv_ID1, ctv_ID1.Id.Remove(0, 1));
+            if (result == DialogResult.Yes && result3 == DialogResult.No) ChangeName(ctv_ID1.Id.Remove(0, 1), ctv_ID1);//le quita la primera letra
         }
 
-        private StructureSet CT_Resim(ScriptContext context, string[] CT_name)
+        private StructureSet CT_Resim(ScriptContext context, string[] CT_name)// encuentra la CT mas reciente
         {
             StructureSet CT = null;
             if (context.Image.Series.Images.Any(x => CT_name.Any(s => x.Id.Contains(s))))
@@ -1123,18 +1144,23 @@ namespace VMS.TPS//tiene que ser igual que el main
             string[] CT_name0 = { "CT_MODIFICADA", "modif", "MODIF", "CT_Modificad", "CT MODIFICAD", "MODIFICAD","modificad" };//para cambiar el nombre despues esto sirva en el script de planing
             string[] CT_name1 = { "CT_ORIGINAL", "origin", "ORIGI", "CT_Original", "CT ORIGINAL", "ORIGINAL","original" };
             //Image CT_ImModif = context.Image.Series.Images.FirstOrDefault(x => CT_name0.Any(s=>x.Id.Contains(s)));//esto obtiene las CTs
-            //Image CT_ImOrig = context.Image.Series.Images.FirstOrDefault(x => CT_name0.Any(s => x.Id.Contains(s)));
+            //Image CT_ImOrig = context.Image.Series.Images.FirstOrDefault(x => CT_name0.Any(s => x.Id.Contains(s))); en desuso por lo que sigue
+            //StructureSet CT_modificada = CT_Resim(context,CT_name0);En desuso por lo que sigue
+            //StructureSet CT_Original = CT_Resim(context, CT_name1); 
+
             //para ver si es resimulacion
-            StructureSet CT_modificada = CT_Resim(context,CT_name0);
-            StructureSet CT_Original = CT_Resim(context, CT_name1); 
+            StructureSet CT_modificada = context.StructureSet;
+            ChangeName(CT_name0[0], ss: CT_modificada, img: context.Image);//CAMBIO EL NOMBRE DE LA CT y ss
+            StructureSet CT_Original = CT_modificada.Copy();//
+            ChangeName(CT_name1[0], ss: CT_Original, img: CT_Original.Image);
+            
   
             //context.Patient.StructureSets;
             if (CT_modificada == null || CT_Original == null) 
             { 
                 System.Windows.MessageBox.Show("Los nombres del Set de Structuras son incorrectos recuerde que deben ser: CT_MODIFICADA y CT_ORIGINAL, corrija e intente de nuevo");
                 return;
-            }
-         
+            }        
 
             StructureSet ss = context.StructureSet;
             context.Patient.BeginModifications();   // enable writing with this script.
@@ -1371,12 +1397,12 @@ namespace VMS.TPS//tiene que ser igual que el main
 
             if (result == DialogResult.No)
             {
-                ChangeName( ptv_ID23,PTV_ID24);
+                ChangeName( PTV_ID24, ptv_ID23);
             }
             else if (result == DialogResult.Cancel)
             {
-                ChangeName( ptv_ID23 , PTV_ID25);
-                if (ptv_ID22!=null) ChangeName( ptv_ID22 ,PTV_ID26);
+                ChangeName( PTV_ID25, ptv_ID23);
+                if (ptv_ID22!=null) ChangeName( PTV_ID26, ptv_ID22);
 
             }
             if (ctv_ID2 == null)
@@ -1392,7 +1418,7 @@ namespace VMS.TPS//tiene que ser igual que el main
             {
                 ss.RemoveStructure(ptv_ID17);
                 ss.RemoveStructure(ptv_ID21);
-                if (result != DialogResult.Cancel) ChangeName(ptv_ID22, PTV_ID22_);
+                if (result != DialogResult.Cancel) ChangeName(PTV_ID22_, ptv_ID22);
             }
             if (ctv_ID3 == null && ctv_ID4 == null && ctv_ID5 == null && ctv_ID6 == null) ss.RemoveStructure(ptv_ID22);
 

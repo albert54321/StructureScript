@@ -42,7 +42,7 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </StackPanel.RenderTransform>
-            <ComboBox x:Name="Combo" SelectionChanged="Combo_SelectionChanged" Foreground="Blue" />
+            <ComboBox x:Name="Combo" SelectionChanged="Combo_SelectionChanged" Foreground="Blue"/>
         </StackPanel>
 
         <StackPanel Name="selected" Width="300" Height="91" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="337,231,-491,-161">
