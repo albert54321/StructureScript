@@ -18,7 +18,7 @@
             <Label x:Name="Stat_Copy0" Content="Autor:   Alberto Alarcón Paredes" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="412" Height="34" FontSize="18"/>
             <Label x:Name="Stat_Copy1" Content="Magister en Física Médica-Instituto Balseiro" HorizontalAlignment="Left" Margin="-410,80,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="363" Height="34" FontSize="18"/>
             <Label x:Name="Stat_Copy2" Content="Licenciado en Física Universidad Mayor de San Simón" HorizontalAlignment="Left" Margin="-410,120,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="449" Height="34" FontSize="18"/>
-            <Label x:Name="Stat_Copy3" Content="Email Institucional: aalarcon@institutozunino.org" HorizontalAlignment="Left" Margin="-450,160,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="412" Height="34" FontSize="18"/>
+            <Label x:Name="Stat_Copy3" Content="Email Institucional: aalarcon@aben.gob.bo" HorizontalAlignment="Left" Margin="-450,160,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="412" Height="34" FontSize="18"/>
             <Label x:Name="Stat_Copy4" Content="Email Personal: alarcon.alberto01@gmail.com" HorizontalAlignment="Left" Margin="-450,200,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="380" Height="34" FontSize="18"/>
             <Label x:Name="Stat_Copy5" Content="Cordoba-Argentina" HorizontalAlignment="Left" Margin="-360,240,0,0" VerticalAlignment="Top" Background="{x:Null}" Foreground="#FFFEFEFF" Width="351" Height="34" FontSize="18"/>
 
