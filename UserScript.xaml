@@ -80,7 +80,7 @@
         </StackPanel>
         <StackPanel Margin="337,330,-491,-181" Orientation="Horizontal">
             <StackPanel.Background>
-                <ImageBrush x:Name="myBrush" ImageSource="Lib/Institutozunino.png" Stretch="Uniform" Opacity="0.8" ></ImageBrush>
+                <ImageBrush x:Name="myBrush" ImageSource="Lib/dynalog-1.png" Stretch="Uniform" Opacity="0.8" ></ImageBrush>
             </StackPanel.Background>
         </StackPanel>
     </Grid>
